@@ -38,12 +38,15 @@
   <div id="container" q-class="show:isCtnShow">
     <canvas id="anm-canvas" class="anm-canvas"></canvas>
     <div class="left-col" q-class="show:isShow">
-      
-<div class="overlay" style="background: #4d4d4d"></div>
+      <!-- <div class="overlay" style="background: #00000"> -->
+<!-- 左侧边栏（上半部分）不设置背景颜色 -->
+<div class="overlay" ></div>
 <div class="intrude-less">
+
+
 	<header id="header" class="inner">
 		<a href="/" class="profilepic">
-			<img src="/assets/nene.png" class="js-avatar">
+			<img src="/assets/tsubaki.png" class="js-avatar">
 		</a>
 		<hgroup>
 		  <h1 class="header-author"><a href="/">Conzxy</a></h1>
@@ -103,14 +106,14 @@
     <div class="mid-col" q-class="show:isShow,hide:isShow|isFalse">
       
 <nav id="mobile-nav">
-  	<div class="overlay js-overlay" style="background: #4d4d4d"></div>
+  	<div class="overlay js-overlay" style="background: #00000"></div>
 	<div class="btnctn js-mobile-btnctn">
   		<div class="slider-trigger list" q-on="click: openSlider(e)"><i class="icon icon-sort"></i></div>
 	</div>
 	<div class="intrude-less">
 		<header id="header" class="inner">
 			<div class="profilepic">
-				<img src="/assets/nene.png" class="js-avatar">
+				<img src="/assets/tsubaki.png" class="js-avatar">
 			</div>
 			<hgroup>
 			  <h1 class="header-author js-header-author">Conzxy</h1>
@@ -502,7 +505,7 @@
 		toc_hide_index: true,
 		root: "/",
 		innerArchive: true,
-		showTags: false
+		showTags: true
 	}
 </script>
 
