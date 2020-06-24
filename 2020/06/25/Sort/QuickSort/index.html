@@ -6,24 +6,30 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>最小生成树算法——prim | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>十大排序——快速排序 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="prim概述prim是基于顶点来求得最小生成树，因而适用于稠密图。">
+  <meta name="description" content="快速排序">
 <meta property="og:type" content="article">
-<meta property="og:title" content="最小生成树算法——prim">
-<meta property="og:url" content="http://yoursite.com/2020/06/24/Prim/index.html">
+<meta property="og:title" content="十大排序——快速排序">
+<meta property="og:url" content="http://yoursite.com/2020/06/25/Sort/QuickSort/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="prim概述prim是基于顶点来求得最小生成树，因而适用于稠密图。">
+<meta property="og:description" content="快速排序">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20200622125907653.gif">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20200622125940172.gif">
-<meta property="article:published_time" content="2020-06-23T16:37:48.296Z">
-<meta property="article:modified_time" content="2020-06-24T04:54:43.991Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200604185349173.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212307728-17746403.png">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212934570-941546711.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200605131722759.gif">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213005838-477843633.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200605134159701.gif">
+<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213040831-1022407683.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200605193437284.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200605193437406.png">
+<meta property="article:published_time" content="2020-06-24T16:13:16.093Z">
+<meta property="article:modified_time" content="2020-06-24T16:36:00.513Z">
 <meta property="article:author" content="Conzxy">
-<meta property="article:tag" content="图论">
-<meta property="article:tag" content="最小生成树">
+<meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200622125907653.gif">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200604185349173.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -119,13 +125,12 @@
 			        theme: '#b7daff',
 			        preload: 'none',
 			        mutex: true,
-			        lrcType: 3,
+
 			        volume: 0.7,
 			        fixed: true,
 			        audio: [{
 					        name: '恋文',
 					        artist: 'やなぎなぎ',
-									Irc: '',
 					        cover: 'https://img-blog.csdnimg.cn/20200624203730921.jpg',
 					        url: 'http://music.163.com/song/media/outer/url?id=28561180.mp3'
 					      },
@@ -235,20 +240,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Prim" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Sort/QuickSort" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      最小生成树算法——prim
+      十大排序——快速排序
     </h1>
   
 
         
-        <a href="/2020/06/24/Prim/" class="archive-article-date">
-  	<time datetime="2020-06-23T16:37:48.296Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-24</time>
+        <a href="/2020/06/25/Sort/QuickSort/" class="archive-article-date">
+  	<time datetime="2020-06-24T16:13:16.093Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
 </a>
         
         
@@ -256,20 +261,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="prim"><a href="#prim" class="headerlink" title="prim"></a>prim</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>prim是基于顶点来求得最小生成树，因而适用于稠密图。</p>
-<a id="more"></a>
-<h2 id="基本思想、"><a href="#基本思想、" class="headerlink" title="基本思想、"></a>基本思想、</h2><p>维护两个集合VT和ET，ET为所有已确定属于最小生成树的边，VT保存ET的所有边的端点，每一步都将距离VT“最近”但是不属于VT的顶点移入VT。</p>
-<h2 id="伪代码"><a href="#伪代码" class="headerlink" title="伪代码"></a>伪代码</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">1 VT←&#123;v&#125;，其中v为顶点集V的任意顶点（起始点），ET←∅</span><br><span class="line">2 If  VT&#x3D;V，则输出T&#x3D;&#123;VT,ET&#125;，</span><br><span class="line">  Else</span><br><span class="line">2.1 在集合E中选取权值最小的边uv，其中u∈VT，v∈V-VT</span><br><span class="line">  （如存在多条，选一条即可）</span><br><span class="line">2.2 VT←VT∪&#123;v&#125;，ET←ET∪&#123;uv&#125;;</span><br><span class="line">2.3 return step 2</span><br></pre></td></tr></table></figure>
-<h2 id="输入样本"><a href="#输入样本" class="headerlink" title="输入样本"></a>输入样本</h2><p>6 10<br>A B 14<br>A F 13<br>A E 22<br>B F 12<br>B C 21<br>C F 18<br>C D 16<br>D E 20<br>D F 19<br>E F 24  </p>
-<p>7 11<br>A B 7<br>A D 5<br>B C 8<br>B D 9<br>B E 7<br>C E 5<br>D E 15<br>D F 6<br>E F 8<br>E G 9<br>F G 11  </p>
-<p>0 0  </p>
-<p>PS:0 0表示终止输入</p>
-<h2 id="输出样本"><a href="#输出样本" class="headerlink" title="输出样本"></a>输出样本</h2><p>The minimal spanning tree’s vertexes set:<br>A F B C D E<br>and its edges:<br>(A,F) (F,B) (F,C) (C,D) (D,E)</p>
-<p>The minimal spanning tree’s vertexes set:<br>A D F B E C G<br>and its edges:<br>(A,D) (D,F) (A,B) (B,E) (E,C) (E,G)</p>
-<h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> INF=<span class="number">65536</span>;</span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="keyword">const</span> <span class="title">alphabet</span><span class="params">(<span class="string">"ABCDEFGHIJkLMNOPQRSTUVWXYZ"</span>)</span></span>;  <span class="comment">//字母与数字转换</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">char</span> u,v;   <span class="comment">//端点</span></span><br><span class="line"><span class="keyword">int</span> w;      <span class="comment">//边权</span></span><br><span class="line"></span><br><span class="line"><span class="comment">//获得邻接矩阵</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getMatrix</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; &amp;g,<span class="keyword">int</span> numv,<span class="keyword">int</span> nume)</span>  </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;numv;i++)</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;numv;j++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(i==j)</span><br><span class="line">      g[i].push_back(<span class="number">0</span>);</span><br><span class="line">      <span class="keyword">else</span></span><br><span class="line">      g[i].push_back(INF);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nume;i++)</span><br><span class="line">  &#123;</span><br><span class="line">      <span class="built_in">cin</span>&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">      g[u-<span class="string">'A'</span>][v-<span class="string">'A'</span>]=g[v-<span class="string">'A'</span>][u-<span class="string">'A'</span>]=w;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//prim——伪代码实现版本</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">prim</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="keyword">const</span>&amp;g,</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;VT,<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; &amp;ET)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> numv=g.size();</span><br><span class="line">  VT.push_back(<span class="number">0</span>);</span><br><span class="line">  <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">final</span><span class="params">(numv,<span class="literal">false</span>)</span></span>;</span><br><span class="line">  <span class="keyword">final</span>[<span class="number">0</span>]=<span class="literal">true</span>;</span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;numv;i++)</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">int</span> min=INF;</span><br><span class="line">    <span class="keyword">int</span> b=<span class="number">0</span>,e=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> j=VT.begin();j!=VT.end();j++)</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;numv;k++)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">final</span>[k]&amp;&amp;g[*j][k]&lt;min)</span><br><span class="line">        &#123;</span><br><span class="line">          min=g[*j][k];</span><br><span class="line">          b=*j;</span><br><span class="line">          e=k;</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    <span class="keyword">final</span>[e]=<span class="literal">true</span>;</span><br><span class="line">    VT.push_back(e);</span><br><span class="line">    ET.push_back(make_pair(b,e));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//prim——lowcost存较小边权，adj存邻接点</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">prim1</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="keyword">const</span>&amp;g,</span></span></span><br><span class="line"><span class="function"><span class="params">  <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;VT,<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; &amp;ET)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">int</span> numv=g.size();</span><br><span class="line">    VT.push_back(<span class="number">0</span>);</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; lowcost;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">adj</span><span class="params">(numv,<span class="number">0</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;x:g[<span class="number">0</span>])</span><br><span class="line">      lowcost.push_back(x);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;numv;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">int</span> min=INF;</span><br><span class="line">      <span class="keyword">int</span> e=<span class="number">0</span>;</span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> k=<span class="number">0</span>;k&lt;numv;k++)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span>(lowcost[k]&amp;&amp;lowcost[k]&lt;min)</span><br><span class="line">          &#123;</span><br><span class="line">            min=lowcost[k];</span><br><span class="line">            e=k;</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      lowcost[e]=<span class="number">0</span>;</span><br><span class="line">      VT.push_back(e);</span><br><span class="line">      ET.push_back(make_pair(adj[e],e));</span><br><span class="line"></span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;numv;j++)</span><br><span class="line">        <span class="keyword">if</span>(lowcost[j]&amp;&amp;g[e][j]&lt;lowcost[j])</span><br><span class="line">        &#123;</span><br><span class="line">          lowcost[j]=g[e][j];</span><br><span class="line">          adj[j]=e;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> numv,nume;</span><br><span class="line">  <span class="keyword">while</span>(<span class="built_in">cin</span>&gt;&gt;numv&gt;&gt;nume&amp;&amp;numv&gt;<span class="number">0</span>&amp;&amp;nume&gt;<span class="number">0</span>)&#123;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">g</span><span class="params">(numv)</span></span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; VT;</span><br><span class="line">    <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;&gt; ET;</span><br><span class="line"></span><br><span class="line">    getMatrix(g,numv,nume);</span><br><span class="line">    <span class="comment">//prim1(g,VT,ET);</span></span><br><span class="line">    prim(g,VT,ET);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"The minimal spanning tree's vertexes set:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:VT)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">cout</span>&lt;&lt;alphabet[c]&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="string">"and its edges:"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;x:ET)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="built_in">cout</span>&lt;&lt;<span class="string">"("</span>&lt;&lt;alphabet[x.first]&lt;&lt;<span class="string">","</span>&lt;&lt;alphabet[x.second]&lt;&lt;<span class="string">")"</span>&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>以下的n表示的就是顶点数v，因为prim是基于顶点的。</p>
-<h3 id="第一个版本"><a href="#第一个版本" class="headerlink" title="第一个版本"></a>第一个版本</h3><p>最坏情况：<br><br><img src="https://img-blog.csdnimg.cn/20200622125907653.gif" alt=""><br><br>最好情况：<br><br><img src="https://img-blog.csdnimg.cn/20200622125940172.gif" alt=""><br><br>Tn=O(n^3),<br>主要是寻找最小边权花费了平方时间</p>
-<h3 id="第二个版本"><a href="#第二个版本" class="headerlink" title="第二个版本"></a>第二个版本</h3><p>这个版本优化了寻找最小边权，只需花费线性时间(空间换时间，但值得)，<br>所以Tn=O(n^2)</p>
+        <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><a id="more"></a>
+<h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>每趟使表的第1个元素放入适当位置（归位），并且左边的元素小于这个元素，右面的元素大于这个元素，我们称这个元素为pivot，将表一分为二，对子表按递归方式继续这种划分，直至划分的子表长为0或1（递归出口）。<br><br><img src="https://img-blog.csdnimg.cn/20200604185349173.png" alt=""><br><br>快速排序二叉递归树：<br><br><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212307728-17746403.png" alt=""><br><br>正因为是将最左边的元素提取出来当pivot，所以左边都比它小，右边都比它大，继续划分也是如此，因此这个pivot在序列中的位置就已经决定好了，其他的序列继续如此划分，直至最后分到子表长度只有1或0。由于划分是按照整体有序的方式进行的，所以最后得到的序列必然是有序的。<br><br>顺带一提，STL的sort的实现原理就是快速排序。因为相比冒泡等时间换空间的算法以及桶排序等空间换时间的算法来说，快排没有严重失衡，得到优化后更是如此，无愧于20世纪十大算法之一。<br></p>
+<h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">QuickSort</span><span class="params">(List &amp;L,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l=left,r=right;         <span class="comment">//记录此时的左边界和右边边</span></span><br><span class="line">    <span class="keyword">int</span> temp=L[left];           <span class="comment">//记录左边界为pivot</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;r)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span>(l!=r)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;L[r]&gt;=temp)  <span class="comment">//如果右边的元素大于等于pivot则正常</span></span><br><span class="line">        &#123;</span><br><span class="line">          r--;              <span class="comment">//向pivot靠近</span></span><br><span class="line">        &#125;</span><br><span class="line">        L[l]=L[r];          <span class="comment">//若小于pivot，则调整</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;L[l]&lt;=temp)</span><br><span class="line">        &#123;</span><br><span class="line">          l++;</span><br><span class="line">        &#125;</span><br><span class="line">        L[r]=L[l];</span><br><span class="line">      &#125;</span><br><span class="line">      L[l]=temp;    <span class="comment">//最终r&lt;l失败，令其为pivot。</span></span><br><span class="line">      QuickSort(L,left,l<span class="number">-1</span>);    <span class="comment">//划分[left,...,l-1]并进行排序</span></span><br><span class="line">      QuickSort(L,l+<span class="number">1</span>,right);   <span class="comment">//划分[l+1,...,right]并进行排序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2><h3 id="最好的情况："><a href="#最好的情况：" class="headerlink" title="最好的情况："></a>最好的情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212934570-941546711.png" alt=""><br><br>选取的pivot正好可以等分序列，每次要处理的序列长度几乎相等，经过<img src="https://img-blog.csdnimg.cn/20200605131722759.gif" alt="">)次嵌套调用，便可得到长度为1的子表，在递归树的同一级别上，没有两个调用会处理原序列的相同部分（线性），因此每个级别的调用只要O(n)次，因此整个算法的时间复杂度为O(nlogn)。<br><br>由嵌套调用次数就可知，递归树深度为logn，那么空间复杂度=O(logn)。</p>
+<h3 id="最坏的情况："><a href="#最坏的情况：" class="headerlink" title="最坏的情况："></a>最坏的情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213005838-477843633.png" alt=""><br><br>如果pivot为最大元素或最小元素，则会出现空序列和n-1的子序列，如果重复出现，则每次处理的子序列都比上次小1，这种情况下，递归树变成了n-1个嵌套调用的线性链。时间复杂度：<img src="https://img-blog.csdnimg.cn/20200605134159701.gif" alt=""><br><br>同时，递归树深度为n-1（从0开始计数，因为深度为0是非递归调用），所以空间复杂度=O(n).<br></p>
+<h3 id="平均情况："><a href="#平均情况：" class="headerlink" title="平均情况："></a>平均情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213040831-1022407683.png" alt=""><br><br><img src="https://img-blog.csdnimg.cn/20200605193437284.png" alt=""><br><br><img src="https://img-blog.csdnimg.cn/20200605193437406.png" alt=""><br></p>
 
       
 
@@ -304,11 +301,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">图论</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">最小生成树</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">排序</a>
         		</li>
       		
 		</ul>
@@ -320,11 +313,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/图论//" class="article-tag-list-link color3">图论</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/图论/最小生成树//" class="article-tag-list-link color1">最小生成树</a>
+        			<a href="/categories/排序//" class="article-tag-list-link color3">排序</a>
         		</li>
       		
 		</ul>
@@ -379,7 +368,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/24/Prim/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/06/25/Sort/QuickSort/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -393,15 +382,20 @@
   
 <nav id="article-nav">
   
-    <a href="/2020/06/24/HDOJ/Graph/1301/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2020/06/25/Sort/RadixSort/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          1301
+          十大排序——基数排序
         
       </div>
     </a>
   
+  
+    <a href="/2020/06/25/Sort/Proof%20of%20O(logn!)=O(nlogn)/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">O(logn!)=O(nlogn)的证明</div>
+      <i class="icon-circle-right"></i>
+    </a>
   
 </nav>
 
@@ -430,7 +424,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#prim"><span class="toc-number">1.</span> <span class="toc-text">prim</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概述"><span class="toc-number">1.1.</span> <span class="toc-text">概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#基本思想、"><span class="toc-number">1.2.</span> <span class="toc-text">基本思想、</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#伪代码"><span class="toc-number">1.3.</span> <span class="toc-text">伪代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输入样本"><span class="toc-number">1.4.</span> <span class="toc-text">输入样本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#输出样本"><span class="toc-number">1.5.</span> <span class="toc-text">输出样本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现代码"><span class="toc-number">1.6.</span> <span class="toc-text">实现代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间复杂度"><span class="toc-number">1.7.</span> <span class="toc-text">时间复杂度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#第一个版本"><span class="toc-number">1.7.1.</span> <span class="toc-text">第一个版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#第二个版本"><span class="toc-number">1.7.2.</span> <span class="toc-text">第二个版本</span></a></li></ol></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#快速排序"><span class="toc-number">1.</span> <span class="toc-text">快速排序</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#基本思想"><span class="toc-number">1.1.</span> <span class="toc-text">基本思想</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现代码"><span class="toc-number">1.2.</span> <span class="toc-text">实现代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法复杂度"><span class="toc-number">1.3.</span> <span class="toc-text">算法复杂度</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#最好的情况："><span class="toc-number">1.3.1.</span> <span class="toc-text">最好的情况：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#最坏的情况："><span class="toc-number">1.3.2.</span> <span class="toc-text">最坏的情况：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#平均情况："><span class="toc-number">1.3.3.</span> <span class="toc-text">平均情况：</span></a></li></ol></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -563,6 +557,22 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">DFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
               </li>
             
             <div class="clearfix"></div>
