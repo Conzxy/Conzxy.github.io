@@ -6,17 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: 图论 | Conzxy&#39;s blog</title>
+  <title>Tag: 图论 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
   <meta property="og:type" content="website">
-<meta property="og:title" content="Conzxy&#39;s blog">
+<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
 <meta property="og:url" content="http://yoursite.com/tags/%E5%9B%BE%E8%AE%BA/index.html">
-<meta property="og:site_name" content="Conzxy&#39;s blog">
+<meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Conzxy">
 <meta name="twitter:card" content="summary">
   
-    <link rel="alternative" href="/atom.xml" title="Conzxy&#39;s blog" type="application/atom+xml">
+    <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
   
     <link rel="icon" href="/assets/Conzxy.png">
@@ -52,7 +52,7 @@
 		  <h1 class="header-author"><a href="/">Conzxy</a></h1>
 		</hgroup>
 		
-		<p class="header-subtitle">人生漫长，且随且行</p>
+		<p class="header-subtitle">当你有问题的时候，不是你太蠢了，而是太懒了</p>
 		
 
 		<nav class="header-menu">
@@ -91,15 +91,74 @@
 					<a class="zhihu" target="_blank" href="https://www.zhihu.com/people/ceng-xiao-yu-6-84" title="zhihu"><i class="icon-zhihu"></i></a>
 		        
 			</div>
-			<!-- 网易云音乐插件 -->
 
-	<div style="position:absolute; bottom:120px left:auto; width:85%">
-		<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="240" height="52" src="//music.163.com/outchain/player?type=2&id=26131698&auto=1&height=32"></iframe>
-	</div>
+			<!-- 《左侧边栏添加--APlayer音乐播放器 -->
+			
+			<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.css">
+			<!-- // 这里div的样式是笔者自己修改过的，你可以直接使用APlayer官方的原配置：<div id="aplayer"></div> -->
+			<div id="aplayer" style="position:absolute;left;0;bottom:0;"></div>
+			<script src="https://cdn.jsdelivr.net/npm/aplayer@1.10.1/dist/APlayer.min.js"></script>
+			<script src="https://cdn.jsdelivr.net/npm/color-thief-don@2.0.2/src/color-thief.js"></script>
+			<script>
+			    const ap = new APlayer({
+			        container: document.getElementById('aplayer'),
+			        autoplay: false,
+			        listFolded: true,
+			        listMaxHeight: 90,
+			        order: 'list',
+			        loop: 'all',
+			        theme: '#b7daff',
+			        preload: 'none',
+			        mutex: true,
+			        lrcType: 3,
+			        volume: 0.7,
+			        fixed: true,
+			        audio: [{
+					        name: '恋文',
+					        artist: 'やなぎなぎ',
+					        cover: 'https://img-blog.csdnimg.cn/20200624203730921.jpg',
+					        url: 'http://music.163.com/song/media/outer/url?id=28561180.mp3'
+					      },
+								{
+									name: 'グレゴリオ',
+									artist: '古川本舗,ちびた',
+									cover: 'https://img-blog.csdnimg.cn/20200624204329501.jpg',
+									url: 'http://music.163.com/song/media/outer/url?id=31546851.mp3'
+								},
+								{
+									name: '今、このとき',
+									artist: 'ひいらぎ',
+									cover: 'https://img-blog.csdnimg.cn/20200624205257763.jpg',
+									url: 'http://music.163.com/song/media/outer/url?id=743041.mp3'
+								},
+								{
+									name: 'ふたりで',
+									artist: 'Famishin,Riryka',
+									cover: 'https://img-blog.csdnimg.cn/20200624210534940.png',
+									url: 'http://music.163.com/song/media/outer/url?id=473403184.mp3'
+								}
+			        ]
+			    });
 
+			    <!-- 根据封面自适应主题色 -->
+			    const colorThief = new ColorThief();
+			    const setTheme = (index) => {
+			        if (!ap.list.audios[index].theme) {
+			            colorThief.getColorAsync(ap.list.audios[index].cover, function(color) {
+			                ap.theme(`rgb(${color[0]}, ${color[1]}, ${color[2]})`, index);
+			            });
+			        }
+			    };
+			    setTheme(ap.list.index);
+			    ap.on('listswitch', (data) => {
+			        setTheme(data.index);
+			    });
+			</script>
+			
+			<!-- 左侧边栏添加--APlayer音乐播放器》 -->
 
 		</nav>
-	</header>
+</header>
 </div>
 
     </div>
@@ -119,7 +178,7 @@
 			  <h1 class="header-author js-header-author">Conzxy</h1>
 			</hgroup>
 			
-			<p class="header-subtitle"><i class="icon icon-quo-left"></i>人生漫长，且随且行<i class="icon icon-quo-right"></i></p>
+			<p class="header-subtitle"><i class="icon icon-quo-left"></i>当你有问题的时候，不是你太蠢了，而是太懒了<i class="icon icon-quo-right"></i></p>
 			
 			
 			
@@ -475,7 +534,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
     
     	<section class="tools-section tools-section-me" q-show="aboutme">
   	  	
-  	  		<div class="aboutme-wrap" id="js-aboutme">湖工大大一生，C++学习中，最近在搞数据结构</div>
+  	  		<div class="aboutme-wrap" id="js-aboutme">湖工大19级生，大二准计科生，C++学习中，同时钻研一些数据结构与算法（还比较浅</div>
   	  	
     	</section>
     
