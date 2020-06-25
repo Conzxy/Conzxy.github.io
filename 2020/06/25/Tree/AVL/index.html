@@ -20,7 +20,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200525003758516.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p4eTAxMjM0MA==,size_16,color_FFFFFF,t_70">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200525003806301.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p4eTAxMjM0MA==,size_16,color_FFFFFF,t_70">
 <meta property="article:published_time" content="2020-06-25T01:56:28.347Z">
-<meta property="article:modified_time" content="2020-06-25T02:00:37.783Z">
+<meta property="article:modified_time" content="2020-06-25T12:13:52.382Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="查找">
 <meta property="article:tag" content="树">
@@ -277,7 +277,7 @@
 <li>节点4成为节点5的左子树</li>
 <li>最后更新节点的高度值</li>
 </ul>
-<p>PS:新根结点的左子树由当前结点的右子树接受<br><br>（根据中序遍历，新根结点原本就是失衡根结点的右子树上的结点，因此新根结点的左子树全部大于失衡根结点，所以可以成为失衡根结点的新右子树）</p>
+<p>PS:新根结点的左子树由当前结点的右子树接受<br>（根据中序遍历，新根结点原本就是失衡根结点的右子树上的结点，因此新根结点的左子树全部大于失衡根结点，所以可以成为失衡根结点的新右子树）</p>
 <h3 id="2-右旋"><a href="#2-右旋" class="headerlink" title="2.右旋"></a>2.右旋</h3><p><img src="https://img-blog.csdnimg.cn/2020052500372849.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p4eTAxMjM0MA==,size_16,color_FFFFFF,t_70" alt="rightRotation"><br><br>插入3、2后出现了不平衡的情况。此时的插入情况是“<strong>在左子树上插入左孩子导致AVL树失衡</strong>”，我们需要进行单右旋调整。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">AVL_Node&lt;T&gt;* <span class="title">RightRotation</span><span class="params">(AVL_Node&lt;T&gt; *cur)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="keyword">auto</span> plchild=cur-&gt;lchild;</span><br><span class="line">	cur-&gt;lchild=plchild-&gt;rchild;</span><br><span class="line">	plchild-&gt;rchild=cur;</span><br><span class="line">	cur-&gt;height=max(Height(cur-&gt;lchild),Height(cur-&gt;rchild))+<span class="number">1</span>;</span><br><span class="line">	plchild-&gt;height=max(Height(cur-&gt;lchild),Height(cur-&gt;rchild))+<span class="number">1</span>;</span><br><span class="line">	<span class="keyword">return</span> plchild;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h3 id="3-先右旋后左旋"><a href="#3-先右旋后左旋" class="headerlink" title="3.先右旋后左旋"></a>3.先右旋后左旋</h3><p><img src="https://img-blog.csdnimg.cn/20200525003758516.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3p4eTAxMjM0MA==,size_16,color_FFFFFF,t_70" alt="RightLeftRotation"><br><br>这种情况，总结起来就是“<strong>在右子树上插入左孩子导致AVL树失衡</strong>”,此时我们需要进行先右旋后左旋的调整。</p>
