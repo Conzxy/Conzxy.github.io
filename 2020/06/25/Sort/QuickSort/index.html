@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>十大排序——快速排序 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="快速排序">
+  <meta name="description" content="快速排序基本思想每趟使表的第1个元素放入适当位置（归位），并且左边的元素小于这个元素，右面的元素大于这个元素，我们称这个元素为pivot，将表一分为二，对子表按递归方式继续这种划分，直至划分的子表长为0或1（递归出口）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="十大排序——快速排序">
 <meta property="og:url" content="http://yoursite.com/2020/06/25/Sort/QuickSort/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="快速排序">
+<meta property="og:description" content="快速排序基本思想每趟使表的第1个元素放入适当位置（归位），并且左边的元素小于这个元素，右面的元素大于这个元素，我们称这个元素为pivot，将表一分为二，对子表按递归方式继续这种划分，直至划分的子表长为0或1（递归出口）。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200604185349173.png">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212307728-17746403.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200625092730588.png">
 <meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212934570-941546711.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200605131722759.gif">
 <meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213005838-477843633.png">
@@ -25,7 +25,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200605193437284.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200605193437406.png">
 <meta property="article:published_time" content="2020-06-24T16:13:16.093Z">
-<meta property="article:modified_time" content="2020-06-24T16:36:00.513Z">
+<meta property="article:modified_time" content="2020-06-25T01:38:57.084Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
@@ -261,11 +261,12 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><a id="more"></a>
-<h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>每趟使表的第1个元素放入适当位置（归位），并且左边的元素小于这个元素，右面的元素大于这个元素，我们称这个元素为pivot，将表一分为二，对子表按递归方式继续这种划分，直至划分的子表长为0或1（递归出口）。<br><br><img src="https://img-blog.csdnimg.cn/20200604185349173.png" alt=""><br><br>快速排序二叉递归树：<br><br><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212307728-17746403.png" alt=""><br><br>正因为是将最左边的元素提取出来当pivot，所以左边都比它小，右边都比它大，继续划分也是如此，因此这个pivot在序列中的位置就已经决定好了，其他的序列继续如此划分，直至最后分到子表长度只有1或0。由于划分是按照整体有序的方式进行的，所以最后得到的序列必然是有序的。<br><br>顺带一提，STL的sort的实现原理就是快速排序。因为相比冒泡等时间换空间的算法以及桶排序等空间换时间的算法来说，快排没有严重失衡，得到优化后更是如此，无愧于20世纪十大算法之一。<br></p>
+        <h1 id="快速排序"><a href="#快速排序" class="headerlink" title="快速排序"></a>快速排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>每趟使表的第1个元素放入适当位置（归位），并且左边的元素小于这个元素，右面的元素大于这个元素，我们称这个元素为pivot，将表一分为二，对子表按递归方式继续这种划分，直至划分的子表长为0或1（递归出口）。  </p>
+<a id="more"></a>
+<p><img src="https://img-blog.csdnimg.cn/20200604185349173.png" alt=""><br>快速排序二叉递归树：<br><img src="https://img-blog.csdnimg.cn/20200625092730588.png" alt=""><br><br>正因为是将最左边的元素提取出来当pivot，所以左边都比它小，右边都比它大，继续划分也是如此，因此这个pivot在序列中的位置就已经决定好了，其他的序列继续如此划分，直至最后分到子表长度只有1或0。由于划分是按照整体有序的方式进行的，所以最后得到的序列必然是有序的。<br>顺带一提，STL的sort的实现原理就是快速排序。因为相比冒泡等时间换空间的算法以及桶排序等空间换时间的算法来说，快排没有严重失衡，得到优化后更是如此，无愧于20世纪十大算法之一。<br></p>
 <h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">QuickSort</span><span class="params">(List &amp;L,<span class="keyword">int</span> left,<span class="keyword">int</span> right)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> l=left,r=right;         <span class="comment">//记录此时的左边界和右边边</span></span><br><span class="line">    <span class="keyword">int</span> temp=L[left];           <span class="comment">//记录左边界为pivot</span></span><br><span class="line">    <span class="keyword">if</span>(l&lt;r)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span>(l!=r)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;L[r]&gt;=temp)  <span class="comment">//如果右边的元素大于等于pivot则正常</span></span><br><span class="line">        &#123;</span><br><span class="line">          r--;              <span class="comment">//向pivot靠近</span></span><br><span class="line">        &#125;</span><br><span class="line">        L[l]=L[r];          <span class="comment">//若小于pivot，则调整</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">while</span>(l&lt;r&amp;&amp;L[l]&lt;=temp)</span><br><span class="line">        &#123;</span><br><span class="line">          l++;</span><br><span class="line">        &#125;</span><br><span class="line">        L[r]=L[l];</span><br><span class="line">      &#125;</span><br><span class="line">      L[l]=temp;    <span class="comment">//最终r&lt;l失败，令其为pivot。</span></span><br><span class="line">      QuickSort(L,left,l<span class="number">-1</span>);    <span class="comment">//划分[left,...,l-1]并进行排序</span></span><br><span class="line">      QuickSort(L,l+<span class="number">1</span>,right);   <span class="comment">//划分[l+1,...,right]并进行排序</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2><h3 id="最好的情况："><a href="#最好的情况：" class="headerlink" title="最好的情况："></a>最好的情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212934570-941546711.png" alt=""><br><br>选取的pivot正好可以等分序列，每次要处理的序列长度几乎相等，经过<img src="https://img-blog.csdnimg.cn/20200605131722759.gif" alt="">)次嵌套调用，便可得到长度为1的子表，在递归树的同一级别上，没有两个调用会处理原序列的相同部分（线性），因此每个级别的调用只要O(n)次，因此整个算法的时间复杂度为O(nlogn)。<br><br>由嵌套调用次数就可知，递归树深度为logn，那么空间复杂度=O(logn)。</p>
-<h3 id="最坏的情况："><a href="#最坏的情况：" class="headerlink" title="最坏的情况："></a>最坏的情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213005838-477843633.png" alt=""><br><br>如果pivot为最大元素或最小元素，则会出现空序列和n-1的子序列，如果重复出现，则每次处理的子序列都比上次小1，这种情况下，递归树变成了n-1个嵌套调用的线性链。时间复杂度：<img src="https://img-blog.csdnimg.cn/20200605134159701.gif" alt=""><br><br>同时，递归树深度为n-1（从0开始计数，因为深度为0是非递归调用），所以空间复杂度=O(n).<br></p>
+<h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2><h3 id="最好的情况："><a href="#最好的情况：" class="headerlink" title="最好的情况："></a>最好的情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815212934570-941546711.png" alt=""><br><br>选取的pivot正好可以等分序列，每次要处理的序列长度几乎相等，经过<img src="https://img-blog.csdnimg.cn/20200605131722759.gif" alt="">)次嵌套调用，便可得到长度为1的子表，在递归树的同一级别上，没有两个调用会处理原序列的相同部分（线性），因此每个级别的调用只要O(n)次，因此整个算法的时间复杂度为O(nlogn)。<br>由嵌套调用次数就可知，递归树深度为logn，那么空间复杂度=O(logn)。</p>
+<h3 id="最坏的情况："><a href="#最坏的情况：" class="headerlink" title="最坏的情况："></a>最坏的情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213005838-477843633.png" alt=""><br><br>如果pivot为最大元素或最小元素，则会出现空序列和n-1的子序列，如果重复出现，则每次处理的子序列都比上次小1，这种情况下，递归树变成了n-1个嵌套调用的线性链。时间复杂度：<img src="https://img-blog.csdnimg.cn/20200605134159701.gif" alt=""><br><br>同时，递归树深度为n-1（从0开始计数，因为深度为0是非递归调用），所以空间复杂度=O(n).</p>
 <h3 id="平均情况："><a href="#平均情况：" class="headerlink" title="平均情况："></a>平均情况：</h3><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815213040831-1022407683.png" alt=""><br><br><img src="https://img-blog.csdnimg.cn/20200605193437284.png" alt=""><br><br><img src="https://img-blog.csdnimg.cn/20200605193437406.png" alt=""><br></p>
 
       
@@ -573,6 +574,34 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
               </li>
             
             <div class="clearfix"></div>

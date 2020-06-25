@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>十大排序——桶排序 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="桶排序">
+  <meta name="description" content="桶排序基本思想桶排序的思想近乎彻底的分治思想。桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="十大排序——桶排序">
 <meta property="og:url" content="http://yoursite.com/2020/06/25/Sort/BucketSort/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="桶排序">
+<meta property="og:description" content="桶排序基本思想桶排序的思想近乎彻底的分治思想。桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-24T16:13:16.073Z">
-<meta property="article:modified_time" content="2020-06-24T16:30:47.460Z">
+<meta property="article:modified_time" content="2020-06-25T01:38:57.094Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
@@ -251,8 +251,14 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><a id="more"></a>
-<h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>桶排序的思想近乎彻底的分治思想。<br><br>桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。<br><br>然后基于某种映射函数f ，将待排序列的关键字 k 映射到第i个桶中 (即桶数组B 的下标i) ，那么该关键字k 就作为 B[i]中的元素 (每个桶B[i]都是一组大小为N/M 的序列 )。<br><br>接着将各个桶中的数据有序的合并起来 : 对每个桶B[i] 中的所有元素进行比较排序 (可以使用快排)。然后依次枚举输出 B[0]….B[M] 中的全部内容即是一个有序序列。<br><br>补充： 映射函数一般是 f = array[i] / k; k^2 = n; n是所有元素个数<br><br>为了使桶排序更加高效，我们需要做到这两点：<br><br>在额外空间充足的情况下，尽量增大桶的数量<br><br>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中<br><br>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。<br></p>
+        <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>桶排序的思想近乎彻底的分治思想。<br>桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。  </p>
+<a id="more"></a>
+<p>然后基于某种映射函数f ，将待排序列的关键字 k 映射到第i个桶中 (即桶数组B 的下标i) ，那么该关键字k 就作为 B[i]中的元素 (每个桶B[i]都是一组大小为N/M 的序列 )。<br>接着将各个桶中的数据有序的合并起来 : 对每个桶B[i] 中的所有元素进行比较排序 (可以使用快排)。然后依次枚举输出 B[0]….B[M] 中的全部内容即是一个有序序列。<br>补充： 映射函数一般是 f = array[i] / k; k^2 = n; n是所有元素个数<br>为了使桶排序更加高效，我们需要做到这两点：  </p>
+<ul>
+<li>在额外空间充足的情况下，尽量增大桶的数量</li>
+<li>使用的映射函数能够将输入的 N 个数据均匀的分配到 K 个桶中</li>
+</ul>
+<p>同时，对于桶中元素的排序，选择何种比较排序算法对于性能的影响至关重要。<br></p>
 <h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">BucketSort</span><span class="params">(List &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j;</span><br><span class="line">    <span class="keyword">int</span> max=L[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;L.size;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(L[i]&gt;max)</span><br><span class="line">        max=L[i];</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> range=max/<span class="number">10</span>+<span class="number">1</span>;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; *Buckets=<span class="keyword">new</span> <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;[range];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;L.size;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">int</span> change=L[i]/<span class="number">10</span>;</span><br><span class="line">      Buckets[change].push_back(L[i]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;range;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(Buckets[i].size()&gt;<span class="number">0</span>)</span><br><span class="line">      &#123;</span><br><span class="line">        sort(Buckets[i].begin(),Buckets[i].end());</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;range;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">for</span>(j=<span class="number">0</span>;j&lt;Buckets[i].size();j++)</span><br><span class="line">      &#123;</span><br><span class="line">        L[index++]=Buckets[i][j];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span>[]Buckets;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
@@ -560,6 +566,34 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
               </li>
             
             <div class="clearfix"></div>

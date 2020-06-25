@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>十大排序——归并排序 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="归并排序">
+  <meta name="description" content="归并排序基本思路归并排序的基本思想是：首先将a[0..n-1]看成是n个长度为1的有序表，将相邻的k（k≥2）个有序子表成对归并，得到n&#x2F;k个长度为k的有序子表；然后再将这些有序子表继续归并，得到n&#x2F;k2个长度为k2的有序子表，如此反复进行下去，最后得到一个长度为n的有序表。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="十大排序——归并排序">
 <meta property="og:url" content="http://yoursite.com/2020/06/25/Sort/MergeSort/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="归并排序">
+<meta property="og:description" content="归并排序基本思路归并排序的基本思想是：首先将a[0..n-1]看成是n个长度为1的有序表，将相邻的k（k≥2）个有序子表成对归并，得到n&#x2F;k个长度为k的有序子表；然后再将这些有序子表继续归并，得到n&#x2F;k2个长度为k2的有序子表，如此反复进行下去，最后得到一个长度为n的有序表。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815215439644-970972319.png">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815215458788-423458569.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200625094327171.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200625094404178.png">
 <meta property="article:published_time" content="2020-06-24T16:13:16.082Z">
-<meta property="article:modified_time" content="2020-06-24T16:32:53.475Z">
+<meta property="article:modified_time" content="2020-06-25T01:44:50.616Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815215439644-970972319.png">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200625094327171.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -254,11 +254,11 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><a id="more"></a>
-<h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>归并排序的基本思想是：首先将a[0..n-1]看成是n个长度为1的有序表，将相邻的k（k≥2）个有序子表成对归并，得到n/k个长度为k的有序子表；然后再将这些有序子表继续归并，得到n/k2个长度为k2的有序子表，如此反复进行下去，最后得到一个长度为n的有序表。</p>
+        <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>归并排序的基本思想是：首先将a[0..n-1]看成是n个长度为1的有序表，将相邻的k（k≥2）个有序子表成对归并，得到n/k个长度为k的有序子表；然后再将这些有序子表继续归并，得到n/k2个长度为k2的有序子表，如此反复进行下去，最后得到一个长度为n的有序表。</p>
+<a id="more"></a>
 <p>若k=2，即归并在相邻的两个有序子表中进行的，称为二路归并排序。若k&gt;2，即归并操作在相邻的多个有序子表中进行，则叫多路归并排序。</p>
 <p>归并排序体现的就是<strong>分治</strong>思想。</p>
-<h2 id="自顶而下的排序"><a href="#自顶而下的排序" class="headerlink" title="自顶而下的排序"></a>自顶而下的排序</h2><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815215439644-970972319.png" alt=""><br><br>步骤：</p>
+<h2 id="自顶而下的排序"><a href="#自顶而下的排序" class="headerlink" title="自顶而下的排序"></a>自顶而下的排序</h2><p><img src="https://img-blog.csdnimg.cn/20200625094327171.png" alt=""><br><br>步骤：</p>
 <ul>
 <li>分解：将[low,high]分解成两个子表，即求mid=（low+high)/2,然后继续对[low,mid],[mid+1,high]分解，直至子表长度为1终止（因为长度为1的子表一定是有序的）</li>
 <li>归并：将排序好的两个子表[low,mid],[mid+1,high]合并</li>
@@ -266,12 +266,12 @@
 <h3 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Merge</span><span class="params">(List &amp;L,<span class="keyword">int</span> low,<span class="keyword">int</span> mid,<span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i=low,j=mid+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> k=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> *temp=<span class="keyword">new</span> <span class="keyword">int</span>[high-low+<span class="number">1</span>];</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=mid&amp;&amp;j&lt;=high)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(L[i]&lt;=L[j])  <span class="comment">//将第一子表放入temp</span></span><br><span class="line">      &#123;</span><br><span class="line">        temp[k++]=L[i++];</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">else</span>            <span class="comment">//将第二子表放入temp</span></span><br><span class="line">      &#123;</span><br><span class="line">        temp[k++]=L[j++];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(i&lt;=mid)     <span class="comment">//第一子表剩余的放入temp</span></span><br><span class="line">    &#123;</span><br><span class="line">      temp[k++]=L[i++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">while</span>(j&lt;=high)    <span class="comment">//第二子表剩余的放入temp</span></span><br><span class="line">    &#123;</span><br><span class="line">      temp[k++]=L[j++];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(k=<span class="number">0</span>,i=low;i&lt;=high;i++,k++)</span><br><span class="line">    &#123;</span><br><span class="line">      L[i]=temp[k];   <span class="comment">//拷贝temp</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span>[]temp;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>自顶而下的二路归并算法：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeSort_top_to_bottom</span><span class="params">(List&amp; L,<span class="keyword">int</span> low,<span class="keyword">int</span> high)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> mid;</span><br><span class="line">    <span class="keyword">if</span>(low&lt;high)  <span class="comment">//子序列有两个及以上元素</span></span><br><span class="line">    &#123;</span><br><span class="line">      mid=(low+high)/<span class="number">2</span>;</span><br><span class="line">      MergeSort_top_to_bottom(L,low,mid);     <span class="comment">//对[low,mid]子序列排序</span></span><br><span class="line">      MergeSort_top_to_bottom(L,mid+<span class="number">1</span>,high);  <span class="comment">//对[mid+1,high]子序列排序</span></span><br><span class="line">      Merge(L,low,mid,high);    <span class="comment">//合并两个子序列</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="自底而上的归并排序"><a href="#自底而上的归并排序" class="headerlink" title="自底而上的归并排序"></a>自底而上的归并排序</h2><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815215458788-423458569.png" alt=""><br><br>步骤：</p>
+<h2 id="自底而上的归并排序"><a href="#自底而上的归并排序" class="headerlink" title="自底而上的归并排序"></a>自底而上的归并排序</h2><p><img src="https://img-blog.csdnimg.cn/20200625094404178.png" alt="">))<br><br>步骤：</p>
 <ul>
 <li>分解：将原序列分解成length长度的子序列</li>
 <li>归并：将相邻的两个子序列调用Merge合并成一个有序子序列<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergePass</span><span class="params">(List &amp;L,<span class="keyword">int</span> length,<span class="keyword">int</span> n)</span>  <span class="comment">//一趟二路归并（一个length对应一趟）</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">      <span class="keyword">int</span> i;</span><br><span class="line">      <span class="keyword">for</span>(i=<span class="number">0</span>;i+<span class="number">2</span>*length<span class="number">-1</span>&lt;n;i=i+length*<span class="number">2</span>)   <span class="comment">//长度为length的两个子表归并</span></span><br><span class="line">      &#123;</span><br><span class="line">        Merge(L,i,i+length<span class="number">-1</span>,i+<span class="number">2</span>*length<span class="number">-1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(i+length<span class="number">-1</span>&lt;n)        <span class="comment">//剩余两个子表归并（后者长度小于length）</span></span><br><span class="line">      &#123;</span><br><span class="line">        Merge(L,i,i+length<span class="number">-1</span>,n<span class="number">-1</span>);</span><br><span class="line">      &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">MergeSort_bottom_to_top</span><span class="params">(List &amp;L,<span class="keyword">int</span> n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> length=<span class="number">1</span>;length&lt;n;length=<span class="number">2</span>*length)</span><br><span class="line">    &#123;</span><br><span class="line">      MergePass(L,length,n);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2>时间复杂度：先来分析下趟数，<br>length=2*length，length&lt;n，那么length=2^m&lt;n,m&lt;log2n<br>所以m范围是[0,log2n-1]，共log2n趟。<br>然后每次移动元素都是n次，那么时间复杂度是O(nlog2n)。<br><br>空间复杂度：Merge开辟了一个临时动态数组，大小和待排序的序列一样大，鉴于每次调用都释放了内存，因此即使递归次数为log2n，也只要考虑一次调用的内存开销，因此是O(n).</li>
+<h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2>时间复杂度：先来分析下趟数，<br>length=2*length，length&lt;n，那么length=2^m&lt;n,m&lt;log2n<br>所以m范围是[0,log2n-1]，共log2n趟。<br>然后每次移动元素都是n次，那么时间复杂度是O(nlog2n)。<br>空间复杂度：Merge开辟了一个临时动态数组，大小和待排序的序列一样大，鉴于每次调用都释放了内存，因此即使递归次数为log2n，也只要考虑一次调用的内存开销，因此是O(n).</li>
 </ul>
 
       
@@ -579,6 +579,34 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
               </li>
             
             <div class="clearfix"></div>

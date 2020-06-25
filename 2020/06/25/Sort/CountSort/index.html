@@ -8,21 +8,21 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>十大排序——计数排序 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="计数排序">
+  <meta name="description" content="计数排序基本思想计数排序是一种线性排序算法，它利用了一个数组，因为数组下标的增长是线性的，所以它就把自己的元素转换成新开辟数组的下标。但是数组元素有正有负，下标只有非负值，那么我们就应该考虑如何转换。这也不是很难，只要我们将该元素值减去数组最小值即可得到count数组的下标（类似映射函数）。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="十大排序——计数排序">
 <meta property="og:url" content="http://yoursite.com/2020/06/25/Sort/CountSort/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="计数排序">
+<meta property="og:description" content="计数排序基本思想计数排序是一种线性排序算法，它利用了一个数组，因为数组下标的增长是线性的，所以它就把自己的元素转换成新开辟数组的下标。但是数组元素有正有负，下标只有非负值，那么我们就应该考虑如何转换。这也不是很难，只要我们将该元素值减去数组最小值即可得到count数组的下标（类似映射函数）。">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815222221988-794651078.png">
-<meta property="og:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815222306673-932627829.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200625094042921.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200625094056961.png">
 <meta property="article:published_time" content="2020-06-24T16:13:16.075Z">
-<meta property="article:modified_time" content="2020-06-24T16:31:57.261Z">
+<meta property="article:modified_time" content="2020-06-25T01:44:50.616Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="排序">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815222221988-794651078.png">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200625094042921.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -254,9 +254,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><a id="more"></a>
-<h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>计数排序是一种线性排序算法，它利用了一个数组，因为数组下标的增长是线性的，所以它就把自己的元素转换成新开辟数组的下标。但是数组元素有正有负，下标只有非负值，那么我们就应该考虑如何转换。这也不是很难，只要我们将该元素值减去数组最小值即可得到count数组的下标（类似映射函数）。</p>
-<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815222221988-794651078.png" alt=""><br><br>用数组元素减去数组最小值即可得到在count数组的下标。count数组中用橙色框住的表示待排序数组转换后的元素不存在。同时，可以观察到count数组的大小是max-min+1=8+6+1=15.<br><br><img src="https://img2018.cnblogs.com/blog/1475571/201908/1475571-20190815222306673-932627829.png" alt=""><br><br>将count中对应原数组的元素放回数组即可</p>
+        <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>计数排序是一种线性排序算法，它利用了一个数组，因为数组下标的增长是线性的，所以它就把自己的元素转换成新开辟数组的下标。但是数组元素有正有负，下标只有非负值，那么我们就应该考虑如何转换。这也不是很难，只要我们将该元素值减去数组最小值即可得到count数组的下标（类似映射函数）。</p>
+<a id="more"></a>
+<h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://img-blog.csdnimg.cn/20200625094042921.png" alt=""><br>用数组元素减去数组最小值即可得到在count数组的下标。count数组中用橙色框住的表示待排序数组转换后的元素不存在。同时，可以观察到count数组的大小是max-min+1=8+6+1=15.<br><img src="https://img-blog.csdnimg.cn/20200625094056961.png" alt=""><br>将count中对应原数组的元素放回数组即可</p>
 <h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">CountSort</span><span class="params">(List &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">int</span> min=L[<span class="number">0</span>],max=L[<span class="number">0</span>];</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">1</span>;i&lt;L.size;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(L[i]&gt;max)</span><br><span class="line">      &#123;</span><br><span class="line">        max=L[i];</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">if</span>(L[i]&lt;min)</span><br><span class="line">      &#123;</span><br><span class="line">        min=L[i];</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">int</span> range=max-min+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> *count=<span class="keyword">new</span> <span class="keyword">int</span>[range];</span><br><span class="line">    <span class="built_in">memset</span>(count,<span class="number">0</span>,<span class="keyword">sizeof</span>(<span class="keyword">int</span>)*range);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;L.size;i++)       <span class="comment">//从原数组中取数，原数组个数为size</span></span><br><span class="line">    &#123;</span><br><span class="line">      count[L[i]-min]++;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> index=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;i&lt;range;i++)        <span class="comment">//从开辟的数组中读取，开辟的数组大小为range</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">while</span>(count[i]--)</span><br><span class="line">        L[index++]=i+min;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span>[]count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2><p>计数排序是一种非基于比较的排序算法，其空间复杂度和时间复杂度均为 O(n+k)，其中 k 是整数的范围。</p>
@@ -566,6 +566,34 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
               </li>
             
             <div class="clearfix"></div>
