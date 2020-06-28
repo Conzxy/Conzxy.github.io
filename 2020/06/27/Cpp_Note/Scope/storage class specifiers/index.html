@@ -16,7 +16,7 @@
 <meta property="og:description" content="Storage class specifiers一个名字除了拥有它的作用域，还有两个重要性质：storage duration和linkage。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-27T14:21:49.630Z">
-<meta property="article:modified_time" content="2020-06-28T08:56:50.684Z">
+<meta property="article:modified_time" content="2020-06-28T09:17:49.433Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="declaration">
@@ -142,6 +142,12 @@
 									artist: 'Famishin,Riryka',
 									cover: 'https://img-blog.csdnimg.cn/20200624210534940.png',
 									url: 'http://music.163.com/song/media/outer/url?id=473403184.mp3'
+								},
+								{
+									name: 'サヨナラバス',
+									artist: '佐藤亜美菜,飯田友子',
+									cover: 'https://img-blog.csdnimg.cn/20200628171448536.png',
+									url: 'http://music.163.com/song/media/outer/url?id=1410413617.mp3'
 								}
 			        ]
 			    });
@@ -312,12 +318,10 @@
 <blockquote>
 <ul>
 <li>variables that aren’t explicitly declared extern (regardless of the static modifier);</li>
-</ul>
-</blockquote>
-<ul>
 <li>local classes and their member functions;</li>
 <li>other names declared at block scope such as typedefs, enumerations, and enumerators.</li>
 </ul>
+</blockquote>
 <blockquote>
 <p>Names not specified with external, module, (since C++20) or internal linkage also have no linkage, regardless of which scope they are declared in.</p>
 </blockquote>
@@ -329,12 +333,10 @@
 <blockquote>
 <ul>
 <li>variables, variable templates (since C++14), functions, or function templates <code>declared static</code>;</li>
-</ul>
-</blockquote>
-<ul>
 <li><code>non-volatile</code> <code>non-template</code> (since C++14) <code>non-inline</code>(since C++17) <code>non-exported</code> (since C++20) <code>const-qualified</code> variables (including <code>constexpr</code>) that <strong>aren’t declared extern and aren’t previously declared to have external linkage</strong>;</li>
 <li>data members of <code>anonymous unions</code>.</li>
 </ul>
+</blockquote>
 <p>internal linkage针对namespace中声明的名字，像声明为static的变量和函数（包括模板）、未被声明为extern的const变量（包括constexpr）（=&gt;const默认为internal）等。internal linkage使这些名字被限制在了该名字所在的翻译单元，即无法被其他翻译单元所引用（single source file）。</p>
 <blockquote>
 <p>In addition, all names declared in unnamed namespace or a namespace within an unnamed namespace, even ones explicitly declared extern, have internal linkage.</p>
@@ -361,21 +363,19 @@
 <blockquote>
 <ul>
 <li>variables and functions not listed above (that is, functions <code>not declared static</code>, namespace-scope <code>non-const</code> variables not declared static, and any variables declared extern);</li>
-</ul>
-</blockquote>
-<ul>
 <li><code>enumerations</code>;</li>
 <li>names of <code>classes</code>, their <code>member</code> functions, <code>static data members (const or not)</code>, <code>nested classes</code> and <code>enumerations</code>, and functions first introduced with <code>friend</code> declarations inside class bodies;</li>
 <li>names of all <code>templates</code> not listed above (that is, not function templates declared static).</li>
 </ul>
+</blockquote>
 <p>external linkage与internal linkage一样也是针对namespace的，function只要不是static声明，都是extern（默认的），namespace中的const变量是internal，而non-const变量是external（non-static）。当然，显式声明的extern变量具有external linkage。<br>对于一个类，其成员函数、static数据成员（无论const）、嵌套类（看做member class）、友元声明都默认为extern。<br>模板同理，模板函数只要没被显式声明为static即可。</p>
 <blockquote>
 <p>Any of the following names first declared at block scope have external linkage:</p>
-</blockquote>
 <ul>
 <li>names of variables declared extern;</li>
 <li>names of functions.</li>
 </ul>
+</blockquote>
 <p>在block中第一次声明的extern变量和函数（函数是默认extern）是具有external linkage的（不太了解这种情况，暂未遇到过）</p>
 <blockquote>
 <p>In practice, this means that you must define such a symbol in a place where it will end up in one and only one translation unit, typically an implementation file (.c/.cpp), such that it has only one visible definition.</p>

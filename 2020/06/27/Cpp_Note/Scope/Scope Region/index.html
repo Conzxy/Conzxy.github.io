@@ -16,7 +16,7 @@
 <meta property="og:description" content="Scope Region作用域这个概念不是C++特有的，而是由C继承过来的，但同时添加了C++专属的新作用域，我们先介绍C的作用域再引入C++的作用域。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-27T04:52:55.598Z">
-<meta property="article:modified_time" content="2020-06-27T15:11:42.087Z">
+<meta property="article:modified_time" content="2020-06-28T09:17:49.437Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="declaration">
@@ -142,6 +142,12 @@
 									artist: 'Famishin,Riryka',
 									cover: 'https://img-blog.csdnimg.cn/20200624210534940.png',
 									url: 'http://music.163.com/song/media/outer/url?id=473403184.mp3'
+								},
+								{
+									name: 'サヨナラバス',
+									artist: '佐藤亜美菜,飯田友子',
+									cover: 'https://img-blog.csdnimg.cn/20200628171448536.png',
+									url: 'http://music.163.com/song/media/outer/url?id=1410413617.mp3'
 								}
 			        ]
 			    });
@@ -276,13 +282,11 @@
 <h3 id="作用域分类"><a href="#作用域分类" class="headerlink" title="作用域分类"></a>作用域分类</h3><blockquote>
 <ul>
 <li>A name has <code>file scope</code> if it’s declared in the <strong>outermost scope of a translation unit</strong>, that is, outside of any function, structure, or union declaration. <strong>Its scope begins right after its declaration and runs to the end of the translation unit</strong>.</li>
-</ul>
-</blockquote>
-<ul>
 <li>A name (other than a statement label) has <code>block scope</code> if it’s declared within a <strong>function definition (including that function’s parameter list) or in a brace-enclosed block within that function</strong>. Its scope begins right after its declaration and runs to the end of the block immediately enclosing that declaration.</li>
 <li>A name has<code>function prototype scope</code> if it’s declared in the function parameter list of a function declaration that is not also a definition. <strong>Its scope begins right after its declaration and runs to the end of the parameter list.</strong></li>
 <li><code>Statement labels</code>, and only statement labels, have <code>function scope</code>. A label <strong>can be defined only in the body of a function definition</strong> and is in scope <strong>everywhere in that body, even before the label has been defined</strong>.</li>
 </ul>
+</blockquote>
 <p>c的作用域大致可分为：</p>
 <ul>
 <li>文件作用域（file scope）</li>
