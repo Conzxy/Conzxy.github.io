@@ -16,7 +16,7 @@
 <meta property="og:description" content="Declare destructors virtual in polymorphic base classes多态基类应当声明virtual析构函数当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-30T16:03:20.221Z">
-<meta property="article:modified_time" content="2020-06-30T16:46:38.974Z">
+<meta property="article:modified_time" content="2020-06-30T16:57:40.749Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Effective C++">
@@ -266,7 +266,7 @@
 <hr>
 <p>实现虚函数，对象要携带某些信息以便在运行期绑定哪个版本。该对象的信息通常是由一个指针 <code>vptr（virtual table pointer）</code>指出的，它指向一个由函数指针构成的数组，我们称之为<code>vtbl（virtual table）</code>，每一个带有虚函数的类都有对应的vtbl，当调用某一个虚函数时，取决于该对象的vptr指向的vtbl，编译器会在其中寻找合适的函数指针。</p>
 <hr>
-<p>然并卵，实际上不需要虚析构函数主要是因为该类如果含有虚函数，会使得其对象的体积增大，因为该对象要存放vptr，除非你明确补偿vptr。<br>既然不是作为基类而设计的，那么声明虚析构函数会是个很糟糕的想法，因此比较公认的准则是：</p>
+<p>然并卵，实际上不需要虚析构函数主要是因为该类如果含有虚函数，会使得其对象的体积增大，因为该对象要存放vptr。这样原本能塞进的缓存器也不能如愿，同时也不能传递给其他语言（其他语言对象没有vptr），除非你明确补偿vptr。<br>既然不是作为基类而设计的，那么声明虚析构函数会是个很糟糕的想法，因此比较公认的准则是：</p>
 <pre><code>只有当class内含至少一个virtual函数，才为它声明virtual析构函数</code></pre><h2 id="不具备多态性的类也不声明virtual析构函数"><a href="#不具备多态性的类也不声明virtual析构函数" class="headerlink" title="不具备多态性的类也不声明virtual析构函数"></a>不具备多态性的类也不声明virtual析构函数</h2><p>多态性基类的设计目的是——<strong>为了使基类接口能处理派生类对象</strong>，有些类设计不是为了被用作基类，有些类虽然是基类但是不是用于多态用途，这些类都不需要声明virtual析构函数。</p>
 
       
