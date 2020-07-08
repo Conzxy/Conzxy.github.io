@@ -6,16 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>文章分类 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>item 10 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="文章分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="Have assignment operators return a reference to *this赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型要求是分不开的。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="item 10">
+<meta property="og:url" content="http://yoursite.com/2020/07/08/Effective%20Cpp/item%2010/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="Have assignment operators return a reference to *this赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型要求是分不开的。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-24T02:13:21.000Z">
-<meta property="article:modified_time" content="2020-06-24T03:02:57.205Z">
+<meta property="article:published_time" content="2020-07-08T15:17:02.341Z">
+<meta property="article:modified_time" content="2020-07-08T16:01:06.886Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="C++">
+<meta property="article:tag" content="Effective C++">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -233,20 +237,215 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article class="article article-type-post show">
-  <header class="article-header" style="border-bottom: 1px solid #ccc">
-  <h1 class="article-title" itemprop="name">
-    文章分类
-  </h1>
-  </header>
+            <article id="post-Effective Cpp/item 10" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      item 10
+    </h1>
+  
+
+        
+        <a href="/2020/07/08/Effective%20Cpp/item%2010/" class="archive-article-date">
+  	<time datetime="2020-07-08T15:17:02.341Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-08</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Have-assignment-operators-return-a-reference-to-this"><a href="#Have-assignment-operators-return-a-reference-to-this" class="headerlink" title="Have assignment operators return a reference to *this"></a>Have assignment operators return a reference to *this</h1><p>赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型要求是分不开的。</p>
+<a id="more"></a>
+<h2 id="连锁赋值"><a href="#连锁赋值" class="headerlink" title="连锁赋值"></a>连锁赋值</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> x,y,z;</span><br><span class="line">x=y=z=<span class="number">15</span>; <span class="comment">//连锁赋值</span></span><br></pre></td></tr></table></figure>
+<p>连锁赋值是依据的右结合律，即</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">x&#x3D;(y&#x3D;(z&#x3D;15));</span><br></pre></td></tr></table></figure>
+<p>为了实现连锁赋值实际上并不要求必须返回一个引用，我们返回值也是可行的。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">A</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">    <span class="keyword">int</span> val;</span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    A(<span class="keyword">int</span> a=<span class="number">0</span>):val(a)&#123;&#125;</span><br><span class="line">    A(<span class="keyword">const</span> A &amp;a):val(a.val)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"constructor"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    A <span class="keyword">operator</span>=(<span class="keyword">const</span> A &amp;a)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;<span class="string">"assignment operation"</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">        val=a.val;</span><br><span class="line">        <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    ~A()&#123;<span class="built_in">cout</span>&lt;&lt;<span class="string">"destructor"</span>&lt;&lt;<span class="built_in">endl</span>;&#125;</span><br><span class="line">    <span class="keyword">friend</span> ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp;,<span class="keyword">const</span> A&amp;);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">ostream&amp; <span class="keyword">operator</span>&lt;&lt;(ostream&amp; os,<span class="keyword">const</span> A &amp;a)</span><br><span class="line">&#123;</span><br><span class="line">    os&lt;&lt;a.val;   </span><br><span class="line">    <span class="keyword">return</span> os;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    A a,b,c,d&#123;<span class="number">9</span>&#125;;</span><br><span class="line">    <span class="comment">//A &amp;r=(a=b);</span></span><br><span class="line">    a=b=c=d;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;a&lt;&lt;<span class="string">" "</span>&lt;&lt;b&lt;&lt;<span class="string">" "</span>&lt;&lt;c&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">assignment operation</span><br><span class="line">constructor            &#x2F;&#x2F;unnecessary</span><br><span class="line">assignment operation</span><br><span class="line">constructor            &#x2F;&#x2F;unnecessary</span><br><span class="line">assignment operation</span><br><span class="line">constructor            &#x2F;&#x2F;unnecessary</span><br><span class="line">destructor             &#x2F;&#x2F;unnecessary</span><br><span class="line">destructor             &#x2F;&#x2F;unnecessary</span><br><span class="line">destructor             &#x2F;&#x2F;unnecessary</span><br><span class="line">9 9 9</span><br><span class="line">destructor</span><br><span class="line">destructor</span><br><span class="line">destructor</span><br><span class="line">destructor</span><br></pre></td></tr></table></figure>
+<p>如果operator=返回类型加上&amp;<br>则运行结果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">assignment operation</span><br><span class="line">assignment operation</span><br><span class="line">assignment operation</span><br><span class="line">9 9 9</span><br><span class="line">destructor</span><br><span class="line">destructor</span><br><span class="line">destructor</span><br><span class="line">destructor</span><br></pre></td></tr></table></figure>
+<p>高下立判，明显返回值的operator=返回时创建临时副本以及析构也会多次调用，这些都是赘余的。<br>而且注意</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">int &amp;r&#x3D;(a&#x3D;b);</span><br></pre></td></tr></table></figure>
+<p>如果返回临时对象，是不能进行左值引用的，这也会造成一定的麻烦（user可能会因为与内置赋值运算符不一样而感到诧异），总之临时对象不是一件好事，理应舍弃这种做法。  </p>
+<h2 id="协议"><a href="#协议" class="headerlink" title="协议"></a>协议</h2><p>上面讲了为什么用&amp;比值返回更优，其实，这个协议被所有内置类型和标准程序库提供的类型如string，vector等共同遵守，当然，这不是必须遵守的，但是，除非你能提供更好的版本，否则还是随众为好。</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/08/Effective%20Cpp/item%2010/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
 
   
-  <div class="category-all-page">
-    <h2>共计&nbsp;20&nbsp;个分类</h2>
-    <ul class="category-list-item-list"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/">C++</a><span class="category-list-item-list-count">8</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/class/">class</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/declaration/">declaration</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/namespace/">namespace</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE/">名字查找</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/">Effective C++</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/">HDOJ</a><span class="category-list-item-list-count">4</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E4%B8%B2/">串</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-item-list-count">6</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/DFS/">DFS</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/">最小生成树</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">最短路径</a><span class="category-list-item-list-count">1</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%8E%92%E5%BA%8F/">排序</a><span class="category-list-item-list-count">10</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">时间复杂度</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%9F%A5%E6%89%BE/">查找</a><span class="category-list-item-list-count">1</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%9F%A5%E6%89%BE/%E6%A0%91/">树</a><span class="category-list-item-list-count">1</span></li></ul></li></ul>
-  </div>
+<nav id="article-nav">
   
-</article>
+  
+    <a href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">转动惯量</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Have-assignment-operators-return-a-reference-to-this"><span class="toc-number">1.</span> <span class="toc-text">Have assignment operators return a reference to *this</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#连锁赋值"><span class="toc-number">1.1.</span> <span class="toc-text">连锁赋值</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#协议"><span class="toc-number">1.2.</span> <span class="toc-text">协议</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>
@@ -274,7 +473,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
