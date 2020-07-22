@@ -6,20 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>item 7 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Category: 数据结构 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Declare destructors virtual in polymorphic base classes多态基类应当声明virtual析构函数当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。">
-<meta property="og:type" content="article">
-<meta property="og:title" content="item 7">
-<meta property="og:url" content="http://yoursite.com/2020/07/01/Effective%20Cpp/item7/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:url" content="http://yoursite.com/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="Declare destructors virtual in polymorphic base classes多态基类应当声明virtual析构函数当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-30T16:03:20.221Z">
-<meta property="article:modified_time" content="2020-07-15T07:39:52.238Z">
 <meta property="article:author" content="Conzxy">
-<meta property="article:tag" content="C++">
-<meta property="article:tag" content="Effective C++">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -237,218 +231,79 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Effective Cpp/item7" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      item 7
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2020" class="archive-year">2020</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2020/07/22/Heap/Lheap/" class="archive-article-date">
+  	<time datetime="2020-07-22T03:06:06.568Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-22</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2020/07/22/Heap/Lheap/">Leftist heap</a>
     </h1>
   
 
-        
-        <a href="/2020/07/01/Effective%20Cpp/item7/" class="archive-article-date">
-  	<time datetime="2020-06-30T16:03:20.221Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-01</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Declare-destructors-virtual-in-polymorphic-base-classes"><a href="#Declare-destructors-virtual-in-polymorphic-base-classes" class="headerlink" title="Declare destructors virtual in polymorphic base classes"></a>Declare destructors virtual in polymorphic base classes</h1><h2 id="多态基类应当声明virtual析构函数"><a href="#多态基类应当声明virtual析构函数" class="headerlink" title="多态基类应当声明virtual析构函数"></a>多态基类应当声明virtual析构函数</h2><p>当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。</p>
-<a id="more"></a>
-<p>因为多态，我们在调用虚函数时根据绑定的真实类型选择合适的版本。调用非虚函数，则直接根据静态类型进行绑定，不能令动态类型和静态类型不一致（后面补充了一些细节）。<br>再回到这上面来，析构函数是non-virtual，但我们用的是一个基类指针指向一个派生类对象，那么调用时就会调用基类的析构函数，那么派生类部分的析构呢？<br>派生类部分并不会被析构，从而造成“局部销毁”现象，这很可能会导致内存泄漏以及给调试器添堵。<br>所以你要知道C++编译器有明确要求：</p>
-<pre><code>当derived class对象经由一个base class指针被删除，而该base class带着一个non-virtual析构函数，其结果是未定义的。</code></pre><p>要完整的删除基类指针指向的动态分配的派生类对象，只要将基类的析构函数声明为virtual即可，此时就会动态绑定派生类对象的析构函数，并沿着继承体系隐式调用基类部分的析构函数，直至完整销毁。</p>
-<h2 id="不含虚函数的类不需要virtual析构函数"><a href="#不含虚函数的类不需要virtual析构函数" class="headerlink" title="不含虚函数的类不需要virtual析构函数"></a>不含虚函数的类不需要virtual析构函数</h2><p>一个类如果不含虚函数，那么一般意味着它不是被用做一个基类。我们也一般不为其声明虚析构函数。在解释为什么如此之前，让我们了解下虚函数的实现细节。</p>
-<hr>
-<p>实现虚函数，对象要携带某些信息以便在运行期绑定哪个版本。该对象的信息通常是由一个指针 <code>vptr（virtual table pointer）</code>指出的，它指向一个由函数指针构成的数组，我们称之为<code>vtbl（virtual table）</code>，每一个带有虚函数的类都有对应的vtbl，当调用某一个虚函数时，取决于该对象的vptr指向的vtbl，编译器会在其中寻找合适的函数指针。</p>
-<hr>
-<p>然并卵，实际上不需要虚析构函数主要是因为该类如果含有虚函数，会使得其对象的体积增大，因为该对象要存放vptr。这样原本能塞进的缓存器也不能如愿，同时也不能传递给其他语言（其他语言对象没有vptr），除非你明确补偿vptr。<br>既然不是作为基类而设计的，那么声明虚析构函数会是个很糟糕的想法，因此比较公认的准则是：</p>
-<pre><code>只有当class内含至少一个virtual函数，才为它声明virtual析构函数</code></pre><h2 id="不具备多态性的类也不声明virtual析构函数"><a href="#不具备多态性的类也不声明virtual析构函数" class="headerlink" title="不具备多态性的类也不声明virtual析构函数"></a>不具备多态性的类也不声明virtual析构函数</h2><p>多态性基类的设计目的是——<strong>为了使基类接口能处理派生类对象</strong>，有些类设计不是为了被用作基类，有些类虽然是基类但是不是用于多态用途，这些类都不需要声明virtual析构函数。</p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/01/Effective%20Cpp/item7/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          转动惯量
-        
-      </div>
-    </a>
   
   
-    <a href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">存储类说明符</div>
-      <i class="icon-circle-right"></i>
-    </a>
-  
-</nav>
-
-<span id="busuanzi_container_page_pv">
-        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
- </span>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Declare-destructors-virtual-in-polymorphic-base-classes"><span class="toc-number">1.</span> <span class="toc-text">Declare destructors virtual in polymorphic base classes</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#多态基类应当声明virtual析构函数"><span class="toc-number">1.1.</span> <span class="toc-text">多态基类应当声明virtual析构函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不含虚函数的类不需要virtual析构函数"><span class="toc-number">1.2.</span> <span class="toc-text">不含虚函数的类不需要virtual析构函数</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#不具备多态性的类也不声明virtual析构函数"><span class="toc-number">1.3.</span> <span class="toc-text">不具备多态性的类也不声明virtual析构函数</span></a></li></ol></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
+    </div></section>
   
 
-  
-
-  
-
-  
-
-  
+    
 
 
           </div>
@@ -477,10 +332,10 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
@@ -625,7 +480,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">-C++ -Effective</a>
+                <a href="javascript:void(0)" class="js-tag color5">Effective</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">堆</a>
               </li>
             
             <div class="clearfix"></div>

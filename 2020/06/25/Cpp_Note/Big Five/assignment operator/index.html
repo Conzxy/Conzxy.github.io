@@ -16,7 +16,7 @@
 <meta property="og:description" content="std::swap构造拷贝（和移动）赋值运算符的坑">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-06-25T02:04:34.316Z">
-<meta property="article:modified_time" content="2020-06-25T12:13:52.415Z">
+<meta property="article:modified_time" content="2020-07-21T05:08:48.111Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="C++">
 <meta property="article:tag" content="Big Five">
@@ -260,7 +260,7 @@
       
         <h1 id="std-swap构造拷贝（和移动）赋值运算符的坑"><a href="#std-swap构造拷贝（和移动）赋值运算符的坑" class="headerlink" title="std::swap构造拷贝（和移动）赋值运算符的坑"></a>std::swap构造拷贝（和移动）赋值运算符的坑</h1><a id="more"></a>
 <p>我们来看一下循环队列头文件中：<a href="https://github.com/Conzxy/Data-Structures/blob/master/Queue/SQ.h" target="_blank" rel="noopener">SQ.h</a><br>有以下代码（已注释）：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Queue&lt;T&gt;::Queue&lt;T&gt;&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Queue&lt;T&gt; &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">    Queue copy=rhs;</span><br><span class="line">    <span class="built_in">std</span>::swap(*<span class="keyword">this</span>,copy);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Queue&lt;T&gt;&amp; Queue&lt;T&gt;::<span class="keyword">operator</span>=(<span class="keyword">const</span> Queue&lt;T&gt; &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">    Queue copy=rhs;</span><br><span class="line">    <span class="built_in">std</span>::swap(*<span class="keyword">this</span>,copy);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>上面这个拷贝赋值运算符重载是错误的，我们首先要清楚swap是以怎样的形式工作的：<br><code>swap(T &amp;a,T &amp;b) {T temp(move(a));a=move(b);b=move(temp);}</code><br>所以<code>std::swap</code>需要移动构造函数和移动赋值运算符，而拷贝构造函数和拷贝赋值运算符阻止了编译器自动合成它们（假设我们并没有设置自定义的），swap第一个构造尚且可以用拷贝构造代替移动构造，但是下面的赋值运算符找不到移动赋值运算符，就会不断调用拷贝赋值运算符，因此它会一直卡死在这里，我们可以加个调试信息来看看：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">....</span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"run"</span>&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br><span class="line">Queue copy....</span><br><span class="line">....</span><br></pre></td></tr></table></figure>
 <p>这样会一直输出run，这是因为缺少了移动赋值运算符，从而导致的无限递归。<br>根据0原则，Big Five要么一个都不定义，要么就应该定义全部。  </p>
@@ -269,8 +269,8 @@
 <h2 id="一个意外的错误"><a href="#一个意外的错误" class="headerlink" title="一个意外的错误"></a>一个意外的错误</h2><p>如果在有自定义移动构造和移动赋值的情况下，这样写的话：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Queue&amp; <span class="keyword">operator</span>=(Queue rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">std</span>::swap(*<span class="keyword">this</span>,rhs);</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这个会提示如下错误信息：<br></p>
-<pre><code>error: ambiguous overload for’operator=’(operand types are ’ Queue&lt;int&gt;’and ’std: :remove_ ref erence&lt;Queue&lt;int&gt;&amp;&gt;::type {aka Queue&lt;int&gt;}&apos; )</code></pre><p>这是在std::swap第二步调用赋值运算符时出错的，因为此时，右侧运算对象是右值，所以既可以调用拷贝赋值也可以调用移动赋值，我们使用自定义的swap可以避免。<br>但是这个应该避免，这样在右值赋值时会和移动赋值冲突。</p>
-<h2 id="自定义swap"><a href="#自定义swap" class="headerlink" title="自定义swap"></a>自定义swap</h2><p>由上面这个例子可以看出调用std::swap进行自赋值是错误且不安全的，因此我们通常调用自己的swap成员函数。<br>至于还有一些东西等我看完effective C++条款25再说吧。</p>
+<pre><code>error: ambiguous overload for’operator=’(operand types are ’ Queue&lt;int&gt;’and ’std: :remove_ ref erence&lt;Queue&lt;int&gt;&amp;&gt;::type {aka Queue&lt;int&gt;}&apos; )</code></pre><p>这是在std::swap第二步调用赋值运算符时出错的，因为此时，右侧运算对象是右值，所以既可以调用拷贝赋值也可以调用移动赋值，我们使用自定义的swap可以避免。<br>但是这个应该避免，这样在右值赋值时会和移动赋值冲突。像最开始那个函数一样先弄个拷贝就不要困扰左右值的问题了。</p>
+<h2 id="自定义swap"><a href="#自定义swap" class="headerlink" title="自定义swap"></a>自定义swap</h2><p>由上面这个例子可以看出调用std::swap进行自赋值是错误且不安全的，因此我们通常调用自己的swap成员函数。<br>更多请看：<a href="">effective item25</a></p>
 
       
 
@@ -632,7 +632,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">-C++ -Effective</a>
+                <a href="javascript:void(0)" class="js-tag color5">Effective</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">堆</a>
               </li>
             
             <div class="clearfix"></div>
