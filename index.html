@@ -442,7 +442,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="item-2-Prefer-consts-enums-and-inlines-to-define"><a href="#item-2-Prefer-consts-enums-and-inlines-to-define" class="headerlink" title="item 2:Prefer consts,enums,and inlines to #define"></a>item 2:Prefer consts,enums,and inlines to #define</h1><p>#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</p>
+        <h1 id="用consts、enums、inlines替代-define"><a href="#用consts、enums、inlines替代-define" class="headerlink" title="用consts、enums、inlines替代#define"></a>用consts、enums、inlines替代#define</h1><p>#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</p>
         
           <a class="article-more-a" href="/2020/07/19/Effective%20Cpp/item%202/#more">more >></a>
         
@@ -534,7 +534,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="View-C-as-a-federation-of-language"><a href="#View-C-as-a-federation-of-language" class="headerlink" title="View C++ as a federation of language"></a>View C++ as a federation of language</h1><p>C++最早只是C with Classes，C++经过不断的发展，Exception、template、STL，今日的C++已经是个<strong>多重范型编程语言</strong>，支持<code>过程形式（procedural）</code>、<code>面向对象形式（object-oriented）</code>、<code>函数形式（functional</code>、<code>泛型形式（generic）</code>、<code>元编程形式（meta programming）</code>。</p>
+        <h1 id="视C-为一个语言联邦"><a href="#视C-为一个语言联邦" class="headerlink" title="视C++为一个语言联邦"></a>视C++为一个语言联邦</h1><p>C++最早只是C with Classes，C++经过不断的发展，Exception、template、STL，今日的C++已经是个<strong>多重范型编程语言</strong>，支持<code>过程形式（procedural）</code>、<code>面向对象形式（object-oriented）</code>、<code>函数形式（functional</code>、<code>泛型形式（generic）</code>、<code>元编程形式（meta programming）</code>。</p>
         
           <a class="article-more-a" href="/2020/07/19/Effective%20Cpp/item%201/#more">more >></a>
         
@@ -719,7 +719,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Have-assignment-operators-return-a-reference-to-this"><a href="#Have-assignment-operators-return-a-reference-to-this" class="headerlink" title="Have assignment operators return a reference to *this"></a>Have assignment operators return a reference to *this</h1><p>赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型的要求是分不开的。</p>
+        <h1 id="令operator-返回一个reference-to-this"><a href="#令operator-返回一个reference-to-this" class="headerlink" title="令operator=返回一个reference to *this"></a>令operator=返回一个reference to *this</h1><p>赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型的要求是分不开的。</p>
         
           <a class="article-more-a" href="/2020/07/08/Effective%20Cpp/item%2010/#more">more >></a>
         
@@ -895,7 +895,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Declare-destructors-virtual-in-polymorphic-base-classes"><a href="#Declare-destructors-virtual-in-polymorphic-base-classes" class="headerlink" title="Declare destructors virtual in polymorphic base classes"></a>Declare destructors virtual in polymorphic base classes</h1><h2 id="多态基类应当声明virtual析构函数"><a href="#多态基类应当声明virtual析构函数" class="headerlink" title="多态基类应当声明virtual析构函数"></a>多态基类应当声明virtual析构函数</h2><p>当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。</p>
+        <h1 id="多态基类应当声明virtual析构函数"><a href="#多态基类应当声明virtual析构函数" class="headerlink" title="多态基类应当声明virtual析构函数"></a>多态基类应当声明virtual析构函数</h1><p>当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。</p>
         
           <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/#more">more >></a>
         

@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>item 2:Prefer consts,enums,and inlines to | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="item 2:Prefer consts,enums,and inlines to #define#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
+  <meta name="description" content="用consts、enums、inlines替代#define#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="item 2:Prefer consts,enums,and inlines to">
 <meta property="og:url" content="http://yoursite.com/2020/07/19/Effective%20Cpp/item%202/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="item 2:Prefer consts,enums,and inlines to #define#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
+<meta property="og:description" content="用consts、enums、inlines替代#define#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-19T06:38:28.379Z">
-<meta property="article:modified_time" content="2020-07-21T03:30:12.481Z">
+<meta property="article:modified_time" content="2020-07-22T09:21:26.641Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Effective C++">
 <meta name="twitter:card" content="summary">
@@ -257,7 +257,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="item-2-Prefer-consts-enums-and-inlines-to-define"><a href="#item-2-Prefer-consts-enums-and-inlines-to-define" class="headerlink" title="item 2:Prefer consts,enums,and inlines to #define"></a>item 2:Prefer consts,enums,and inlines to #define</h1><p>#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</p>
+        <h1 id="用consts、enums、inlines替代-define"><a href="#用consts、enums、inlines替代-define" class="headerlink" title="用consts、enums、inlines替代#define"></a>用consts、enums、inlines替代#define</h1><p>#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</p>
 <a id="more"></a>
 <h2 id="define的问题"><a href="#define的问题" class="headerlink" title="#define的问题"></a>#define的问题</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASPECT_RATIO 1.653</span></span><br></pre></td></tr></table></figure>
 <p>我们要知道，记号ASPECT_RATIO可能未被编译器看到，或者在编译器处理源码之前就被预处理器移走，于是，该记号没有进入记号表（symbol table）。于是导致莫名奇妙的编译错误，错误信息可能会提示1.653，如果这个定义在别人的头文件中，那你是很难追踪的。<br>当然，还可能出现在记号式调试器中，也是因为没有进入到记号表中。</p>
@@ -452,7 +452,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#item-2-Prefer-consts-enums-and-inlines-to-define"><span class="toc-number">1.</span> <span class="toc-text">item 2:Prefer consts,enums,and inlines to #define</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#define的问题"><span class="toc-number">1.1.</span> <span class="toc-text">#define的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用const代替-define"><span class="toc-number">1.2.</span> <span class="toc-text">用const代替#define</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const的特殊情况"><span class="toc-number">1.3.</span> <span class="toc-text">const的特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-常量指针"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.常量指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-class-专属常量"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.class 专属常量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#enum"><span class="toc-number">1.4.</span> <span class="toc-text">enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏带来的另一个麻烦：文本替换"><span class="toc-number">1.5.</span> <span class="toc-text">宏带来的另一个麻烦：文本替换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">1.6.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#用consts、enums、inlines替代-define"><span class="toc-number">1.</span> <span class="toc-text">用consts、enums、inlines替代#define</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#define的问题"><span class="toc-number">1.1.</span> <span class="toc-text">#define的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用const代替-define"><span class="toc-number">1.2.</span> <span class="toc-text">用const代替#define</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const的特殊情况"><span class="toc-number">1.3.</span> <span class="toc-text">const的特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-常量指针"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.常量指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-class-专属常量"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.class 专属常量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#enum"><span class="toc-number">1.4.</span> <span class="toc-text">enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏带来的另一个麻烦：文本替换"><span class="toc-number">1.5.</span> <span class="toc-text">宏带来的另一个麻烦：文本替换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">1.6.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
