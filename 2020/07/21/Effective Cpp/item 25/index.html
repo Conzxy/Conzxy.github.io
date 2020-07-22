@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Effective Cpp/item 25 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>item 25:Consider supprot for a non-throwing swap | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="title: item 25:">
+  <meta name="description" content="考虑写出一个不抛异常的swap函数swap作为STL的一部分，也是异常安全性能编程的脊柱以及用来处理自我赋值的常见机制。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Effective Cpp&#x2F;item 25">
+<meta property="og:title" content="item 25:Consider supprot for a non-throwing swap">
 <meta property="og:url" content="http://yoursite.com/2020/07/21/Effective%20Cpp/item%2025/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="title: item 25:">
+<meta property="og:description" content="考虑写出一个不抛异常的swap函数swap作为STL的一部分，也是异常安全性能编程的脊柱以及用来处理自我赋值的常见机制。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-21T03:44:51.556Z">
-<meta property="article:modified_time" content="2020-07-22T04:47:47.574Z">
+<meta property="article:modified_time" content="2020-07-22T08:50:17.114Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="Effectibe C++">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -242,7 +243,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Effective Cpp/item 25
+      item 25:Consider supprot for a non-throwing swap
     </h1>
   
 
@@ -256,8 +257,62 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <hr>
-<p>title: item 25:</p>
+        <h1 id="考虑写出一个不抛异常的swap函数"><a href="#考虑写出一个不抛异常的swap函数" class="headerlink" title="考虑写出一个不抛异常的swap函数"></a>考虑写出一个不抛异常的swap函数</h1><p>swap作为STL的一部分，也是异常安全性能编程的脊柱以及用来处理自我赋值的常见机制。</p>
+<a id="more"></a>
+<h2 id="缺省swap（std-swap）"><a href="#缺省swap（std-swap）" class="headerlink" title="缺省swap（std::swap）"></a>缺省swap（std::swap）</h2><p>我们先来看看缺省版本的swap吧：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(T&amp; a,T&amp; b)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="function">T <span class="title">temp</span><span class="params">(a)</span></span>;</span><br><span class="line">    a=b;</span><br><span class="line">    b=temp;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>类型T需要支持copying（因为Meyers写书的时候还没有移动语义，所以书上没提，其实支持moving也是可以的，这里不作区分）。<br>这个缺省版本有三次复制，因此在某些情况下相当鸡肋。<br>其中最主要的是“以指针指向一个对象，内含真正数据”，即所谓的pimpl手法。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">WidgetImpl</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  ...</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">int</span> a,b,c;</span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="keyword">double</span>&gt; v;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  Widget(<span class="keyword">const</span> Widget&amp;);</span><br><span class="line">  Widget&amp; <span class="keyword">operator</span>=(<span class="keyword">const</span> Widget&amp; rhs)</span><br><span class="line">  &#123;</span><br><span class="line">    ...</span><br><span class="line">    *pImpl=*(rhs.pImpl);</span><br><span class="line">    ...</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  WidgetImpl *pImpl;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>如果我要交换两个Widget对象，那么将会复制3次Widget对象和3次WidgetImpl对象，这不是一件划算的事，因为我想要的只是交换Widget内的指针罢了。<br>因此我们要定义自己的swap函数。</p>
+<h2 id="特化swap"><a href="#特化swap" class="headerlink" title="特化swap"></a>特化swap</h2><p>我们可以特化std内的swap来实现我们想要的操作：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">  <span class="keyword">template</span>&lt;&gt;</span><br><span class="line">  <span class="keyword">void</span> swap&lt;Widget&gt;(Widget&amp; a,Widget&amp; b)</span><br><span class="line">  &#123;</span><br><span class="line">    swap(a.pImpl,b.pImpl);  <span class="comment">//还通不过编译</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里稍微介绍下全特化和偏特化：  </p>
+<table>
+<thead>
+<tr>
+<th>特化类型</th>
+<th>属性</th>
+<th>使用模板</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>全特化</td>
+<td>具体类型限死</td>
+<td>类模板、函数模板皆可</td>
+</tr>
+<tr>
+<td>偏特化</td>
+<td>有多个类型，限定一部分</td>
+<td>仅类模板（函数模板通过重载实现）</td>
+</tr>
+</tbody></table>
+<p>所以上面这个swap是std::swap的全特化版本，我们要注意一点：<strong>尽管我们不能改变std命名空间的任何东西，但是可以为标准template制造特化版本以适应自己的classes。</strong><br>当然，上面这个代码是通不过的，因为pimpl手法运用的就是private指针，那么我们要不声明为friend？不，这里我们选择member：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  ...</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Widget&amp; rhs)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    <span class="keyword">using</span> <span class="built_in">std</span>::swap;  <span class="comment">//这个是必要的</span></span><br><span class="line">    swap(pImpl,rhs.pImpl);</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">  <span class="keyword">template</span>&lt;&gt;</span><br><span class="line">  <span class="keyword">void</span> swap&lt;Widget&gt;(Widget&amp; a,Widget&amp; b)</span><br><span class="line">  &#123;</span><br><span class="line">    a.swap(b);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为什么这样写主要是为了和STL容器保持一致性，因为所有STL容器也都是提供public swap成员和std::swap特化版本。</p>
+<h2 id="参数化"><a href="#参数化" class="headerlink" title="参数化"></a>参数化</h2><p>正如前面所说，我们无法提供一个偏特化的函数模板，因此只能重载，因此：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">  tempalte&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Widget&lt;T&gt;&amp; a,Widget&lt;T&gt;&amp; b)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    a.swap(b);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>但是标准委员会规定不准膨胀那些已经声明好的东西，因此我们最好不要添加新的东西到std中。那么我们就用non-member去调用member即可：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> Widgetstuff&#123;</span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">Widget</span>&#123;</span>...&#125;; <span class="comment">//内含swap成员函数</span></span><br><span class="line">  ...</span><br><span class="line">  <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">swap</span><span class="params">(Widget&lt;T&gt;&amp; a,Widget&lt;T&gt;&amp; b)</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    a.swap(b);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>namespace不是必要的，但是最好加上，没必要让挤进global namespace。</p>
+<h2 id="using-std-swap的必要性"><a href="#using-std-swap的必要性" class="headerlink" title="using std::swap的必要性"></a>using std::swap的必要性</h2><p>现在swap有几个版本了？</p>
+<ul>
+<li>缺省版本</li>
+<li>std特化版本</li>
+<li>模板重载（T专属）</li>
+</ul>
+<p>我们这里注意一种情况：将swap用于赋值运算符的重载，不用using显式声明std::swap的话，那么第一时间找到的就是member版本的swap，同时此时不会进行ADL名字查找（因为成员函数进入查找集了），也就是说我们想要的non-member swap会被忽视。<br>我们想用的到底是哪个版本？通过using声明将std::swap曝光，可以强迫进行ADL名字查找（这是一份很好的保证），若参数T命名空间中有T专属的swap，则调用它，若没有则使用std内的swap。（这里要注意下：编译器相比一般化template更喜欢T专属std::swap特化版）</p>
+<h2 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h2><ul>
+<li>1.提供一个public swap成员函数，让它高效地置换你的类型的两个对象。这个函数绝不该抛出异常。  </li>
+<li>2.在你的class或template所在的命名空间提供一个non-member swap，并令它调用上述swap成员函数</li>
+<li>3.如果正在编写的class并非class template，为你的class特化std::swap，并令它调用swap成员函数。</li>
+</ul>
+<h2 id="成员swap绝不可抛出异常的说明"><a href="#成员swap绝不可抛出异常的说明" class="headerlink" title="成员swap绝不可抛出异常的说明"></a>成员swap绝不可抛出异常的说明</h2><p>我们承诺：成员swap绝不可抛出异常。<br>因为swap一个最好的应用就是帮助classes提供强烈的异常安全性保障。非成员版本不受此约束，因为缺省swap是以copy构造以及copy赋值为基础，而这两个都可能抛出异常。<br>因此我们写自定义swap不仅仅是提供了高效置换对象的方法，同时不会抛出异常。这两个性质是相辅而成的，因为高效率的swap<strong>s</strong>几乎都是基于对内置类型的操作（例如pimpl手法的底层指针），而<strong>内置类型上的操作绝不会抛出异常</strong>。</p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
+<li>当std::swap对你的类型效率不高时，提供一个swap成员函数，并确定这个函数不会抛出异常。</li>
+<li>如果你提供一个<strong>member</strong> swap，也该提供一个<strong>non-member</strong> swap来调用前者，对于classes（而非templates），也请特化std::swap。</li>
+<li>调用swap时应针对std::swap使用using声明，然后调用swap并且不限定namespace</li>
+<li>为“用户定义类型”进行std template 全特化是好的，但是不要往std中添加新东西</li>
+</ul>
 
       
 
@@ -287,7 +342,33 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effectibe C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C/Designs-and-Declarations//" class="article-tag-list-link color5">Designs and Declarations</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -361,8 +442,8 @@
     </a>
   
   
-    <a href="/2020/07/20/Heap/bheap/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Heap/bheap</div>
+    <a href="/2020/07/19/Effective%20Cpp/item%202/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">item 2:Prefer consts,enums,and inlines to</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -393,7 +474,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    目录，不存在的…
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#考虑写出一个不抛异常的swap函数"><span class="toc-number">1.</span> <span class="toc-text">考虑写出一个不抛异常的swap函数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#缺省swap（std-swap）"><span class="toc-number">1.1.</span> <span class="toc-text">缺省swap（std::swap）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#特化swap"><span class="toc-number">1.2.</span> <span class="toc-text">特化swap</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#参数化"><span class="toc-number">1.3.</span> <span class="toc-text">参数化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#using-std-swap的必要性"><span class="toc-number">1.4.</span> <span class="toc-text">using std::swap的必要性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#流程"><span class="toc-number">1.5.</span> <span class="toc-text">流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#成员swap绝不可抛出异常的说明"><span class="toc-number">1.6.</span> <span class="toc-text">成员swap绝不可抛出异常的说明</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">1.7.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -589,15 +670,15 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Effective</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">堆</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Effectibe C++</a>
               </li>
             
             <div class="clearfix"></div>
