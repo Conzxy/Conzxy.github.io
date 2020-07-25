@@ -6,15 +6,33 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Tag: Effectibe C++ | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Binomial Queues | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/tags/Effectibe-C/index.html">
+  <meta name="description" content="二项队列(Binomial Queues)名字由来首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的森林(forest)。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Binomial Queues">
+<meta property="og:url" content="http://yoursite.com/2020/07/24/Heap/BinomialQueue/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="二项队列(Binomial Queues)名字由来首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的森林(forest)。">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200724231105276.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200724234125453.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020072423585494.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725002547573.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725102418747.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725102948616.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020072512134883.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725123610941.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725132132934.gif">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725133256368.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200725134334871.png">
+<meta property="article:published_time" content="2020-07-24T14:36:47.243Z">
+<meta property="article:modified_time" content="2020-07-25T06:34:03.152Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="堆">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200724231105276.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -231,75 +249,244 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-Heap/BinomialQueue" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/21/Effective%20Cpp/item%2025/" class="archive-article-date">
-  	<time datetime="2020-07-21T03:44:51.556Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-21</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/21/Effective%20Cpp/item%2025/">item 25:Consider supprot for a non-throwing swap</a>
+    <h1 class="article-title" itemprop="name">
+      Binomial Queues
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2020/07/24/Heap/BinomialQueue/" class="archive-article-date">
+  	<time datetime="2020-07-24T14:36:47.243Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-24</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二项队列-Binomial-Queues"><a href="#二项队列-Binomial-Queues" class="headerlink" title="二项队列(Binomial Queues)"></a>二项队列(Binomial Queues)</h1><h2 id="名字由来"><a href="#名字由来" class="headerlink" title="名字由来"></a>名字由来</h2><p>首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的<strong>森林(forest)</strong>。</p>
+<a id="more"></a>
+<p><img src="https://img-blog.csdnimg.cn/20200724231105276.png" alt="B0 B1 B2 B3"></p>
+<p>如上图所示，这是由B0、B1、B2、B3组成的二项队列，其中每一颗树都称为<strong>二项树(binomial tree)</strong>。我们将其表示为Bk。k表示二项树高度，Bk实际上是由B（k-1）接在另一个B（k-1）的根上（merge的基础）。在每个高度都只有惟一一个二项树，因此二项队列可以表示为任意大小。<br>二项队列为什么会如此命名，是因为二项树的性质。  </p>
+<p><img src="https://img-blog.csdnimg.cn/20200724234125453.gif" alt=""></p>
+<p>性质一来源于定义，而性质二和性质三都可以通过数学归纳法得出，性质二比较显然，这里稍微证明一下性质三：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020072423585494.gif" alt=""></p>
+<p>性质四也很好理解，我这里举一个例子吧，假设二项队列大小为27，27=1+2+8+16，因此可以是由B0，B1，B3，B4组成的，那么27的二进制表示就是11011，自己算算确实如此，因此我们可以根据总结点数来得出二项队列是由哪些二项树组成的。性质四实质就是十进制转二进制。</p>
+<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p><img src="https://img-blog.csdnimg.cn/20200725002547573.gif" alt=""></p>
+<p>补充一点在上面，从这点也可以看出寻找最小元素的算法分析度为O(logn)。<br>我们还是来重点讲一下合并操作吧。</p>
+<h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><p>合并操作我们假设有H1和H2，如下图所示</p>
+<p><img src="https://img-blog.csdnimg.cn/20200725102418747.png" alt=""></p>
+<p>这里先提一下rank（阶）的意思，</p>
+<pre><code>rank=No. of children=height of tree</code></pre><p>我们会以H1作为新堆，合并操作结束后H2置为空，合并就是看两个二项队列中有没有同阶的，有同阶的则进行合并，没有同阶的则保留到新H1中，因此合并结果为：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200725102948616.png" alt=""></p>
+<p>从这里也可以看出我们需要提供一个同阶二项树的算法，这个在后面有所体现。  </p>
+<h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>合并两个同阶二项树的操作仅需常数时间，而二项树最多有O(logn)个，所以最坏情况为O(logn)。<br>我们再来看下插入，插入是合并的一种情形，即单结点树与二项树合并，那么最坏时间复杂度为O(logn)。最好情况呢？当二项队列为<strong>偶数</strong>时，B0是空的，此时插入就是O(1)，但是实际上我们很难遇到最坏情况，我们这里采用<strong>摊还分析</strong>来得到平均时间：</p>
+<p><img src="https://img-blog.csdnimg.cn/2020072512134883.gif" alt=""></p>
+<p>所以插入的时间复杂度取平均时间为O(1)。这就是二项队列比左式堆优越的点。</p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p><img src="https://img-blog.csdnimg.cn/20200725123610941.gif" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725132132934.gif" alt=""></p>
+<h2 id="deleteMin"><a href="#deleteMin" class="headerlink" title="deleteMin"></a>deleteMin</h2><p>接下来将deleteMin，我们删除掉最小根植二项树的根要如何操作？<br>就拿上面的H1来举例，首先我们要把最小根植和所有子树分离（假设那个点为最小根植点）</p>
+<p><img src="https://img-blog.csdnimg.cn/20200725133256368.png" alt=""></p>
+<p>我们用H’’表示子树形成的新二项队列，而H’表示原来除最小根植树的其他二项树组成的二项队列，然后这两个二项队列进行合并，这样得到的新二项队列就是我们想要的。</p>
+<h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>由上面流程可以得知分两步：找最小根植O(logn)和合并O(logn)，加起来还是O(logn)。</p>
+<h2 id="实现（implement）"><a href="#实现（implement）" class="headerlink" title="实现（implement）"></a>实现（implement）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BinomialNode</span>&#123;</span></span><br><span class="line">    DataType element;</span><br><span class="line">    BinomialNode* leftchild;</span><br><span class="line">    BinomialNode* nextSibling;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>用的是兄弟-儿子表示法。<br>同时我们会弄一个数组来存储每个根结点</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;BinomialNode*&gt; theTrees;</span><br></pre></td></tr></table></figure>
+<p>如用图表示大概就是这样：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200725134334871.png" alt=""></p>
+<p>为了操作的便利，我们要求儿子按照子树的大小按顺序排列。数组的下标代表着二项树的rank。同时你会发现儿子以及兄弟都会以<strong>扩散式</strong>的递减，如图中的14是个r(2)树，而儿子和兄弟是r(1)，直至到r(0)。</p>
+<p>我们来看下代码吧：</p>
+<h3 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h3><h4 id="capacity"><a href="#capacity" class="headerlink" title="capacity"></a>capacity</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">capacity</span><span class="params">()</span><span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">1</span>&lt;&lt;theTrees())<span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>capacity其实就是进阶的一个临界点，突破了这个临界点（currentSize&gt;capacity()）就要重新分配根结点数组，因为我们要存储更高阶的树。</p>
+<h4 id="combineTrees"><a href="#combineTrees" class="headerlink" title="combineTrees"></a>combineTrees</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> *Retuen the result of merging equal-sized t1 and t2  </span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function">BinomialNode* <span class="title">combineTrees</span><span class="params">(BinomialNode *t1, BinomialNode *t2)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t1-&gt;element&gt;t2-&gt;element)</span><br><span class="line">        <span class="keyword">return</span> combineTrees(t2,t1);</span><br><span class="line">    t2-&gt;nextSibling=t1-&gt;leftchild;</span><br><span class="line">    t1-&gt;leftchild=t2;</span><br><span class="line">    <span class="keyword">return</span> t1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个很好理解，将小根植树儿子作为大根值的兄弟，然后大根值成为小根植的儿子（不能反过来），这样一个高一阶的新二项树就生成了。</p>
+<h4 id="merge-1"><a href="#merge-1" class="headerlink" title="merge"></a>merge</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(Binomial&lt;T&gt; &amp;rhs)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>==&amp;rhs)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line"></span><br><span class="line">    currentSize+=rhs.currentSize;</span><br><span class="line">    <span class="keyword">if</span>(currentSize&gt;capacity())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> oldNumTrees=theTrees.size();</span><br><span class="line">        <span class="keyword">int</span> newNumTrees=<span class="built_in">std</span>::max(theTrees.size(),rhs.theTrees.size())+<span class="number">1</span>;</span><br><span class="line">        theTrees.resize(newNumTrees);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=oldNumTrees;i&lt;newNumTrees;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    BNode *carry=<span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>,j=<span class="number">1</span>;j&lt;=currentSize;i++,j*=<span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        BNode* t1=theTrees[i];</span><br><span class="line">        BNode* t2=i&lt;rhs.theTrees.size()?rhs.theTrees[i]:<span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> whichcase=t1==<span class="literal">nullptr</span>?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">        whichcase+=t2==<span class="literal">nullptr</span>?<span class="number">0</span>:<span class="number">2</span>;</span><br><span class="line">        whichcase+=carry==<span class="literal">nullptr</span>?<span class="number">0</span>:<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span>(whichcase)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:<span class="comment">/*No Trees*/</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:<span class="comment">/*only this*/</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:<span class="comment">/*only rhs*/</span></span><br><span class="line">                theTrees[i]=t2;</span><br><span class="line">                rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:<span class="comment">/*only carry*/</span></span><br><span class="line">                theTrees[i]=carry;  <span class="comment">//浅拷贝，转让资源管理权</span></span><br><span class="line">                carry=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:<span class="comment">/*this and rhs*/</span></span><br><span class="line">                carry=combineTrees(t1,t2);</span><br><span class="line">                theTrees[i]=rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>:<span class="comment">/*this and carry*/</span></span><br><span class="line">                carry=combineTrees(t1,carry);</span><br><span class="line">                theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">6</span>:<span class="comment">/*rhs and carry*/</span></span><br><span class="line">                carry=combineTrees(t2,carry);</span><br><span class="line">                rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">7</span>:<span class="comment">/*all three*/</span></span><br><span class="line">                theTrees[i]=carry;</span><br><span class="line">                carry=combineTrees(t1,t2);</span><br><span class="line">                rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;root:rhs.theTrees)</span><br><span class="line">        root=<span class="literal">nullptr</span>;</span><br><span class="line">    rhs.currentSize=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这段代码我只想说真看懂了前面合并以及各标识符的意义自然就懂。<br>i表示的是rank，而j是i的限制条件，转换来就是i&lt;=log（currentSize）<br>carry是上一步得到的树，当前case生成的carry为i+1阶，用的carry是上阶段得到的i阶。最后会以case4结束整个循环，置为nullptr（转让资源管理权）（不过不是只有最后一步才会使case4）</p>
+<h4 id="deleteMin-1"><a href="#deleteMin-1" class="headerlink" title="deleteMin"></a>deleteMin</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">deleteMin</span><span class="params">(T&amp; minItem)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(isEmpty())</span><br><span class="line">        <span class="keyword">throw</span> UnderflowException&#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> minIndex=findMinIndex();</span><br><span class="line">    minItem=theTrees[minIndex]-&gt;element;</span><br><span class="line"></span><br><span class="line">    BNode* oldroot=theTrees[minIndex];</span><br><span class="line">    BNode* deleteTrees=oldroot-&gt;leftchild;</span><br><span class="line">    <span class="keyword">delete</span> oldroot;</span><br><span class="line">    theTrees[minIndex]=<span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//construct H''</span></span><br><span class="line">    Binomial deleteQueue;</span><br><span class="line">    deleteQueue.theTrees.resize(minIndex);</span><br><span class="line">    deleteQueue.currentSize=(<span class="number">1</span>&lt;&lt;minIndex)<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=minIndex<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        deleteQueue.theTrees[i]=deleteTrees;</span><br><span class="line">        deleteTrees=deleteTrees-&gt;nextSibling;</span><br><span class="line">        deleteQueue.theTrees[i]-&gt;nextSibling=<span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//consturct H'</span></span><br><span class="line">    currentSize-=deleteQueue.currentSize+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    merge(deleteQueue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个很显然的，在下面补个findMinIndex：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findMinIndex</span><span class="params">()</span><span class="keyword">const</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> minIndex;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;theTrees[i]==<span class="literal">nullptr</span>;i++)</span><br><span class="line">        ;<span class="comment">//找到第一个非空根结点</span></span><br><span class="line">    <span class="keyword">for</span>(minIndex=i;i&lt;theTrees.size();i++)</span><br><span class="line">        <span class="keyword">if</span>(theTrees[i]!=<span class="literal">nullptr</span>&amp;&amp;theTrees[i]-&gt;element&lt;theTrees[minIndex]-&gt;element)</span><br><span class="line">            minIndex=i;</span><br><span class="line">    <span class="keyword">return</span> minIndex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effectibe C++</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
         		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Designs-and-Declarations//" class="article-tag-list-link color5">Designs and Declarations</a>
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/07/24/Heap/BinomialQueue/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
   
   
-    </div></section>
+    <a href="/2020/07/22/Heap/Lheap/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Leftist heap</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二项队列-Binomial-Queues"><span class="toc-number">1.</span> <span class="toc-text">二项队列(Binomial Queues)</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#名字由来"><span class="toc-number">1.1.</span> <span class="toc-text">名字由来</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法分析"><span class="toc-number">1.2.</span> <span class="toc-text">算法分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#merge"><span class="toc-number">1.2.1.</span> <span class="toc-text">merge</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#时间复杂度"><span class="toc-number">1.2.2.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#补充"><span class="toc-number">1.3.</span> <span class="toc-text">补充</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#deleteMin"><span class="toc-number">1.4.</span> <span class="toc-text">deleteMin</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#时间复杂度-1"><span class="toc-number">1.4.1.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#实现（implement）"><span class="toc-number">1.5.</span> <span class="toc-text">实现（implement）</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Source-Code"><span class="toc-number">1.5.1.</span> <span class="toc-text">Source Code</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#capacity"><span class="toc-number">1.5.1.1.</span> <span class="toc-text">capacity</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#combineTrees"><span class="toc-number">1.5.1.2.</span> <span class="toc-text">combineTrees</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#merge-1"><span class="toc-number">1.5.1.3.</span> <span class="toc-text">merge</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#deleteMin-1"><span class="toc-number">1.5.1.4.</span> <span class="toc-text">deleteMin</span></a></li></ol></li></ol></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
   
 
-    
+  
+
+  
+
+  
+
+  
 
 
           </div>
@@ -328,9 +515,9 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
-		isTag: true,
+		isTag: false,
 		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
@@ -481,10 +668,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">堆</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effectibe C++</a>
               </li>
             
             <div class="clearfix"></div>
