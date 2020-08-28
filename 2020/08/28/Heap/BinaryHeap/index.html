@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>BinaryHeap | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="二叉堆支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。 关键操作insertExample插入14 Code1234567891011121314151617181920template&lt;typename T&gt;    void BinaryHeap&lt;T&gt;::insert(const T&amp; x)    &amp;#123;        if(currentS">
+  <meta name="description" content="二叉堆支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BinaryHeap">
 <meta property="og:url" content="http://yoursite.com/2020/08/28/Heap/BinaryHeap/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="二叉堆支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。 关键操作insertExample插入14 Code1234567891011121314151617181920template&lt;typename T&gt;    void BinaryHeap&lt;T&gt;::insert(const T&amp; x)    &amp;#123;        if(currentS">
+<meta property="og:description" content="二叉堆支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941281.png">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941245.png">
@@ -24,7 +24,7 @@
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200828145230975.gif#pic_center">
 <meta property="og:image" content="https://img-blog.csdnimg.cn/20200828145842775.gif#pic_center">
 <meta property="article:published_time" content="2020-08-28T06:11:57.254Z">
-<meta property="article:modified_time" content="2020-08-28T07:17:42.811Z">
+<meta property="article:modified_time" content="2020-08-28T07:21:17.217Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="数据结构">
 <meta property="article:tag" content="堆">
@@ -268,6 +268,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。</p>
+<a id="more"></a>
 <h2 id="关键操作"><a href="#关键操作" class="headerlink" title="关键操作"></a>关键操作</h2><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>插入14<br><img src="https://img-blog.csdnimg.cn/20200828150941281.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941245.png" alt=""></p>
 <h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> BinaryHeap&lt;T&gt;::insert(<span class="keyword">const</span> T&amp; x)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(currentSize+<span class="number">1</span>==<span class="built_in">array</span>.size())</span><br><span class="line">            <span class="built_in">array</span>.resize(<span class="number">2</span>*<span class="built_in">array</span>.size());   <span class="comment">//扩容</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 上滤操作（percolate up）：与下滤操作类似，但是不是调整根结点，而是child。</span></span><br><span class="line"><span class="comment">         * hole是新增位置的child，其parent是最后一个父结点，通过父结点不断往上爬直到</span></span><br><span class="line"><span class="comment">         * 欲插入值不小于父结点停止。</span></span><br><span class="line"><span class="comment">         * 最后用储存插入值的哨兵填上hole。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">int</span> hole=++currentSize;</span><br><span class="line">        T copy=x;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">array</span>[<span class="number">0</span>]=<span class="built_in">std</span>::move(copy);</span><br><span class="line">        <span class="keyword">for</span>(;x&lt;<span class="built_in">array</span>[hole/<span class="number">2</span>];hole/=<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[hole/<span class="number">2</span>]);<span class="comment">//x&lt;parent，hole percolate up</span></span><br><span class="line">        <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h4 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h4><p>如果insert采用一般的swap上滤，则需要3次赋值，设上滤层数为d，那么总共就需要3d次赋值，而这里的方法只需要d+1次赋值（开始哨兵不算）。<br>最坏情况上滤层数为[logN]，因此时间复杂度为O(logn)（平均为O(1))</p>
