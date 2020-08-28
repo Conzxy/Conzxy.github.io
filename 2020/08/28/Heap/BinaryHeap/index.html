@@ -6,17 +6,30 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>文章分类 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>BinaryHeap | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="文章分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="二叉堆支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。 关键操作insertExample插入14 Code1234567891011121314151617181920template&lt;typename T&gt;    void BinaryHeap&lt;T&gt;::insert(const T&amp; x)    &amp;#123;        if(currentS">
+<meta property="og:type" content="article">
+<meta property="og:title" content="BinaryHeap">
+<meta property="og:url" content="http://yoursite.com/2020/08/28/Heap/BinaryHeap/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="二叉堆支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。 关键操作insertExample插入14 Code1234567891011121314151617181920template&lt;typename T&gt;    void BinaryHeap&lt;T&gt;::insert(const T&amp; x)    &amp;#123;        if(currentS">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-24T02:13:21.000Z">
-<meta property="article:modified_time" content="2020-06-24T03:02:57.205Z">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941281.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941245.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941244.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941232.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828150941209.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828144526345.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828145230975.gif#pic_center">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200828145842775.gif#pic_center">
+<meta property="article:published_time" content="2020-08-28T06:11:57.254Z">
+<meta property="article:modified_time" content="2020-08-28T07:17:42.811Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="数据结构">
+<meta property="article:tag" content="堆">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200828150941281.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -233,20 +246,220 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article class="article article-type-post show">
-  <header class="article-header" style="border-bottom: 1px solid #ccc">
-  <h1 class="article-title" itemprop="name">
-    文章分类
-  </h1>
-  </header>
+            <article id="post-Heap/BinaryHeap" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      BinaryHeap
+    </h1>
+  
+
+        
+        <a href="/2020/08/28/Heap/BinaryHeap/" class="archive-article-date">
+  	<time datetime="2020-08-28T06:11:57.254Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。</p>
+<h2 id="关键操作"><a href="#关键操作" class="headerlink" title="关键操作"></a>关键操作</h2><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>插入14<br><img src="https://img-blog.csdnimg.cn/20200828150941281.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941245.png" alt=""></p>
+<h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> BinaryHeap&lt;T&gt;::insert(<span class="keyword">const</span> T&amp; x)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(currentSize+<span class="number">1</span>==<span class="built_in">array</span>.size())</span><br><span class="line">            <span class="built_in">array</span>.resize(<span class="number">2</span>*<span class="built_in">array</span>.size());   <span class="comment">//扩容</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 上滤操作（percolate up）：与下滤操作类似，但是不是调整根结点，而是child。</span></span><br><span class="line"><span class="comment">         * hole是新增位置的child，其parent是最后一个父结点，通过父结点不断往上爬直到</span></span><br><span class="line"><span class="comment">         * 欲插入值不小于父结点停止。</span></span><br><span class="line"><span class="comment">         * 最后用储存插入值的哨兵填上hole。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">int</span> hole=++currentSize;</span><br><span class="line">        T copy=x;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">array</span>[<span class="number">0</span>]=<span class="built_in">std</span>::move(copy);</span><br><span class="line">        <span class="keyword">for</span>(;x&lt;<span class="built_in">array</span>[hole/<span class="number">2</span>];hole/=<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[hole/<span class="number">2</span>]);<span class="comment">//x&lt;parent，hole percolate up</span></span><br><span class="line">        <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h4><p>如果insert采用一般的swap上滤，则需要3次赋值，设上滤层数为d，那么总共就需要3d次赋值，而这里的方法只需要d+1次赋值（开始哨兵不算）。<br>最坏情况上滤层数为[logN]，因此时间复杂度为O(logn)（平均为O(1))</p>
+<h3 id="deleteMin"><a href="#deleteMin" class="headerlink" title="deleteMin"></a>deleteMin</h3><h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h4><p><img src="https://img-blog.csdnimg.cn/20200828150941244.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941232.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941209.png" alt=""></p>
+<h4 id="Code-1"><a href="#Code-1" class="headerlink" title="Code"></a>Code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> BinaryHeap&lt;T&gt;::deleteMin() &#123;</span><br><span class="line">        <span class="keyword">if</span>(isEmpty())</span><br><span class="line">            <span class="keyword">throw</span> UnderflowException&#123;&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">array</span>[<span class="number">1</span>]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[currentSize--]);</span><br><span class="line">        percolateDown(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>把最后一个叶子结点调至根结点，此时根结点失衡，于是percolateDown调整平衡维持堆序性质。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 下滤操作：调整失衡点（不满足堆序性质），以失衡点为根结点，在子树中找到满足堆序的位置。</span></span><br><span class="line"><span class="comment">     * 方式：通过child挖hole，如果最小child&lt;失衡点，那么最小child成为失衡点的parent，原来位置成为hole，</span></span><br><span class="line"><span class="comment">     * 如此反复，得到一个“下滤”的形态。如果到达leaf层或已经满足堆序（到达leaf层自然满足），即可终止循环。</span></span><br><span class="line"><span class="comment">     * 最后用储存原来失衡点的局部变量来填上hole。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> BinaryHeap&lt;T&gt;::percolateDown(<span class="keyword">int</span> hole) &#123;</span><br><span class="line">        <span class="keyword">int</span> child;</span><br><span class="line">        T tmp=<span class="built_in">std</span>::move(<span class="built_in">array</span>[hole]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(;hole*<span class="number">2</span>&lt;=currentSize;hole=child)</span><br><span class="line">        &#123;</span><br><span class="line">            child=hole*<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(child!=currentSize&amp;&amp;<span class="built_in">array</span>[child+<span class="number">1</span>]&lt;<span class="built_in">array</span>[child])</span><br><span class="line">                ++child;    <span class="comment">//找到最小child</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">array</span>[child]&lt;tmp)</span><br><span class="line">                <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[child]);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">break</span>;  <span class="comment">//如果array[child]&gt;=tmp,此时已满足minheap的性质</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(tmp);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="算法复杂度-1"><a href="#算法复杂度-1" class="headerlink" title="算法复杂度"></a>算法复杂度</h4><p>最坏同上滤操作，为O(logn)。</p>
+<h3 id="buildHeap"><a href="#buildHeap" class="headerlink" title="buildHeap"></a>buildHeap</h3><p>方案一：<br>通过向空堆insert来建堆，共N个insert，因此最坏时间复杂度为O(nlogn),平均为O(N)。<br>方案二：  </p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*建堆操作：从最后一个根结点开始建堆，因为每个根结点都是不平衡状态（假设）*/</span></span><br><span class="line"><span class="keyword">void</span> BinaryHeap&lt;T&gt;::buildHeap()&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=currentSize/<span class="number">2</span>;i&gt;<span class="number">0</span>;i--)</span><br><span class="line">            percolateDown(i);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h4 id="算法复杂度（方案二）"><a href="#算法复杂度（方案二）" class="headerlink" title="算法复杂度（方案二）"></a>算法复杂度（方案二）</h4><p>这里先证明一个定理：<br><img src="https://img-blog.csdnimg.cn/20200828144526345.gif#pic_center" alt=""></p>
+<p>证明：</p>
+<p><img src="https://img-blog.csdnimg.cn/20200828145230975.gif#pic_center" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200828145842775.gif#pic_center" alt=""><br>这个定理就表明了建堆的时间复杂度为O(n)。</p>
+<h2 id="Github"><a href="#Github" class="headerlink" title="Github"></a>Github</h2><p>戳👉<a href="https://github.com/Conzxy/Data-Structures/tree/master/Heap/BinaryHeap" target="_blank" rel="noopener">BinaryHeap</a></p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/08/28/Heap/BinaryHeap/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
 
   
-  <div class="category-all-page">
-    <h2>共计&nbsp;25&nbsp;个分类</h2>
-    <ul class="category-list-item-list"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/">C++</a><span class="category-list-item-list-count">8</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/class/">class</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/declaration/">declaration</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/namespace/">namespace</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE/">名字查找</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/">Effective C++</a><span class="category-list-item-list-count">5</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/Accustoming-Yourself-to-C/">Accustoming Yourself to C++</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/Designs-and-Declarations/">Designs and Declarations</a><span class="category-list-item-list-count">1</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/">HDOJ</a><span class="category-list-item-list-count">4</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E4%B8%B2/">串</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-item-list-count">6</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/DFS/">DFS</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/">最小生成树</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">最短路径</a><span class="category-list-item-list-count">1</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%8E%92%E5%BA%8F/">排序</a><span class="category-list-item-list-count">10</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-item-list-count">3</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">时间复杂度</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%9F%A5%E6%89%BE/">查找</a><span class="category-list-item-list-count">1</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%9F%A5%E6%89%BE/%E6%A0%91/">树</a><span class="category-list-item-list-count">1</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-item-list-count">1</span></li></ul>
-  </div>
+<nav id="article-nav">
   
-</article>
+  
+    <a href="/2020/07/24/Heap/BinomialQueue/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Binomial Queues</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二叉堆"><span class="toc-number">1.</span> <span class="toc-text">二叉堆</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#关键操作"><span class="toc-number">1.1.</span> <span class="toc-text">关键操作</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#insert"><span class="toc-number">1.1.1.</span> <span class="toc-text">insert</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Example"><span class="toc-number">1.1.1.1.</span> <span class="toc-text">Example</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Code"><span class="toc-number">1.1.1.2.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#算法复杂度"><span class="toc-number">1.1.1.3.</span> <span class="toc-text">算法复杂度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#deleteMin"><span class="toc-number">1.1.2.</span> <span class="toc-text">deleteMin</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#Example-1"><span class="toc-number">1.1.2.1.</span> <span class="toc-text">Example</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#Code-1"><span class="toc-number">1.1.2.2.</span> <span class="toc-text">Code</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#算法复杂度-1"><span class="toc-number">1.1.2.3.</span> <span class="toc-text">算法复杂度</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#buildHeap"><span class="toc-number">1.1.3.</span> <span class="toc-text">buildHeap</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#算法复杂度（方案二）"><span class="toc-number">1.1.3.1.</span> <span class="toc-text">算法复杂度（方案二）</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Github"><span class="toc-number">1.2.</span> <span class="toc-text">Github</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>
@@ -274,7 +487,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
