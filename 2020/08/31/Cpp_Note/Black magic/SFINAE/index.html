@@ -16,7 +16,7 @@
 <meta property="og:description" content="Substitution Failure is not an Error概念SFINAE技术是指在编译期将函数模板的形参换成实参，如果替换失败不会算作编译错误，而是继续寻找合适的特化版本，直到所有的模板版本都替换失败编译器才报错。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-08-31T12:50:13.861Z">
-<meta property="article:modified_time" content="2020-08-31T12:59:33.287Z">
+<meta property="article:modified_time" content="2020-08-31T16:38:35.432Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Black magic">
 <meta property="article:tag" content="template">
@@ -306,18 +306,18 @@ D*(conv()&amp;)</code></pre><p>对于一个non-const对象，显然第二个转�
 <p>For conversion functions, however, there is a backdoor. If two conversion functions are equally good, then the return type of them decides who is best according to 13.3.3/1.</p>
 </blockquote>
 <blockquote>
-<p>The rule is that the better conversion from the return type of the conversion function to the destination type wins</p>
+<p>The rule is that the better conversion from the <strong>return type</strong> of the conversion function to the <strong>destination type</strong> wins</p>
 </blockquote>
 <pre><code>conv()-&gt;operator D*-&gt;D*-&gt;B*
 conv()-&gt;operator B*-&gt;B*</code></pre><p><code>B*-&gt;B* better than to D*-&gt;B*</code>,所以去掉const会导致总是调用第二个check。<strong>const的作用就是强迫编译器去选择第二个转换函数</strong>，把类型转换弄回正轨。</p>
 <p>把const再加上来，调用第二个转换函数，<code>D*-&gt;D* better than to D*-&gt;B*</code>,如此就能识别B是D的基类。</p>
 <h3 id="If-they-are-not-related"><a href="#If-they-are-not-related" class="headerlink" title="If they are not related"></a>If they are not related</h3><p>candidata function of check:<br>first:</p>
 <pre><code>D*(conv()&amp;)</code></pre><p>second:  </p>
-<pre><code>B*(conv()const&amp;)</code></pre><p>当D与B不存在继承关系时，非模板和模板都可以匹配，但非模板优于模板(因此没产生二义性)，第二个转换函数因为无法转换成B*直接舍弃，因此直接调用第二个check。</p>
-<p>&lt;如果第二个函数也是模板会怎样呢？&gt;<br>B不是D的基类会产生调用二义性。首先解释一下为什么B是D的基类反而没事，因为此时D<em>-&gt;B</em>存在，那转换就存在优先级，因此可以直接调用第一个check，而B不是D的基类，优先级一样(没有竞争因素）</p>
+<pre><code>B*(conv()const&amp;)</code></pre><p>当D与B不存在继承关系时，非模板和模板都可以匹配，但非模板优于模板(因此没产生二义性)，第二个转换函数因为无法转换成B*（目标对象）直接舍弃，因此直接调用第二个check。</p>
+<p>&lt;如果第二个函数也是模板会怎样呢？&gt;<br>B不是D的基类会产生调用二义性。首先解释一下为什么B是D的基类反而没事，因为此时D<em>-&gt;B</em>存在，那转换就存在优先级，因此可以直接调用第一个check，而B不是D的基类，优先级一样</p>
 <pre><code>conv-&gt;conv const-&gt;B*
 conv-&gt;D*</code></pre><p>如果第一个函数不是模板也是如此。</p>
-<p><strong>PS：有两个转换函数的类一定要考虑优先级，否则二义性</strong></p>
+<p><strong>PS：有两个转换函数的类一定要考虑优先级，否则出现二义性</strong></p>
 
       
 
