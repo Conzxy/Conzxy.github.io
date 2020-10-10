@@ -6,14 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Archives | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>5.16 Conditianal operator | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/archives/page/2/index.html">
+  <meta name="description" content="条件运算符【该笔记内容参考的是文档n3337&#x2F;5.16】">
+<meta property="og:type" content="article">
+<meta property="og:title" content="5.16 Conditianal operator">
+<meta property="og:url" content="http://yoursite.com/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="条件运算符【该笔记内容参考的是文档n3337&#x2F;5.16】">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-10-10T03:50:53.102Z">
+<meta property="article:modified_time" content="2020-10-10T03:52:34.919Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -231,195 +236,185 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-文档笔记/Conditianal operator" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      5.16 Conditianal operator
+    </h1>
+  
+
+        
+        <a href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/" class="archive-article-date">
+  	<time datetime="2020-10-10T03:50:53.102Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
+</a>
+        
+        
+      </header>
     
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h1><p>【该笔记内容参考的是文档n3337/5.16】</p>
+<a id="more"></a>
+<ol>
+<li><p>条件运算符是<code>右结合性</code>，第一表达式会被转换为<code>bool</code>类型，并且根据布尔值决定评估(evaluate)：</p>
+<ul>
+<li><p><strong>true</strong>：结果取第二表达式的值</p>
+</li>
+<li><p><strong>false</strong>：结果取第三表达式的值</p>
+<p>注意，第二表达式和第三表达式<code>只有其中一个</code>会被评估</p>
+</li>
+</ul>
+</li>
+<li><p>对于第二表达式或第三表达式有<code>void</code>类型的情况，然后进行<strong>标准转换</strong>：</p>
+<ul>
+<li><p>左值转右值（lvalue to rvalue）</p>
+</li>
+<li><p>数组转换为指针（array to pointer）</p>
+</li>
+<li><p>函数转换为指向函数的指针（function to pointer）</p>
+<p>接着：</p>
+<ul>
+<li><p>第二表达式或第三表达式为<code>throw</code>表达式，其结果是其他类型并且是prvalue</p>
+</li>
+<li><p>第二表达式和第三表达式都为<code>void</code>（或者<code>thorw</code>表达式），其结果是<code>void</code>类型且是prvalue</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果第二表达式和第三表达式有着不同的类型，并且满足如下一个条件：</p>
+<ul>
+<li><p>有类类型</p>
+</li>
+<li><p>两个表达式都是glvalue（相同的<code>value category</code>）且相同类型（除了cv）</p>
+</li>
+</ul>
+<p>将尝试进行互相转换，设被转换表达式为类型为<code>T1</code>的<code>E1</code>，欲匹配表达式为类型为<code>T2</code>的<code>E2</code>，则可细分为：</p>
+<ul>
+<li><p>如果<code>E2</code>是个<strong>左值</strong>（lvalue）：如果<code>E1</code>可以隐式转换为“对<code>T2</code>的左值引用”，则<code>E1</code>可被转换匹配<code>E2</code></p>
+</li>
+<li><p>如果<code>E2</code>是个<strong>亡值</strong>（xvalue）：如果<code>E1</code>可以隐式转换为“对<code>T2</code>的右值引用”，则<code>E1</code>可被转换匹配<code>E2</code></p>
+</li>
+</ul>
+<p>上述转换的约束条件是该引用必须是<code>bind directly</code>：除去<strong>通过初始化器表达式创建并初始化的一个临时对象</strong>的大多数情况</p>
+<ul>
+<li><p>如果<code>E2</code>是个<strong>右值</strong>（rvalue）【！包括prvalue和xvalue】：或若上述两种转换都不能完成，至少有一个是类类型则：</p>
+<ul>
+<li><p>如果<code>E1</code>和<code>E2</code>都是类类型，并且潜在（underlying）类类型相同或者一个是另一个的基类。假如转换成功，<code>E1</code>将会变成根据<code>E1</code>通过拷贝形成的类型为<code>T2</code>的临时对象（prvalue）,并且将这个临时对象作为被转换的操作数</p>
+</li>
+<li><p>否则（i.e.，<code>E1</code>或者<code>E2</code>有一个非类类型，或者他们两个都是类类型但是不满足上面提到的条件），如果<code>E1</code>可以隐式地转换为表达式<code>E2</code>(如果<code>E2</code>被转换为prvalue或者它就是)的类型，则可以转换<code>E1</code>来匹配<code>E2</code></p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>如果第二表达式和第三表达式都是glvalue（拥有相同的<code>value category</code>）并且拥有相同的类型，其结果类型就是该类型并且拥有该<code>value category</code>。如果第二表达式或第三表达式是位域抑或两者都是，则结果类型为位域。</p>
+</li>
+<li><p>否则，结果类型为prvalue。如果第二表达式和第三表达式不拥有相同类型，并且有类类型（可能有cv），重载决议会决定作用于操作数的转换，如果失败，则程序是<code>ill-formed</code>。否则，转换被决定并执行后，转换后的操作数取代原来的操作数。</p>
+</li>
+<li><p><code>Lvalue to rvalue</code>,<code>array to pointer</code>和 <code>function to pointer</code>这三类标准转换执行完之后【前提】：</p>
+<ul>
+<li><p>第二表达式和第三表达式拥有相同的类型，结果就是这个类型。如果操作数有类类型，则结果是结果类型的临时对象（prvalue）</p>
+</li>
+<li><p>第二表达式和第三表达式有算术或者枚举类型，选择最通用的算术转换得到共同类型（common type），作为结果类型</p>
+</li>
+<li><p>第二表达式和第三表达式满足如下条件：</p>
+<ul>
+<li><p>都具有指针类型</p>
+</li>
+<li><p>一个具有指针类型而另一个是<code>nullptr</code></p>
+</li>
+<li><p>都是<code>nullptr</code></p>
+</li>
+</ul>
+</li>
+</ul>
+<p>至少一个不是整型执行指针转换和修饰符转换，从而得到它们的复合类型，作为结果类型。</p>
+<ul>
+<li><p>第二表达式和第三表达式满足如下条件：</p>
+<ul>
+<li><p>都具有指向成员类型指针的类型</p>
+</li>
+<li><p>一个具有指向成员类型指针的类型，另一个是nullptr</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>执行指向成员指针转换和修饰符转换，得到共同类型（cv修饰符匹配第二表达式或第三表达式），作为结果类型。</p>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;boolalpha;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> ch;</span><br><span class="line"><span class="built_in">string</span> str;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="built_in">std</span>::move(str):<span class="built_in">string</span>(<span class="string">"a"</span>))&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="keyword">const</span> <span class="built_in">string</span>&amp;,<span class="keyword">decltype</span>(<span class="literal">false</span>?str:ch)&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span> <span class="keyword">const</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="built_in">std</span>::move(str),ch)&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="built_in">std</span>::move(str),str)&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="string">"a"</span>:<span class="built_in">std</span>::move(str))&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p><code>std::move(str)</code>是xvalue，<code>string(&quot;a&quot;)</code>是prvalue，有类类型，</p>
+<ul>
+<li><p>第三表达式转换为对string的右值引用，但不是直接绑定，故失败</p>
+</li>
+<li><p>第二表达式和第三表达式的潜在类型相同，因此可以执行转换，取匹配类型为结果类型且为prvalue</p>
+</li>
+</ul>
+<p><code>str</code>和<code>ch</code>都是左值且具有相同类型（除了cv）：</p>
+<ul>
+<li><p><code>str</code>可以转换为对string的const左值引用且为直接绑定，匹配成功，结果类型为const string且为左值</p>
+</li>
+<li><p>另一方面，<code>ch</code>不可以转换为对string的左值引用进行直接绑定，因为非const左值引用不能绑定const对象，因此失败</p>
+</li>
+</ul>
+<p><code>std::move(str)</code>是xvalue，<code>ch</code>是左值，</p>
+<ul>
+<li><p><code>ch</code>不可以转换为string右值引用进行直接绑定</p>
+</li>
+<li><p><code>std::move(str)</code>可以转换为string const左值引用进行直接绑定,结果类型为string const且为prvalue</p>
+</li>
+</ul>
+<p><code>std::move(str)</code>和<code>str</code>：</p>
+<ul>
+<li><p><code>str</code>不能转换为string&amp;&amp;，失败</p>
+</li>
+<li><p><code>std::move(str)</code>不能转换为string&amp;，失败</p>
+</li>
+<li><p>进入第三种情况，潜在类型为string，因此取其作为结果类型且为prvalue</p>
+</li>
+</ul>
+<p><code>&quot;a&quot;</code>和<code>std::move(str)</code>：</p>
+<ul>
+<li><p>根据第五点，<code>&quot;a&quot;</code>可被转换为<code>string(&quot;a&quot;)</code>代替原操作数</p>
+</li>
+<li><p><code>string(&quot;a&quot;)</code>不能直接绑定，所以结果类型为string且为prvalue</p>
+</li>
+</ul>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
       
       
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2020" class="archive-year">2020</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/21/Effective%20Cpp/item%2025/" class="archive-article-date">
-  	<time datetime="2020-07-21T03:44:51.556Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-21</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/21/Effective%20Cpp/item%2025/">item 25:Consider supprot for a non-throwing swap</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Designs-and-Declarations//" class="article-tag-list-link color5">Designs and Declarations</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/19/Effective%20Cpp/item%202/" class="archive-article-date">
-  	<time datetime="2020-07-19T06:38:28.379Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/19/Effective%20Cpp/item%202/">item 2:Prefer consts,enums,and inlines to</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Accustoming-Yourself-to-C//" class="article-tag-list-link color3">Accustoming Yourself to C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/19/Effective%20Cpp/item%201/" class="archive-article-date">
-  	<time datetime="2020-07-19T06:23:50.050Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-19</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/19/Effective%20Cpp/item%201/">item 1:View C++ as a federation of language</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Accustoming-Yourself-to-C//" class="article-tag-list-link color3">Accustoming Yourself to C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/15/Design%20pattern/Abstract%20factory/" class="archive-article-date">
-  	<time datetime="2020-07-15T15:32:30.403Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/15/Design%20pattern/Abstract%20factory/">抽象工厂</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -427,359 +422,137 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
         		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
       		
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/categories/C-文档笔记//" class="article-tag-list-link color3">C++文档笔记</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/08/Effective%20Cpp/item%2010/" class="archive-article-date">
-  	<time datetime="2020-07-08T15:17:02.341Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-08</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2020/10/07/Cppt1/1.1.3%20Two-Phase%20Translation/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">1.1.3 Two-Phase Translation</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/08/Effective%20Cpp/item%2010/">item 10:Have assignment operators return a reference to *this</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#条件运算符"><span class="toc-number">1.</span> <span class="toc-text">条件运算符</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Example"><span class="toc-number">1.1.</span> <span class="toc-text">Example</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/" class="archive-article-date">
-  	<time datetime="2020-07-05T03:40:55.484Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-05</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">转动惯量</a>
-    </h1>
+        
+    </div>
+</aside>
+
+
+
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数学//" class="article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/07/01/Effective%20Cpp/item%207/" class="archive-article-date">
-  	<time datetime="2020-06-30T16:03:20.221Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-01</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/07/01/Effective%20Cpp/item%207/">item 7:Declare destructors virtual in polymorphic base classes</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/" class="archive-article-date">
-  	<time datetime="2020-06-27T14:21:49.630Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/">存储类说明符</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/declaration//" class="article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/" class="archive-article-date">
-  	<time datetime="2020-06-27T04:52:55.598Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/">C与C++的作用域</a>
-    </h1>
   
 
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/declaration//" class="article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.501Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/">非限定型查找</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-        </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
-  
-  
-    </div></section>
-  
-
-    
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/archives/">&amp;laquo; Prev</a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="page-number" href="/archives/page/5/">5</a><a class="extend next" rel="next" href="/archives/page/3/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -809,8 +582,8 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
-		isArchive: true,
+		isPost: true,
+		isArchive: false,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
