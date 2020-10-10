@@ -16,7 +16,7 @@
 <meta property="og:description" content="条件运算符【该笔记内容参考的是文档n3337&#x2F;5.16】">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-10T03:50:53.102Z">
-<meta property="article:modified_time" content="2020-10-10T03:52:34.919Z">
+<meta property="article:modified_time" content="2020-10-10T03:56:20.996Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="C++">
 <meta name="twitter:card" content="summary">
@@ -259,8 +259,7 @@
       
         <h1 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h1><p>【该笔记内容参考的是文档n3337/5.16】</p>
 <a id="more"></a>
-<ol>
-<li><p>条件运算符是<code>右结合性</code>，第一表达式会被转换为<code>bool</code>类型，并且根据布尔值决定评估(evaluate)：</p>
+<p>1.条件运算符是<code>右结合性</code>，第一表达式会被转换为<code>bool</code>类型，并且根据布尔值决定评估(evaluate)：</p>
 <ul>
 <li><p><strong>true</strong>：结果取第二表达式的值</p>
 </li>
@@ -268,8 +267,7 @@
 <p>注意，第二表达式和第三表达式<code>只有其中一个</code>会被评估</p>
 </li>
 </ul>
-</li>
-<li><p>对于第二表达式或第三表达式有<code>void</code>类型的情况，然后进行<strong>标准转换</strong>：</p>
+<p>2.对于第二表达式或第三表达式有<code>void</code>类型的情况，然后进行<strong>标准转换</strong>：</p>
 <ul>
 <li><p>左值转右值（lvalue to rvalue）</p>
 </li>
@@ -285,23 +283,20 @@
 </ul>
 </li>
 </ul>
-</li>
-<li><p>如果第二表达式和第三表达式有着不同的类型，并且满足如下一个条件：</p>
+<p>3.如果第二表达式和第三表达式有着不同的类型，并且满足如下一个条件：</p>
 <ul>
 <li><p>有类类型</p>
 </li>
 <li><p>两个表达式都是glvalue（相同的<code>value category</code>）且相同类型（除了cv）</p>
+<p>将尝试进行互相转换，设被转换表达式为类型为<code>T1</code>的<code>E1</code>，欲匹配表达式为类型为<code>T2</code>的<code>E2</code>，则可细分为：</p>
 </li>
 </ul>
-<p>将尝试进行互相转换，设被转换表达式为类型为<code>T1</code>的<code>E1</code>，欲匹配表达式为类型为<code>T2</code>的<code>E2</code>，则可细分为：</p>
 <ul>
 <li><p>如果<code>E2</code>是个<strong>左值</strong>（lvalue）：如果<code>E1</code>可以隐式转换为“对<code>T2</code>的左值引用”，则<code>E1</code>可被转换匹配<code>E2</code></p>
 </li>
 <li><p>如果<code>E2</code>是个<strong>亡值</strong>（xvalue）：如果<code>E1</code>可以隐式转换为“对<code>T2</code>的右值引用”，则<code>E1</code>可被转换匹配<code>E2</code></p>
-</li>
-</ul>
 <p>上述转换的约束条件是该引用必须是<code>bind directly</code>：除去<strong>通过初始化器表达式创建并初始化的一个临时对象</strong>的大多数情况</p>
-<ul>
+</li>
 <li><p>如果<code>E2</code>是个<strong>右值</strong>（rvalue）【！包括prvalue和xvalue】：或若上述两种转换都不能完成，至少有一个是类类型则：</p>
 <ul>
 <li><p>如果<code>E1</code>和<code>E2</code>都是类类型，并且潜在（underlying）类类型相同或者一个是另一个的基类。假如转换成功，<code>E1</code>将会变成根据<code>E1</code>通过拷贝形成的类型为<code>T2</code>的临时对象（prvalue）,并且将这个临时对象作为被转换的操作数</p>
@@ -311,12 +306,9 @@
 </ul>
 </li>
 </ul>
-</li>
-<li><p>如果第二表达式和第三表达式都是glvalue（拥有相同的<code>value category</code>）并且拥有相同的类型，其结果类型就是该类型并且拥有该<code>value category</code>。如果第二表达式或第三表达式是位域抑或两者都是，则结果类型为位域。</p>
-</li>
-<li><p>否则，结果类型为prvalue。如果第二表达式和第三表达式不拥有相同类型，并且有类类型（可能有cv），重载决议会决定作用于操作数的转换，如果失败，则程序是<code>ill-formed</code>。否则，转换被决定并执行后，转换后的操作数取代原来的操作数。</p>
-</li>
-<li><p><code>Lvalue to rvalue</code>,<code>array to pointer</code>和 <code>function to pointer</code>这三类标准转换执行完之后【前提】：</p>
+<p>4.如果第二表达式和第三表达式都是glvalue（拥有相同的<code>value category</code>）并且拥有相同的类型，其结果类型就是该类型并且拥有该<code>value category</code>。如果第二表达式或第三表达式是位域抑或两者都是，则结果类型为位域。</p>
+<p>5.否则，结果类型为prvalue。如果第二表达式和第三表达式不拥有相同类型，并且有类类型（可能有cv），重载决议会决定作用于操作数的转换，如果失败，则程序是<code>ill-formed</code>。否则，转换被决定并执行后，转换后的操作数取代原来的操作数。</p>
+<p>6.<code>Lvalue to rvalue</code>,<code>array to pointer</code>和 <code>function to pointer</code>这三类标准转换执行完之后【前提】：</p>
 <ul>
 <li><p>第二表达式和第三表达式拥有相同的类型，结果就是这个类型。如果操作数有类类型，则结果是结果类型的临时对象（prvalue）</p>
 </li>
@@ -331,10 +323,8 @@
 <li><p>都是<code>nullptr</code></p>
 </li>
 </ul>
-</li>
-</ul>
 <p>至少一个不是整型执行指针转换和修饰符转换，从而得到它们的复合类型，作为结果类型。</p>
-<ul>
+</li>
 <li><p>第二表达式和第三表达式满足如下条件：</p>
 <ul>
 <li><p>都具有指向成员类型指针的类型</p>
@@ -342,35 +332,33 @@
 <li><p>一个具有指向成员类型指针的类型，另一个是nullptr</p>
 </li>
 </ul>
-</li>
-</ul>
 <p>执行指向成员指针转换和修饰符转换，得到共同类型（cv修饰符匹配第二表达式或第三表达式），作为结果类型。</p>
 <h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cout</span>&lt;&lt;boolalpha;</span><br><span class="line"><span class="keyword">const</span> <span class="built_in">string</span> ch;</span><br><span class="line"><span class="built_in">string</span> str;</span><br><span class="line"></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="built_in">std</span>::move(str):<span class="built_in">string</span>(<span class="string">"a"</span>))&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="keyword">const</span> <span class="built_in">string</span>&amp;,<span class="keyword">decltype</span>(<span class="literal">false</span>?str:ch)&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span> <span class="keyword">const</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="built_in">std</span>::move(str),ch)&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="built_in">std</span>::move(str),str)&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br><span class="line"><span class="built_in">cout</span>&lt;&lt;Is_same_v&lt;<span class="built_in">string</span>,<span class="keyword">decltype</span>(<span class="literal">false</span>?<span class="string">"a"</span>:<span class="built_in">std</span>::move(str))&gt;&lt;&lt;<span class="string">'\n'</span>;<span class="comment">//true</span></span><br></pre></td></tr></table></figure>
 
 </li>
-</ol>
-<p><code>std::move(str)</code>是xvalue，<code>string(&quot;a&quot;)</code>是prvalue，有类类型，</p>
+</ul>
+<p>1.<code>std::move(str)</code>是xvalue，<code>string(&quot;a&quot;)</code>是prvalue，有类类型，</p>
 <ul>
 <li><p>第三表达式转换为对string的右值引用，但不是直接绑定，故失败</p>
 </li>
 <li><p>第二表达式和第三表达式的潜在类型相同，因此可以执行转换，取匹配类型为结果类型且为prvalue</p>
 </li>
 </ul>
-<p><code>str</code>和<code>ch</code>都是左值且具有相同类型（除了cv）：</p>
+<p>2.<code>str</code>和<code>ch</code>都是左值且具有相同类型（除了cv）：</p>
 <ul>
 <li><p><code>str</code>可以转换为对string的const左值引用且为直接绑定，匹配成功，结果类型为const string且为左值</p>
 </li>
 <li><p>另一方面，<code>ch</code>不可以转换为对string的左值引用进行直接绑定，因为非const左值引用不能绑定const对象，因此失败</p>
 </li>
 </ul>
-<p><code>std::move(str)</code>是xvalue，<code>ch</code>是左值，</p>
+<p>3.<code>std::move(str)</code>是xvalue，<code>ch</code>是左值，</p>
 <ul>
 <li><p><code>ch</code>不可以转换为string右值引用进行直接绑定</p>
 </li>
 <li><p><code>std::move(str)</code>可以转换为string const左值引用进行直接绑定,结果类型为string const且为prvalue</p>
 </li>
 </ul>
-<p><code>std::move(str)</code>和<code>str</code>：</p>
+<p>4.<code>std::move(str)</code>和<code>str</code>：</p>
 <ul>
 <li><p><code>str</code>不能转换为string&amp;&amp;，失败</p>
 </li>
@@ -379,7 +367,7 @@
 <li><p>进入第三种情况，潜在类型为string，因此取其作为结果类型且为prvalue</p>
 </li>
 </ul>
-<p><code>&quot;a&quot;</code>和<code>std::move(str)</code>：</p>
+<p>5.<code>&quot;a&quot;</code>和<code>std::move(str)</code>：</p>
 <ul>
 <li><p>根据第五点，<code>&quot;a&quot;</code>可被转换为<code>string(&quot;a&quot;)</code>代替原操作数</p>
 </li>
