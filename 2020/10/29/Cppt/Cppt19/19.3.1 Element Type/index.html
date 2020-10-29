@@ -6,18 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Cppt/Cppt19/19.3.1 Element Type | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>19.3.1 Element Type | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="元素类型提供主模板（primary template）并根据需要实现偏特化模板。 12345678910111213141516171819202122232425#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;list&gt;template&lt;typename C&gt;struct ElementT; &#x2F;&#x2F;prim">
+  <meta name="description" content="元素类型">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Cppt&#x2F;Cppt19&#x2F;19.3.1 Element Type">
+<meta property="og:title" content="19.3.1 Element Type">
 <meta property="og:url" content="http://yoursite.com/2020/10/29/Cppt/Cppt19/19.3.1%20Element%20Type/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="元素类型提供主模板（primary template）并根据需要实现偏特化模板。 12345678910111213141516171819202122232425#include &lt;iostream&gt;#include &lt;vector&gt;#include &lt;list&gt;template&lt;typename C&gt;struct ElementT; &#x2F;&#x2F;prim">
+<meta property="og:description" content="元素类型">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-10-29T11:44:19.805Z">
-<meta property="article:modified_time" content="2020-10-29T11:44:19.805Z">
+<meta property="article:modified_time" content="2020-10-29T12:02:53.283Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="template">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -242,7 +243,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Cppt/Cppt19/19.3.1 Element Type
+      19.3.1 Element Type
     </h1>
   
 
@@ -256,7 +257,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="元素类型"><a href="#元素类型" class="headerlink" title="元素类型"></a>元素类型</h1><p>提供<code>主模板</code>（primary template）并根据需要实现偏特化模板。</p>
+        <h1 id="元素类型"><a href="#元素类型" class="headerlink" title="元素类型"></a>元素类型</h1><a id="more"></a>
+<p>提供<code>主模板</code>（primary template）并根据需要实现偏特化模板。</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>;</span> <span class="comment">//primary template:不提供default implement就没必要定义generic code</span></span><br><span class="line"><span class="comment">//template&lt;typename C&gt;</span></span><br><span class="line"><span class="comment">//struct ElementT&#123;</span></span><br><span class="line"><span class="comment">//     using type=C::value_type;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;std::vector&lt;T&gt;&gt;&#123;</span> <span class="comment">//partial specialization for std::vector</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;std::list&lt;T&gt;&gt;&#123;</span> <span class="comment">//partial specialization for std::list</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;T[N]&gt;&#123;</span> <span class="comment">//partial specialization for arrays of known bounds</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;T[]&gt;&#123;</span> <span class="comment">//partial specialization for arrays of unknown bounds</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
 <p>这样我们就可以提取<code>容器</code>和<code>内置数组</code>的<code>元素类型</code></p>
@@ -319,7 +321,37 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
 
@@ -387,14 +419,14 @@
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Cppt/Cppt19/19.3.2 Transformation Traits
+          19.3.2 Transformation Traits
         
       </div>
     </a>
   
   
     <a href="/2020/10/29/Cppt/Cppt19/19.3%20Type%20Function/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Cppt/Cppt19/19.3 Type Function</div>
+      <div class="article-nav-title">19.3 Type function</div>
       <i class="icon-circle-right"></i>
     </a>
   

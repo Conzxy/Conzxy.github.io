@@ -254,34 +254,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="了解C-默默编写并调用了哪些函数"><a href="#了解C-默默编写并调用了哪些函数" class="headerlink" title="了解C++默默编写并调用了哪些函数"></a>了解C++默默编写并调用了哪些函数</h1><h2 id="自动生成的函数类型"><a href="#自动生成的函数类型" class="headerlink" title="自动生成的函数类型"></a>自动生成的函数类型</h2><p>当你自己没有声明任何函数时，C++会自动给你声明：</p>
-<ul>
-<li><p>default constructor</p>
-</li>
-<li><p>copy constructor</p>
-</li>
-<li><p>copy assignment operator</p>
-</li>
-<li><p>destructor</p>
-</li>
-</ul>
-<p>这些函数唯有在被调用时才会被编译器创建出来</p>
-<p>注意，编译器生成的函数都不是virtual（这方面请看<code>Item 7</code>）</p>
-<h2 id="无法自动生成的情形"><a href="#无法自动生成的情形" class="headerlink" title="无法自动生成的情形"></a>无法自动生成的情形</h2><ul>
-<li><p>在“内含引用成员或const成员”的类中请提供自己的拷贝赋值和拷贝构造</p>
-</li>
-<li><p>基类如果拷贝赋值是<code>delete</code>或是<code>private</code>的则拒绝为派生类生成拷贝赋值</p>
-</li>
-</ul>
-<h2 id="三-五法则"><a href="#三-五法则" class="headerlink" title="三/五法则"></a>三/五法则</h2><ul>
-<li><p>如果这个类需要一个析构函数，我们几乎可以肯定它也需要它需要一个拷贝构造函数和拷贝赋值运算符重载</p>
-</li>
-<li><p>如果需要一个拷贝构造函数，几乎肯定也需要一个拷贝赋值运算符重载，反之亦然</p>
-</li>
-<li><p>但是无论需要拷贝构造函数还是拷贝赋值运算符重载都不意味必须要析构函数</p>
-</li>
-</ul>
-
+        <h1 id="了解C-默默编写并调用了哪些函数"><a href="#了解C-默默编写并调用了哪些函数" class="headerlink" title="了解C++默默编写并调用了哪些函数"></a>了解C++默默编写并调用了哪些函数</h1>
+        
+          <a class="article-more-a" href="/2020/10/29/Effective%20Cpp/Item%205/#more">more >></a>
+        
       
 
       
@@ -823,19 +799,19 @@
 
 
   
-    <article id="post-Cppt/Cppt19/19.4 Result Type Traits" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt19/19.4.4 SFINAE-Friendly" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.4%20Result%20Type%20Traits/">Cppt/Cppt19/19.4 Result Type Traits</a>
+      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/">19.4.4 SFINAE-friendly traits</a>
     </h1>
   
 
         
-        <a href="/2020/10/29/Cppt/Cppt19/19.4%20Result%20Type%20Traits/" class="archive-article-date">
+        <a href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/" class="archive-article-date">
   	<time datetime="2020-10-29T11:44:19.807Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
 </a>
         
@@ -844,27 +820,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="结果类型特性"><a href="#结果类型特性" class="headerlink" title="结果类型特性"></a>结果类型特性</h1><p><code>result type traits</code>对于<strong>运算符模板</strong>很有用。</p>
-<h1 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Array&lt;T&gt; <span class="keyword">operator</span>+(Array&lt;T&gt; <span class="keyword">const</span>&amp;,Array&lt;T&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
-
-<p>进一步，混合类型：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;???&gt; <span class="keyword">operator</span>+(Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
-
-<p>这个进一步的处理在1.3讲过：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;<span class="keyword">typename</span> PlusResult&lt;T1,T2&gt;::type&gt;</span><br><span class="line"><span class="comment">//Array&lt;PlusResult_t&lt;T1,T2&gt;&gt;</span></span><br><span class="line"><span class="keyword">operator</span>+ (Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
-
-<h2 id="PlusResult"><a href="#PlusResult" class="headerlink" title="PlusResult"></a>PlusResult</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PlusResult</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=<span class="keyword">decltype</span>(T1()+T2());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">using</span> PlusResult_t=PlusResult&lt;T1,T2&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p>注意这里可能会产生引用类型，那么可以提供<strong>嵌套traits</strong>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;Remove_cv_t&lt;Remove_reference_t&lt;PlusResult_t&lt;T1,T2&gt;&gt;&gt;&gt;</span><br><span class="line"><span class="keyword">operator</span>+(Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
-
-<p>由于<code>Array</code>类对它的元素类型可能并不要求需要能够值初始化，也就是说这是个不必要的约束。那么我们可以提供<code>std::declval</code>，因为它可以只提供声明没有提供定义并主要用于<code>unevaluated context</code>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">add_rvalue_reference_t</span>&lt;T&gt; <span class="title">declval</span><span class="params">()</span><span class="keyword">noexcept</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PlusResult</span>&#123;</span></span><br><span class="line"> <span class="keyword">using</span> type=<span class="keyword">decltype</span>(<span class="built_in">std</span>::declval&lt;T1&gt;()+<span class="built_in">std</span>::declval&lt;T2&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+        <h1 id="SFINAE-友好traits"><a href="#SFINAE-友好traits" class="headerlink" title="SFINAE-友好traits"></a>SFINAE-友好traits</h1>
+        
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/#more">more >></a>
+        
       
 
       
@@ -872,11 +831,37 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.4%20Result%20Type%20Traits/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/">展开全文 >></a>
         </p>
       
 
@@ -906,19 +891,19 @@
 
 
   
-    <article id="post-Cppt/Cppt19/19.4.4 SFINAE-Friendly" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt19/19.3.4 Result Type Traits" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/">Cppt/Cppt19/19.4.4 SFINAE-Friendly</a>
+      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/">19.3.4 Result Type Traits</a>
     </h1>
   
 
         
-        <a href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/" class="archive-article-date">
+        <a href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/" class="archive-article-date">
   	<time datetime="2020-10-29T11:44:19.807Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
 </a>
         
@@ -927,20 +912,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="SFINAE-友好traits"><a href="#SFINAE-友好traits" class="headerlink" title="SFINAE-友好traits"></a>SFINAE-友好traits</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PlusResultT</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=<span class="keyword">decltype</span>(<span class="built_in">std</span>::declval&lt;T1&gt;()+<span class="built_in">std</span>::declval&lt;T2&gt;());</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">using</span> PlusResult=<span class="keyword">typename</span> PlusResultT&lt;T1,T2&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p>注意这个<code>+</code>不被<code>SFINAE</code>保护，也就是说出现<code>hand error</code>，<code>SFINAE</code>不会将其<code>ignore</code></p>
-<p>试想我们准备一个新的<code>谓词traits</code>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2,<span class="keyword">bool</span> =hasPlusT&lt;T1,T2&gt;::value&gt;</span><br><span class="line">struct PlusResultT&#123;</span><br><span class="line">    <span class="keyword">using</span> type=<span class="keyword">decltype</span>(<span class="built_in">std</span>::declval&lt;T1&gt;()+<span class="built_in">std</span>::declval&lt;T2&gt;());</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PlusResult</span>&lt;T1,T2,false&gt;&#123;</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这样就可以根据<code>T1</code>，<code>T2</code>类型之间是否有<code>+</code>支持：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> ,<span class="keyword">typename</span> ,<span class="keyword">typename</span> =<span class="built_in">std</span>::<span class="keyword">void</span>&lt;&gt;&gt;</span><br><span class="line">struct hasPlusT:<span class="built_in">std</span>::false_type&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2,<span class="keyword">typename</span> =<span class="built_in">std</span>::<span class="keyword">void</span>&lt;<span class="keyword">decltype</span>(</span><br><span class="line">                     <span class="built_in">std</span>::declval&lt;T1&gt;()+<span class="built_in">std</span>::declval&lt;T2&gt;())&gt;</span><br><span class="line">struct hasPlusT:<span class="built_in">std</span>::true_type&#123;&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这样<code>PlusResultT&lt;&gt;</code>就不会因为实例化问题而报错，通过<code>hasPlusT&lt;&gt;</code>来获得<code>SFINAE-friendly</code>特性</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Array</span>&#123;</span>&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//generic operator+ for different element types</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;PlusResultT&lt;T1,T2&gt;::type&gt;</span><br><span class="line"><span class="keyword">operator</span>+(Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;)&#123;...&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//fall back</span></span><br><span class="line">Array&lt;A&gt; <span class="keyword">operator</span>+(Array&lt;A&gt; <span class="keyword">const</span>&amp;,Array&lt;B&gt; <span class="keyword">const</span>&amp;)&#123;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addAB</span><span class="params">(Array&lt;A&gt; a,Array&lt;B&gt; b)</span></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> sum=a+b;   <span class="comment">//原来是因为PlusResultT&lt;A,B&gt;的实例化error</span></span><br><span class="line">    ............    <span class="comment">//现在是substitution failure，提供对应fall back可正常调用</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-
-
+        <h1 id="结果类型特性"><a href="#结果类型特性" class="headerlink" title="结果类型特性"></a>结果类型特性</h1>
+        
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/#more">more >></a>
+        
       
 
       
@@ -948,11 +923,41 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/">展开全文 >></a>
         </p>
       
 
@@ -989,7 +994,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/">Cppt/Cppt19/19.3.3 Perdicate Traits</a>
+      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/">19.3.3 Perdicate Traits</a>
     </h1>
   
 
@@ -1003,36 +1008,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="谓词特性"><a href="#谓词特性" class="headerlink" title="谓词特性"></a>谓词特性</h1><p>前面，我们都是研究一个类型：提供一个类型，然后给出相关的其它类型。而这节扩展为多个实参，引进新的type traits：<code>type predicates</code>，即<code>类型谓词</code>，是返回一个布尔值的<code>类型函数</code>。</p>
-<p>补充：据primer第344页所描述：</p>
-<blockquote>
-<p>谓词是一个可调用表达式，其返回结果是个可以用作条件的值</p>
-</blockquote>
-<h2 id="Is-same"><a href="#Is-same" class="headerlink" title="Is_same"></a>Is_same</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Is_same</span>&#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">bool</span> value=<span class="literal">false</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Is_same</span>&lt;T,T&gt;&#123;</span></span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">bool</span> value=<span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>为了便利，这里提供<code>模板变量</code>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">bool</span> Is_same_v=Is_same&lt;T1,T2&gt;::value;</span><br></pre></td></tr></table></figure>
-
-<p>Is_same&lt;&gt;对应于<strong>std::is_same&lt;&gt;</strong></p>
-<h2 id="true-type和false-type"><a href="#true-type和false-type" class="headerlink" title="true_type和false_type"></a>true_type和false_type</h2><p>根据Is_same&lt;&gt;的两种结果可以提供一个类模板<code>Bool_constant</code>对应两个实例：<code>true_type</code>和<code>false_type</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">bool</span> val&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Bool_constant</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=Bool_constant&lt;val&gt;;</span><br><span class="line">    <span class="keyword">static</span> <span class="keyword">constexpr</span> <span class="keyword">bool</span> value=val;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> _true_type=Bool_constant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line"><span class="keyword">using</span> _false_type=Bool_constant&lt;<span class="literal">false</span>&gt;;</span><br></pre></td></tr></table></figure>
-
-<p>因此Is_same&lt;&gt;可以重新实现为：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Is_same</span>:</span>_false_type&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Is_same</span>&lt;T,T&gt;:</span>_true_type&#123;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>既然是继承实现的，那么就可以通过多态隐式转换为基类对象</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fooImpl</span><span class="params">(T,_true_type)</span></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"foolImpl(T,true) for int called\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">fooImpl</span><span class="params">(T,_false_type)</span></span>&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"foolImpl(T,false) for int called\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">(T t)</span></span>&#123;</span><br><span class="line">    fooImpl(t,Is_same&lt;T,<span class="keyword">int</span>&gt;&#123;&#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>这个技术称为<code>Tag dispatching</code>，这个在后面会展开</p>
-<p>注意到Bool_constant有个<code>type</code>成员，那么就有：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">using</span> Is_same_t=<span class="keyword">typename</span> Is_same&lt;T1,T2&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p><code>Is_same_t&lt;&gt;</code>与上面的<code>Is_same&lt;&gt;</code>共同具有<code>value</code>成员，因此<code>模板变量</code>可以这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">bool</span> Is_same_v=Is_same_t&lt;T1,T2&gt;::value;</span><br></pre></td></tr></table></figure>
-
-<p>这个在标准库中也提供了对应的工具：<code>std::true_type</code>和<code>std::false_type</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//C++11/14</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">    <span class="keyword">using</span> true_type=integral_constant&lt;<span class="keyword">bool</span>,<span class="literal">true</span>&gt;;</span><br><span class="line">    <span class="keyword">using</span> false_type=integral_constant&lt;<span class="keyword">bool</span>,<span class="literal">false</span>&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//C++17</span></span><br><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">    <span class="keyword">using</span> true_type=bool_constant&lt;<span class="literal">true</span>&gt;;</span><br><span class="line">    <span class="keyword">using</span> false_type=bool_constant&lt;<span class="literal">false</span>&gt;;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">bool</span> B&gt;</span><br><span class="line"><span class="keyword">using</span> bool_constant=integral_constant&lt;<span class="keyword">bool</span>,B&gt;;</span><br></pre></td></tr></table></figure>
-
+        <h1 id="谓词特性"><a href="#谓词特性" class="headerlink" title="谓词特性"></a>谓词特性</h1>
+        
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/#more">more >></a>
+        
       
 
       
@@ -1040,7 +1019,37 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">
@@ -1081,7 +1090,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/">Cppt/Cppt19/19.3.2 Transformation Traits</a>
+      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/">19.3.2 Transformation Traits</a>
     </h1>
   
 
@@ -1095,75 +1104,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="转换特性"><a href="#转换特性" class="headerlink" title="转换特性"></a>转换特性</h1><h2 id="Removing-Reference"><a href="#Removing-Reference" class="headerlink" title="Removing Reference"></a>Removing Reference</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_reference</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_reference</span>&lt;T&amp;&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_reference</span>&lt;T&amp;&amp;&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Remove_reference_t=<span class="keyword">typename</span> Remove_reference&lt;T&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p>移除引用类型可以用于一些可能产生引用类型的构造，比如对于声明为<code>转发引用</code>（forwarding reference）类型的函数参数的特殊推导规则。</p>
-<p>在标准库中，与之对应的是<strong>std::remove_reference&lt;&gt;</strong>。</p>
-<h2 id="Adding-References"><a href="#Adding-References" class="headerlink" title="Adding References"></a>Adding References</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Add_lvalue_reference</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T&amp;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Add_lvalue_reference_t</span><br><span class="line">=<span class="keyword">typename</span> Add_lvalue_reference&lt;T&gt;::type;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Add_rvalue_reference</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T&amp;&amp;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Add_rvalue_reference_v</span><br><span class="line">=<span class="keyword">typename</span> Add_rvalue_reference&lt;T&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p>由于在这里引用折叠依然适用，因此不需要通过实现偏特化模板来达到引用折叠的效果。</p>
-<p>那么问题来了，这个与下面这个更为简单的别名版本有什么区别：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Add_lvalue_reference_t=T&amp;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Add_rvalue_reference_t=T&amp;&amp;;</span><br></pre></td></tr></table></figure>
-
-<p>区别就在于别名版本无法通过类模板的特化实例来应付一些特殊情形，比如<code>void</code></p>
-<p>所以Add_lvalue_reference补充void的全特化模板：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Add_lvalue_reference</span>&lt;void&gt;&#123;</span></span><br><span class="line">     <span class="keyword">using</span> type=<span class="keyword">void</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Add_lvalue_reference</span>&lt;void const&gt;&#123;</span></span><br><span class="line">     <span class="keyword">using</span> type=<span class="keyword">void</span> <span class="keyword">const</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Add_lvalue_reference</span>&lt;void volatile&gt;&#123;</span></span><br><span class="line">     <span class="keyword">using</span> type=<span class="keyword">void</span> <span class="keyword">volatile</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Add_lvalue_reference</span>&lt;void const volatile&gt;&#123;</span></span><br><span class="line">     <span class="keyword">using</span> type=<span class="keyword">void</span> <span class="keyword">const</span> <span class="keyword">volatile</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>Add_rvalue_reference类似。</p>
-<p>标准库与之对应的是<strong>std::add_lvalue_reference&lt;&gt;</strong> 和 <strong>std::add_rvalue_reference&lt;&gt;</strong></p>
-<h2 id="Removing-Qualifiers"><a href="#Removing-Qualifiers" class="headerlink" title="Removing Qualifiers"></a>Removing Qualifiers</h2><p>这个主要是去掉const和volatile的，更为准确的说是顶层const</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_const</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_const</span>&lt;T const&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Remove_const_t=<span class="keyword">typename</span> Remove_const&lt;T&gt;::type;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_volatile</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_volatile</span>&lt;T volatile&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Remove_volatile_t=<span class="keyword">typename</span> Remove_volatile&lt;T&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p>更进一步地，我们可以把两者结合起来，同时去掉cv：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Remove_cv</span>:</span> Remove_const&lt;Remove_volatile_t&lt;T&gt;&gt;</span><br><span class="line">&#123;&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Remove_cv_t=<span class="keyword">typename</span> Remove_cv&lt;T&gt;::type;</span><br></pre></td></tr></table></figure>
-
-<p>这里有两点注意：</p>
-<ul>
-<li><p>这里是先去掉volatile再去掉reference，但这个顺序并没有语义原因，因此反之亦可</p>
-</li>
-<li><p>这里用到了<code>metafunction forwarding</code>的技术，它并没有声明自己的type而是用的继承自<strong>Remove_const&lt;&gt;</strong> 的默认版本。</p>
-</li>
-</ul>
-<p>PS：这里别想着多重继承两个类来获得去掉cv的type，典型的重名问题，直接报错，反而不如声明自己的type。</p>
-<p>mark一下<code>metafunction forwarding</code>，因为这个以后才会展开，这里先贴一下google搜到的：</p>
-<blockquote>
-<p>The technique of using public derivation to supply the nested type of a metafunction by accessing the one provided by its base class.</p>
-</blockquote>
-<p>关于上面这个模板别名还是一种写法，就是<code>嵌套别名</code>:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> Remove_cv_t=Remove_const_t&lt;Remove_volatile_t&lt;T&gt;&gt;;</span><br></pre></td></tr></table></figure>
-
-<h2 id="Decay"><a href="#Decay" class="headerlink" title="Decay"></a>Decay</h2><p><strong>Decay</strong>这里翻译成“退化”比较合适。包括范围：</p>
-<ul>
-<li><p>数组类型转换为指针类型</p>
-</li>
-<li><p>函数类型转换为指向函数的指针类型</p>
-</li>
-<li><p>去掉顶层const、volatile和引用修饰符</p>
-</li>
-</ul>
-<p>第一步，我们定义一个不处理数组、函数的主模板，只是简单的去掉cv和引用（书上其实没去引用）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>:</span>Remove_cv&lt;Remove_reference_t&lt;T&gt;&gt;&#123;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">//书上的版本：</span></span><br><span class="line"><span class="comment">//template&lt;typename T&gt;</span></span><br><span class="line"><span class="comment">//struct Decay:Remove_cv&lt;T&gt;&#123;&#125;;</span></span><br></pre></td></tr></table></figure>
-
-<p>这里我们又用到了<code>metafunction forwarding</code>的技术，但是有语义顺序：先去<strong>引用</strong>再去<strong>cv</strong>，为什么？</p>
-<p>因为int const&amp;一定是低层const，传给<code>Remove_cv</code>推断不出int&amp;，因此int const&amp;传给<code>Remove_reference</code>，这样Decay&lt;int const&amp;&gt;≠int而是int const，但是int const*还是不能去掉const的，只有引用的const我们允许去掉。</p>
-<p>第二步，我们处理数组类型</p>
-<p>数组分为无界（unknown bound）和有界（known bound），因此有：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>&lt;T[]&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T*;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>&lt;T(&amp;)[]&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T*;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>&lt;T[N]&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T*;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>&lt;T(&amp;)[N]&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=T*;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>这里我也补充了一点书上没有的东西：加入了数组的引用特化。</p>
-<p>第三步，就是处理函数类型</p>
-<p>函数类型就是<code>签名式</code>，包括返回类型和参数列表，因此我们使用可变模板：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> R,<span class="keyword">typename</span>...Args&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>&lt;R(Args...)&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=R(*)(Args...);</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> R,<span class="keyword">typename</span>...Args&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Decay</span>&lt;R(Args...,...)&gt;&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=R(*)(Args...,...);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-
-<p>注意这里第二个特化是针对使用了<code>C-style varargs</code>的函数类型。</p>
-<p>PS：varargs=variadic arguments，是一个缩写词</p>
-<h2 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;boolalpha;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>&amp;,Add_lvalue_reference_t&lt;<span class="keyword">int</span>&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>&amp;&amp;,Add_rvalue_reference_t&lt;<span class="keyword">int</span>&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>,Remove_cv_t&lt;<span class="keyword">int</span> <span class="keyword">const</span> <span class="keyword">volatile</span>&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>,Decay_t&lt;<span class="keyword">int</span>&amp;&amp;&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>,Decay_t&lt;<span class="keyword">int</span>&amp;&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>(*)(<span class="keyword">int</span>),Decay_t&lt;<span class="keyword">int</span>(<span class="keyword">int</span>)&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>,Decay_t&lt;<span class="keyword">int</span> <span class="keyword">const</span>&amp;&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>*,Decay_t&lt;<span class="keyword">int</span>(&amp;)[]&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>*,Decay_t&lt;<span class="keyword">int</span>[<span class="number">3</span>]&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">std</span>::is_same_v&lt;<span class="keyword">int</span>*,Decay_t&lt;<span class="keyword">int</span> *<span class="keyword">const</span>&gt;&gt;&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>output:</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br><span class="line">true</span><br></pre></td></tr></table></figure>
-
-<p>这里用到的std::is_same_v下一节会实现自己的版本。</p>
-
+        <h1 id="转换特性"><a href="#转换特性" class="headerlink" title="转换特性"></a>转换特性</h1>
+        
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/#more">more >></a>
+        
       
 
       
@@ -1171,7 +1115,37 @@
     <div class="article-info article-info-index">
       
       
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
       
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
 
       
         <p class="article-more-link">

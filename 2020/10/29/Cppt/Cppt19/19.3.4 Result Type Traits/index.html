@@ -6,16 +6,19 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>文章分类 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>19.3.4 Result Type Traits | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="文章分类">
-<meta property="og:url" content="http://yoursite.com/categories/index.html">
+  <meta name="description" content="结果类型特性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="19.3.4 Result Type Traits">
+<meta property="og:url" content="http://yoursite.com/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="结果类型特性">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-06-24T02:13:21.000Z">
-<meta property="article:modified_time" content="2020-06-24T03:02:57.205Z">
+<meta property="article:published_time" content="2020-10-29T11:44:19.807Z">
+<meta property="article:modified_time" content="2020-10-29T12:07:30.906Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="template">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -233,20 +236,232 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article class="article article-type-post show">
-  <header class="article-header" style="border-bottom: 1px solid #ccc">
-  <h1 class="article-title" itemprop="name">
-    文章分类
-  </h1>
-  </header>
+            <article id="post-Cppt/Cppt19/19.3.4 Result Type Traits" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      19.3.4 Result Type Traits
+    </h1>
+  
+
+        
+        <a href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/" class="archive-article-date">
+  	<time datetime="2020-10-29T11:44:19.807Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="结果类型特性"><a href="#结果类型特性" class="headerlink" title="结果类型特性"></a>结果类型特性</h1><a id="more"></a>
+<p><code>result type traits</code>对于<strong>运算符模板</strong>很有用。</p>
+<h1 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h1><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">Array&lt;T&gt; <span class="keyword">operator</span>+(Array&lt;T&gt; <span class="keyword">const</span>&amp;,Array&lt;T&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
+
+<p>进一步，混合类型：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;???&gt; <span class="keyword">operator</span>+(Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
+
+<p>这个进一步的处理在1.3讲过：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;<span class="keyword">typename</span> PlusResult&lt;T1,T2&gt;::type&gt;</span><br><span class="line"><span class="comment">//Array&lt;PlusResult_t&lt;T1,T2&gt;&gt;</span></span><br><span class="line"><span class="keyword">operator</span>+ (Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
+
+<h2 id="PlusResult"><a href="#PlusResult" class="headerlink" title="PlusResult"></a>PlusResult</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PlusResult</span>&#123;</span></span><br><span class="line">    <span class="keyword">using</span> type=<span class="keyword">decltype</span>(T1()+T2());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="keyword">using</span> PlusResult_t=PlusResult&lt;T1,T2&gt;::type;</span><br></pre></td></tr></table></figure>
+
+<p>注意这里可能会产生引用类型，那么可以提供<strong>嵌套traits</strong>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line">Array&lt;Remove_cv_t&lt;Remove_reference_t&lt;PlusResult_t&lt;T1,T2&gt;&gt;&gt;&gt;</span><br><span class="line"><span class="keyword">operator</span>+(Array&lt;T1&gt; <span class="keyword">const</span>&amp;,Array&lt;T2&gt; <span class="keyword">const</span>&amp;);</span><br></pre></td></tr></table></figure>
+
+<p>由于<code>Array</code>类对它的元素类型可能并不要求需要能够值初始化，也就是说这是个不必要的约束。那么我们可以提供<code>std::declval</code>，因为它可以只提供声明没有提供定义并主要用于<code>unevaluated context</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> <span class="built_in">std</span>&#123;</span><br><span class="line">    <span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="function"><span class="keyword">add_rvalue_reference_t</span>&lt;T&gt; <span class="title">declval</span><span class="params">()</span><span class="keyword">noexcept</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T1,<span class="keyword">typename</span> T2&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">PlusResult</span>&#123;</span></span><br><span class="line"> <span class="keyword">using</span> type=<span class="keyword">decltype</span>(<span class="built_in">std</span>::declval&lt;T1&gt;()+<span class="built_in">std</span>::declval&lt;T2&gt;());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
 
   
-  <div class="category-all-page">
-    <h2>共计&nbsp;38&nbsp;个分类</h2>
-    <ul class="category-list-item-list"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/">C++</a><span class="category-list-item-list-count">9</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/class/">class</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/declaration/">declaration</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/namespace/">namespace</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/primer%E7%AC%94%E8%AE%B0/">primer笔记</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C/%E5%90%8D%E5%AD%97%E6%9F%A5%E6%89%BE/">名字查找</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/C-%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/">C++文档笔记</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Cpp-templates-note/">Cpp-templates-note</a><span class="category-list-item-list-count">6</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Cpp-templates-note/chapter-19/">chapter 19</a><span class="category-list-item-list-count">6</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Cpp-templates%E2%80%94note/">Cpp-templates—note</a><span class="category-list-item-list-count">10</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Cpp-templates%E2%80%94note/chapter-1/">chapter 1</a><span class="category-list-item-list-count">10</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/">Effective C++</a><span class="category-list-item-list-count">6</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/Accustoming-Yourself-to-C/">Accustoming Yourself to C++</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/Constructors-Destructors-and-Assignment-Operators/">Constructors,Destructors,and Assignment Operators</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/Effective-C/Designs-and-Declarations/">Designs and Declarations</a><span class="category-list-item-list-count">1</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/">HDOJ</a><span class="category-list-item-list-count">4</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/HDOJ/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/template/">template</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E4%B8%B2/">串</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/">图论</a><span class="category-list-item-list-count">6</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/DFS/">DFS</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E5%B9%B6%E6%9F%A5%E9%9B%86/">并查集</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E6%9C%80%E5%B0%8F%E7%94%9F%E6%88%90%E6%A0%91/">最小生成树</a><span class="category-list-item-list-count">2</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E5%9B%BE%E8%AE%BA/%E6%9C%80%E7%9F%AD%E8%B7%AF%E5%BE%84/">最短路径</a><span class="category-list-item-list-count">1</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%8E%92%E5%BA%8F/">排序</a><span class="category-list-item-list-count">10</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E5%AD%A6/">数学</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">数据结构</a><span class="category-list-item-list-count">3</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/%E5%A0%86/">堆</a><span class="category-list-item-list-count">3</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%97%B6%E9%97%B4%E5%A4%8D%E6%9D%82%E5%BA%A6/">时间复杂度</a><span class="category-list-item-list-count">1</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%9F%A5%E6%89%BE/">查找</a><span class="category-list-item-list-count">2</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E6%9F%A5%E6%89%BE/%E6%A0%91/">树</a><span class="category-list-item-list-count">2</span></li></ul></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-item-list-count">5</span><ul class="category-list-item-list-child"><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E7%BB%93%E6%9E%84%E5%9E%8B/">结构型</a><span class="category-list-item-list-count">4</span></li><li class="category-list-item-list-item"><a class="category-list-item-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/%E9%A2%84%E5%A4%87%E7%9F%A5%E8%AF%86/">预备知识</a><span class="category-list-item-list-count">1</span></li></ul></li></ul>
-  </div>
+<nav id="article-nav">
   
-</article>
+    <a href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          19.4.4 SFINAE-friendly traits
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">19.3.3 Perdicate Traits</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#结果类型特性"><span class="toc-number">1.</span> <span class="toc-text">结果类型特性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Example"><span class="toc-number">2.</span> <span class="toc-text">Example</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#PlusResult"><span class="toc-number">2.1.</span> <span class="toc-text">PlusResult</span></a></li></ol></li></ol>
+                    </div>
+                </span>
+            </div>
+        </div>
+        
+    </div>
+</aside>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
 
           </div>
         </div>
@@ -274,7 +489,7 @@
 	var yiliaConfig = {
 		mathjax: false,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,
