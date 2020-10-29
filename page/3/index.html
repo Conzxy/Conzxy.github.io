@@ -233,20 +233,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Effective Cpp/item 10" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt1/1.1.3 Two-Phase Translation" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/08/Effective%20Cpp/item%2010/">item 10:Have assignment operators return a reference to *this</a>
+      <a class="article-title" href="/2020/10/07/Cppt/Cppt1/1.1.3%20Two-Phase%20Translation/">1.1.3 Two-Phase Translation</a>
     </h1>
   
 
         
-        <a href="/2020/07/08/Effective%20Cpp/item%2010/" class="archive-article-date">
-  	<time datetime="2020-07-08T15:17:02.341Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-08</time>
+        <a href="/2020/10/07/Cppt/Cppt1/1.1.3%20Two-Phase%20Translation/" class="archive-article-date">
+  	<time datetime="2020-10-07T14:21:32.995Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-07</time>
 </a>
         
         
@@ -254,9 +254,865 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="令operator-返回一个reference-to-this"><a href="#令operator-返回一个reference-to-this" class="headerlink" title="令operator=返回一个reference to *this"></a>令operator=返回一个reference to *this</h1><p>赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型的要求是分不开的。</p>
+        <h1 id="两阶段翻译"><a href="#两阶段翻译" class="headerlink" title="两阶段翻译"></a>两阶段翻译</h1><p>我们都知道模板是在编译期就会处理好一切，其中分为两个阶段：</p>
         
-          <a class="article-more-a" href="/2020/07/08/Effective%20Cpp/item%2010/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1.3%20Two-Phase%20Translation/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1/section-1-1//" class="article-tag-list-link color2">section 1.1</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1.3%20Two-Phase%20Translation/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cppt/Cppt1/1.1.2 Using the Template" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/07/Cppt/Cppt1/1.1.2%20Using%20the%20Template/">1.1.2 Using the Template</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/07/Cppt/Cppt1/1.1.2%20Using%20the%20Template/" class="archive-article-date">
+  	<time datetime="2020-10-07T14:21:32.994Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-07</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="使用模板"><a href="#使用模板" class="headerlink" title="使用模板"></a>使用模板</h1>
+        
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1.2%20Using%20the%20Template/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1/section-1-1//" class="article-tag-list-link color2">section 1.1</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1.2%20Using%20the%20Template/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cppt/Cppt1/1.1.1 Defining the Template" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/07/Cppt/Cppt1/1.1.1%20Defining%20the%20Template/">1.1.1 Defining the Template</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/07/Cppt/Cppt1/1.1.1%20Defining%20the%20Template/" class="archive-article-date">
+  	<time datetime="2020-10-07T14:21:32.993Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-07</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="定义函数模板"><a href="#定义函数模板" class="headerlink" title="定义函数模板"></a>定义函数模板</h1>
+        
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1.1%20Defining%20the%20Template/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1/section-1-1//" class="article-tag-list-link color2">section 1.1</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1.1%20Defining%20the%20Template/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cppt/Cppt1/1.1 A First Look at Function Templates" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/07/Cppt/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/">1.1 A First Look at Function Templates</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/07/Cppt/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/" class="archive-article-date">
+  	<time datetime="2020-10-07T14:21:32.983Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-07</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="初见函数模板"><a href="#初见函数模板" class="headerlink" title="初见函数模板"></a>初见函数模板</h1><p>函数模板代表函数家族，看起来像普通函数，但是有些元素被参数化了。</p>
+        
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/07/Cppt/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Tree/BinarySearchTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/28/Tree/BinarySearchTree/">BinarySearchTree</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/28/Tree/BinarySearchTree/" class="archive-article-date">
+  	<time datetime="2020-09-28T12:00:27.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree&lt;root&lt;right subtree。</p>
+        
+          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">查找</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/查找//" class="article-tag-list-link color3">查找</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/查找/树//" class="article-tag-list-link color2">树</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cpp_Note/Black magic/SFINAE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/">SFINAE</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/" class="archive-article-date">
+  	<time datetime="2020-08-31T12:50:13.861Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Substitution-Failure-is-not-an-Error"><a href="#Substitution-Failure-is-not-an-Error" class="headerlink" title="Substitution Failure is not an Error"></a>Substitution Failure is not an Error</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>SFINAE技术是指在编译期将函数模板的形参换成实参，如果替换失败不会算作编译错误，而是继续寻找合适的特化版本，直到所有的模板版本都替换失败编译器才报错。</p>
+        
+          <a class="article-more-a" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Black magic</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/template//" class="article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Heap/BinaryHeap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/28/Heap/BinaryHeap/">BinaryHeap</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/28/Heap/BinaryHeap/" class="archive-article-date">
+  	<time datetime="2020-08-28T06:11:57.254Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。</p>
+        
+          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Heap/BinomialQueue" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/24/Heap/BinomialQueue/">Binomial Queues</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/24/Heap/BinomialQueue/" class="archive-article-date">
+  	<time datetime="2020-07-24T14:36:47.243Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-24</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二项队列-Binomial-Queues"><a href="#二项队列-Binomial-Queues" class="headerlink" title="二项队列(Binomial Queues)"></a>二项队列(Binomial Queues)</h1><h2 id="名字由来"><a href="#名字由来" class="headerlink" title="名字由来"></a>名字由来</h2><p>首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的<strong>森林(forest)</strong>。</p>
+        
+          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Heap/Lheap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/22/Heap/Lheap/">Leftist heap</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/22/Heap/Lheap/" class="archive-article-date">
+  	<time datetime="2020-07-22T03:06:06.568Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-22</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="左式堆（Leftist-heap）"><a href="#左式堆（Leftist-heap）" class="headerlink" title="左式堆（Leftist heap）"></a>左式堆（Leftist heap）</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>二叉堆不能有效地支持合并操作，而且只使用一个数组的话，我们需要将一个数组复制到另一个数组中，时间复杂度为O(n)。因此我们通过链式来设计一个新的方便合并的堆，这就是左式堆。</p>
+        
+          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Effective Cpp/item 25" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/21/Effective%20Cpp/item%2025/">item 25:Consider supprot for a non-throwing swap</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/21/Effective%20Cpp/item%2025/" class="archive-article-date">
+  	<time datetime="2020-07-21T03:44:51.556Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-21</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="考虑写出一个不抛异常的swap函数"><a href="#考虑写出一个不抛异常的swap函数" class="headerlink" title="考虑写出一个不抛异常的swap函数"></a>考虑写出一个不抛异常的swap函数</h1><p>swap作为STL的一部分，也是异常安全性能编程的脊柱以及用来处理自我赋值的常见机制。</p>
+        
+          <a class="article-more-a" href="/2020/07/21/Effective%20Cpp/item%2025/#more">more >></a>
         
       
 
@@ -284,93 +1140,9 @@
         		<li class="article-tag-list-item">
         			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
         		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/08/Effective%20Cpp/item%2010/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-math/转动惯量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">转动惯量</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/" class="archive-article-date">
-  	<time datetime="2020-07-05T03:40:55.484Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-05</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="常见转动惯量的推导"><a href="#常见转动惯量的推导" class="headerlink" title="常见转动惯量的推导"></a>常见转动惯量的推导</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>闲来无事，本人记性差，想着转动惯量还是自己推一遍为好，见课件定积分求法过于麻烦（要找对应的一元微元），于是用重积分（二重、三重）以及曲线（面）积分来求以下七种常见类型的转动惯量，</p>
-        
-          <a class="article-more-a" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
+      		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数学//" class="article-tag-list-link color3">数学</a>
+        			<a href="/categories/Effective-C/Designs-and-Declarations//" class="article-tag-list-link color5">Designs and Declarations</a>
         		</li>
       		
 		</ul>
@@ -379,774 +1151,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Effective Cpp/item 7" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/01/Effective%20Cpp/item%207/">item 7:Declare destructors virtual in polymorphic base classes</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/01/Effective%20Cpp/item%207/" class="archive-article-date">
-  	<time datetime="2020-06-30T16:03:20.221Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-01</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="多态基类应当声明virtual析构函数"><a href="#多态基类应当声明virtual析构函数" class="headerlink" title="多态基类应当声明virtual析构函数"></a>多态基类应当声明virtual析构函数</h1><p>当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。</p>
-        
-          <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Scope/storage class specifiers" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/">存储类说明符</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/" class="archive-article-date">
-  	<time datetime="2020-06-27T14:21:49.630Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Storage-class-specifiers"><a href="#Storage-class-specifiers" class="headerlink" title="Storage class specifiers"></a>Storage class specifiers</h1><p>一个名字除了拥有它的作用域，还有两个重要性质：storage duration和linkage。</p>
-        
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/declaration//" class="article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Scope/Scope Region" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/">C与C++的作用域</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/" class="archive-article-date">
-  	<time datetime="2020-06-27T04:52:55.598Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Scope-Region"><a href="#Scope-Region" class="headerlink" title="Scope Region"></a>Scope Region</h1><p>作用域这个概念不是C++特有的，而是由C继承过来的，但同时添加了C++专属的新作用域，我们先介绍C的作用域再引入C++的作用域。</p>
-        
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/declaration//" class="article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Name lookup/Unqualified name lookup" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/">非限定型查找</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.501Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Unqualified-name-lookup"><a href="#Unqualified-name-lookup" class="headerlink" title="Unqualified name lookup"></a>Unqualified name lookup</h1><blockquote>
-<p>Name lookup stops in the scope in which a name is found and it finds all declarations in that scope matching that name. It does not continue to look in enclosing scopes even when there could be better matching functions located there. Then there’s also ADL, which is a different matter.</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Name lookup/Template define" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/">模板的两段名字查找</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.499Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Template的名字查找（OL-and-ADL）"><a href="#Template的名字查找（OL-and-ADL）" class="headerlink" title="Template的名字查找（OL and ADL）"></a>Template的名字查找（OL and ADL）</h1><h2 id="name-lookup-in-template-function"><a href="#name-lookup-in-template-function" class="headerlink" title="name lookup in template function"></a>name lookup in template function</h2><p>C++17 Standard said：</p>
-<blockquote>
-<p>Such names are unbound and are looked up at the point of the template instantiation (17.6.4.1) in both the context of the template definition and the context of the point of instantiation.</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Name lookup/ADL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/">ADL</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.496Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Argument-dependent-name-lookup"><a href="#Argument-dependent-name-lookup" class="headerlink" title="Argument dependent-name lookup"></a>Argument dependent-name lookup</h1>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Namespace/Using-directive" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Namespace/Using-directive/">Using指令</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Namespace/Using-directive/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:07:46.701Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="using指令"><a href="#using指令" class="headerlink" title="using指令"></a>using指令</h1><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>A using-directive is a block-declaration（{/<em>block</em>/}）</p>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-directive/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/namespace//" class="article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-directive/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Namespace/Using-declaration" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/">Using声明</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:07:46.699Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Using-声明"><a href="#Using-声明" class="headerlink" title="Using 声明"></a>Using 声明</h1><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><blockquote>
-<p>Introduces a name that is defined elsewhere into the <strong>declarative region</strong> where this using-declaration appears.</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/namespace//" class="article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/07/21/Effective%20Cpp/item%2025/">展开全文 >></a>
         </p>
       
 
@@ -1178,7 +1183,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
     </nav>
   
 

@@ -233,20 +233,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Cppt1/1.1 A First Look at Function Templates" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt19/19.3.1 Element Type" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/07/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/">1.1 A First Look at Function Templates</a>
+      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.1%20Element%20Type/">Cppt/Cppt19/19.3.1 Element Type</a>
     </h1>
   
 
         
-        <a href="/2020/10/07/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/" class="archive-article-date">
-  	<time datetime="2020-10-07T14:21:32.983Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-07</time>
+        <a href="/2020/10/29/Cppt/Cppt19/19.3.1%20Element%20Type/" class="archive-article-date">
+  	<time datetime="2020-10-29T11:44:19.805Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
 </a>
         
         
@@ -254,9 +254,301 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="初见函数模板"><a href="#初见函数模板" class="headerlink" title="初见函数模板"></a>初见函数模板</h1><p>函数模板代表函数家族，看起来像普通函数，但是有些元素被参数化了。</p>
+        <h1 id="元素类型"><a href="#元素类型" class="headerlink" title="元素类型"></a>元素类型</h1><p>提供<code>主模板</code>（primary template）并根据需要实现偏特化模板。</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;list&gt;</span></span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>;</span> <span class="comment">//primary template:不提供default implement就没必要定义generic code</span></span><br><span class="line"><span class="comment">//template&lt;typename C&gt;</span></span><br><span class="line"><span class="comment">//struct ElementT&#123;</span></span><br><span class="line"><span class="comment">//     using type=C::value_type;</span></span><br><span class="line"><span class="comment">//&#125;</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;std::vector&lt;T&gt;&gt;&#123;</span> <span class="comment">//partial specialization for std::vector</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;std::list&lt;T&gt;&gt;&#123;</span> <span class="comment">//partial specialization for std::list</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T,<span class="built_in">std</span>::<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;T[N]&gt;&#123;</span> <span class="comment">//partial specialization for arrays of known bounds</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&lt;T[]&gt;&#123;</span> <span class="comment">//partial specialization for arrays of unknown bounds</span></span><br><span class="line">     <span class="keyword">using</span> type=T;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<p>这样我们就可以提取<code>容器</code>和<code>内置数组</code>的<code>元素类型</code></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">printElementType</span><span class="params">(T <span class="keyword">const</span>&amp; c)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">     <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"Container of "</span></span><br><span class="line">              &lt;&lt;<span class="keyword">typeid</span>(<span class="keyword">typename</span> ElementT&lt;T&gt;::type).name()</span><br><span class="line">              &lt;&lt;<span class="string">" elements.\n"</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">     <span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; s;</span><br><span class="line">     printElementType(s);</span><br><span class="line">     <span class="keyword">int</span> arr[<span class="number">42</span>];</span><br><span class="line">     printElementType(arr);</span><br><span class="line">     <span class="comment">//deque&lt;int&gt; q;</span></span><br><span class="line">     <span class="comment">//printElementType(q);</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>output:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Container of b elements. </span><br><span class="line">Container of i elements.</span><br></pre></td></tr></table></figure>
+
+<h2 id="进一步简化"><a href="#进一步简化" class="headerlink" title="进一步简化"></a>进一步简化</h2><p>诚然，通过使用<code>偏特化</code>来实现<code>类型函数</code>使得我们在不知道<code>容器类型</code>的时候可以得到其<code>元素类型</code>。但是<code>类型函数</code>可以更加简化（也应当更为简化）。</p>
+<p>如果<code>容器类型</code>定义了类型成员（标准容器都定义了）：<strong>value_type</strong>，则可以根据这个写出<code>默认实现</code>：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">templatestruct &lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ElementT</span>&#123;</span>        </span><br><span class="line">    <span class="keyword">using</span> type=<span class="keyword">typename</span> C::value_type;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
+<h2 id="类型函数的用处"><a href="#类型函数的用处" class="headerlink" title="类型函数的用处"></a>类型函数的用处</h2><blockquote>
+<p>It allows us to parameterize a template in terms of(依据) a container type without also requiring parameters for the element type and other characteristic.</p>
+</blockquote>
+<p>举个例子，如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">templateT &lt;<span class="keyword">typename</span> T,<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="function">T <span class="title">sumOfElements</span><span class="params">(C <span class="keyword">const</span>&amp; c)</span></span>;</span><br></pre></td></tr></table></figure>
+
+<p>这样的话就需要显式指定元素类型：sumOfElements<int>(list)</p>
+<p>但有class templates代行type function可以得到如下实现：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line">ElementT&lt;C&gt;::<span class="function">type <span class="title">sumOfElements</span><span class="params">(C <span class="keyword">const</span>&amp; c)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>为了便利，我们可以创建一个<code>模板别名</code>（template alias）：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="keyword">using</span> ElementType=ElementT&lt;T&gt;::type;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="function">ElementType&lt;C&gt; <span class="title">sumOfElements</span><span class="params">(C <span class="keyword">const</span>&amp; c)</span></span></span><br></pre></td></tr></table></figure>
+
+<p>这也体现了traits的作用：<strong>manage the sort of extra parameters</strong></p>
+<blockquote>
+<p>Observe how the traits are implemented as an extension to existing types;i.e,we can define these type function even for fundamental types and types of closed libraries.</p>
+</blockquote>
+<h2 id="traits-class"><a href="#traits-class" class="headerlink" title="traits class"></a>traits class</h2><p>我们称这里的<code>ElementT</code>为<strong>traits class</strong>：is used to access a trait of the given container type C</p>
+<blockquote>
+<p>thus,traits classes are not limited to describing characteristic of container parameters but any kind of <code>&quot;main parameters&quot;</code></p>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.1%20Element%20Type/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
         
-          <a class="article-more-a" href="/2020/10/07/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/#more">more >></a>
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cppt/Cppt19/19.3 Type Function" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3%20Type%20Function/">Cppt/Cppt19/19.3 Type Function</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/29/Cppt/Cppt19/19.3%20Type%20Function/" class="archive-article-date">
+  	<time datetime="2020-10-29T11:44:19.794Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="类型函数"><a href="#类型函数" class="headerlink" title="类型函数"></a>类型函数</h1><h2 id="value-type-function-amp-class-template"><a href="#value-type-function-amp-class-template" class="headerlink" title="value/type function&amp;class template"></a>value/type function&amp;class template</h2><table>
+<thead>
+<tr>
+<th align="center">categories</th>
+<th>argument</th>
+<th>return result</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="center">value functions</td>
+<td>some values</td>
+<td>another values</td>
+</tr>
+<tr>
+<td align="center">type functions</td>
+<td>some types</td>
+<td>type/constant</td>
+</tr>
+<tr>
+<td align="center">↓（serve as type functions）↓</td>
+<td><strong>parameters</strong></td>
+<td>omit</td>
+</tr>
+<tr>
+<td align="center">class templates</td>
+<td>template parameters</td>
+<td>member type/constant</td>
+</tr>
+</tbody></table>
+<p>该小节包括：</p>
+<ul>
+<li></li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3%20Type%20Function/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cpp_Note/OOP/primer ch15" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/">Object-Oriented Programming</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/" class="archive-article-date">
+  	<time datetime="2020-10-28T12:12:43.712Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OOP，全名：<strong>Object-Oriented Programming</strong></p>
+<p>其核心思想为：</p>
+<ul>
+<li><p><strong>数据抽象（封装）</strong>：使得类的接口和实现分离</p>
+</li>
+<li><p><strong>继承</strong>：可以建立相似关系模型</p>
+</li>
+<li><p><strong>动态绑定（多态）</strong>：可以在一定程度忽略相似类型的区别从而以统一的方式使用</p>
+        
+          <a class="article-more-a" href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C/primer笔记//" class="article-tag-list-link color4">primer笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cppt/Cppt1/1.4 Default Template Arguments" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/10/Cppt/Cppt1/1.4%20Default%20Template%20Arguments/">1.4 Default Template Arguments</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/10/Cppt/Cppt1/1.4%20Default%20Template%20Arguments/" class="archive-article-date">
+  	<time datetime="2020-10-10T09:42:41.563Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="默认模板实参"><a href="#默认模板实参" class="headerlink" title="默认模板实参"></a>默认模板实参</h1>
+        
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.4%20Default%20Template%20Arguments/#more">more >></a>
         
       
 
@@ -295,7 +587,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/07/Cppt1/1.1%20A%20First%20Look%20at%20Function%20Templates/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.4%20Default%20Template%20Arguments/">展开全文 >></a>
         </p>
       
 
@@ -325,20 +617,20 @@
 
 
   
-    <article id="post-Tree/BinarySearchTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt1/1.3.3 Return Type as Common Type" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/28/Tree/BinarySearchTree/">BinarySearchTree</a>
+      <a class="article-title" href="/2020/10/10/Cppt/Cppt1/1.3.3%20Return%20Type%20as%20Common%20Type/">1.3.3 Return Type as Common Type</a>
     </h1>
   
 
         
-        <a href="/2020/09/28/Tree/BinarySearchTree/" class="archive-article-date">
-  	<time datetime="2020-09-28T12:00:27.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-28</time>
+        <a href="/2020/10/10/Cppt/Cppt1/1.3.3%20Return%20Type%20as%20Common%20Type/" class="archive-article-date">
+  	<time datetime="2020-10-10T09:42:41.561Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
 </a>
         
         
@@ -346,9 +638,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree&lt;root&lt;right subtree。</p>
+        <h1 id="共同类型作为返回类型"><a href="#共同类型作为返回类型" class="headerlink" title="共同类型作为返回类型"></a>共同类型作为返回类型</h1>
         
-          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3.3%20Return%20Type%20as%20Common%20Type/#more">more >></a>
         
       
 
@@ -361,106 +653,6 @@
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">查找</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/查找//" class="article-tag-list-link color3">查找</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/查找/树//" class="article-tag-list-link color2">树</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Black magic/SFINAE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/">SFINAE</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/" class="archive-article-date">
-  	<time datetime="2020-08-31T12:50:13.861Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Substitution-Failure-is-not-an-Error"><a href="#Substitution-Failure-is-not-an-Error" class="headerlink" title="Substitution Failure is not an Error"></a>Substitution Failure is not an Error</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>SFINAE技术是指在编译期将函数模板的形参换成实参，如果替换失败不会算作编译错误，而是继续寻找合适的特化版本，直到所有的模板版本都替换失败编译器才报错。</p>
-        
-          <a class="article-more-a" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Black magic</a>
-        		</li>
-      		 
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
         		</li>
@@ -474,7 +666,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/template//" class="article-tag-list-link color4">template</a>
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1/section-1-3//" class="article-tag-list-link color2">section 1.3</a>
         		</li>
       		
 		</ul>
@@ -483,7 +683,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3.3%20Return%20Type%20as%20Common%20Type/">展开全文 >></a>
         </p>
       
 
@@ -513,20 +713,20 @@
 
 
   
-    <article id="post-Heap/BinaryHeap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt1/1.3.2 Deducing the Return Type" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/28/Heap/BinaryHeap/">BinaryHeap</a>
+      <a class="article-title" href="/2020/10/10/Cppt/Cppt1/1.3.2%20Deducing%20the%20Return%20Type/">1.3.2 Deducing the Return Type</a>
     </h1>
   
 
         
-        <a href="/2020/08/28/Heap/BinaryHeap/" class="archive-article-date">
-  	<time datetime="2020-08-28T06:11:57.254Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
+        <a href="/2020/10/10/Cppt/Cppt1/1.3.2%20Deducing%20the%20Return%20Type/" class="archive-article-date">
+  	<time datetime="2020-10-10T09:42:41.559Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
 </a>
         
         
@@ -534,9 +734,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。</p>
+        <h1 id="推断返回类型"><a href="#推断返回类型" class="headerlink" title="推断返回类型"></a>推断返回类型</h1>
         
-          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3.2%20Deducing%20the%20Return%20Type/#more">more >></a>
         
       
 
@@ -550,11 +750,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
         		</li>
       		
 		</ul>
@@ -566,11 +762,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1/section-1-3//" class="article-tag-list-link color2">section 1.3</a>
         		</li>
       		
 		</ul>
@@ -579,7 +779,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3.2%20Deducing%20the%20Return%20Type/">展开全文 >></a>
         </p>
       
 
@@ -609,20 +809,20 @@
 
 
   
-    <article id="post-Heap/BinomialQueue" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt1/1.3.1 Template Parameters for Return Types" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/24/Heap/BinomialQueue/">Binomial Queues</a>
+      <a class="article-title" href="/2020/10/10/Cppt/Cppt1/1.3.1%20Template%20Parameters%20for%20Return%20Types/">1.3.1 Template Parameters for Return Types</a>
     </h1>
   
 
         
-        <a href="/2020/07/24/Heap/BinomialQueue/" class="archive-article-date">
-  	<time datetime="2020-07-24T14:36:47.243Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-24</time>
+        <a href="/2020/10/10/Cppt/Cppt1/1.3.1%20Template%20Parameters%20for%20Return%20Types/" class="archive-article-date">
+  	<time datetime="2020-10-10T09:42:41.557Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
 </a>
         
         
@@ -630,9 +830,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="二项队列-Binomial-Queues"><a href="#二项队列-Binomial-Queues" class="headerlink" title="二项队列(Binomial Queues)"></a>二项队列(Binomial Queues)</h1><h2 id="名字由来"><a href="#名字由来" class="headerlink" title="名字由来"></a>名字由来</h2><p>首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的<strong>森林(forest)</strong>。</p>
+        <h1 id="属于返回类型的模板参数"><a href="#属于返回类型的模板参数" class="headerlink" title="属于返回类型的模板参数"></a>属于返回类型的模板参数</h1>
         
-          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3.1%20Template%20Parameters%20for%20Return%20Types/#more">more >></a>
         
       
 
@@ -646,11 +846,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
         		</li>
       		
 		</ul>
@@ -662,11 +858,15 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Cpp-templates—note/chapter-1/section-1-3//" class="article-tag-list-link color2">section 1.3</a>
         		</li>
       		
 		</ul>
@@ -675,7 +875,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3.1%20Template%20Parameters%20for%20Return%20Types/">展开全文 >></a>
         </p>
       
 
@@ -705,20 +905,20 @@
 
 
   
-    <article id="post-Heap/Lheap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt1/1.3 Multiple Template Parameters" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/22/Heap/Lheap/">Leftist heap</a>
+      <a class="article-title" href="/2020/10/10/Cppt/Cppt1/1.3%20Multiple%20Template%20Parameters/">1.3 Multiple Template Parameters</a>
     </h1>
   
 
         
-        <a href="/2020/07/22/Heap/Lheap/" class="archive-article-date">
-  	<time datetime="2020-07-22T03:06:06.568Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-22</time>
+        <a href="/2020/10/10/Cppt/Cppt1/1.3%20Multiple%20Template%20Parameters/" class="archive-article-date">
+  	<time datetime="2020-10-10T09:42:41.556Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
 </a>
         
         
@@ -726,9 +926,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="左式堆（Leftist-heap）"><a href="#左式堆（Leftist-heap）" class="headerlink" title="左式堆（Leftist heap）"></a>左式堆（Leftist heap）</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>二叉堆不能有效地支持合并操作，而且只使用一个数组的话，我们需要将一个数组复制到另一个数组中，时间复杂度为O(n)。因此我们通过链式来设计一个新的方便合并的堆，这就是左式堆。</p>
+        <h1 id="多个模板参数"><a href="#多个模板参数" class="headerlink" title="多个模板参数"></a>多个模板参数</h1>
         
-          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3%20Multiple%20Template%20Parameters/#more">more >></a>
         
       
 
@@ -742,11 +942,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
         		</li>
       		
 		</ul>
@@ -758,11 +954,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
         		</li>
       		
 		</ul>
@@ -771,7 +967,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.3%20Multiple%20Template%20Parameters/">展开全文 >></a>
         </p>
       
 
@@ -801,20 +997,20 @@
 
 
   
-    <article id="post-Effective Cpp/item 25" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cppt/Cppt1/1.2 Template Argument Deduction" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/21/Effective%20Cpp/item%2025/">item 25:Consider supprot for a non-throwing swap</a>
+      <a class="article-title" href="/2020/10/10/Cppt/Cppt1/1.2%20Template%20Argument%20Deduction/">1.2 Template Argument Deduction</a>
     </h1>
   
 
         
-        <a href="/2020/07/21/Effective%20Cpp/item%2025/" class="archive-article-date">
-  	<time datetime="2020-07-21T03:44:51.556Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-21</time>
+        <a href="/2020/10/10/Cppt/Cppt1/1.2%20Template%20Argument%20Deduction/" class="archive-article-date">
+  	<time datetime="2020-10-10T09:42:41.554Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
 </a>
         
         
@@ -822,9 +1018,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="考虑写出一个不抛异常的swap函数"><a href="#考虑写出一个不抛异常的swap函数" class="headerlink" title="考虑写出一个不抛异常的swap函数"></a>考虑写出一个不抛异常的swap函数</h1><p>swap作为STL的一部分，也是异常安全性能编程的脊柱以及用来处理自我赋值的常见机制。</p>
+        <h1 id="模板实参推断"><a href="#模板实参推断" class="headerlink" title="模板实参推断"></a>模板实参推断</h1>
         
-          <a class="article-more-a" href="/2020/07/21/Effective%20Cpp/item%2025/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.2%20Template%20Argument%20Deduction/#more">more >></a>
         
       
 
@@ -838,7 +1034,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
         		</li>
       		
 		</ul>
@@ -850,11 +1046,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        			<a href="/categories/Cpp-templates—note//" class="article-tag-list-link color4">Cpp-templates—note</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Designs-and-Declarations//" class="article-tag-list-link color5">Designs and Declarations</a>
+        			<a href="/categories/Cpp-templates—note/chapter-1//" class="article-tag-list-link color5">chapter 1</a>
         		</li>
       		
 		</ul>
@@ -863,7 +1059,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/21/Effective%20Cpp/item%2025/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/Cppt/Cppt1/1.2%20Template%20Argument%20Deduction/">展开全文 >></a>
         </p>
       
 
@@ -893,20 +1089,20 @@
 
 
   
-    <article id="post-Effective Cpp/item 2" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-文档笔记/Conditianal operator" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/19/Effective%20Cpp/item%202/">item 2:Prefer consts,enums,and inlines to</a>
+      <a class="article-title" href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/">5.16 Conditianal operator</a>
     </h1>
   
 
         
-        <a href="/2020/07/19/Effective%20Cpp/item%202/" class="archive-article-date">
-  	<time datetime="2020-07-19T06:38:28.379Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-19</time>
+        <a href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/" class="archive-article-date">
+  	<time datetime="2020-10-10T03:50:53.102Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
 </a>
         
         
@@ -914,194 +1110,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="用consts、enums、inlines替代-define"><a href="#用consts、enums、inlines替代-define" class="headerlink" title="用consts、enums、inlines替代#define"></a>用consts、enums、inlines替代#define</h1><p>#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</p>
+        <h1 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h1><p>【该笔记内容参考的是文档n3337/5.16】</p>
         
-          <a class="article-more-a" href="/2020/07/19/Effective%20Cpp/item%202/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Accustoming-Yourself-to-C//" class="article-tag-list-link color3">Accustoming Yourself to C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/19/Effective%20Cpp/item%202/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Effective Cpp/item 1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/19/Effective%20Cpp/item%201/">item 1:View C++ as a federation of language</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/19/Effective%20Cpp/item%201/" class="archive-article-date">
-  	<time datetime="2020-07-19T06:23:50.050Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-19</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="视C-为一个语言联邦"><a href="#视C-为一个语言联邦" class="headerlink" title="视C++为一个语言联邦"></a>视C++为一个语言联邦</h1><p>C++最早只是C with Classes，C++经过不断的发展，Exception、template、STL，今日的C++已经是个<strong>多重范型编程语言</strong>，支持<code>过程形式（procedural）</code>、<code>面向对象形式（object-oriented）</code>、<code>函数形式（functional</code>、<code>泛型形式（generic）</code>、<code>元编程形式（meta programming）</code>。</p>
-        
-          <a class="article-more-a" href="/2020/07/19/Effective%20Cpp/item%201/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C/Accustoming-Yourself-to-C//" class="article-tag-list-link color3">Accustoming Yourself to C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/19/Effective%20Cpp/item%201/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Design pattern/Abstract factory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/15/Design%20pattern/Abstract%20factory/">抽象工厂</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/15/Design%20pattern/Abstract%20factory/" class="archive-article-date">
-  	<time datetime="2020-07-15T15:32:30.403Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-15</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Abstract-factory"><a href="#Abstract-factory" class="headerlink" title="Abstract factory"></a>Abstract factory</h1><h2 id="Intent"><a href="#Intent" class="headerlink" title="Intent"></a>Intent</h2><ul>
-<li><p>Provide an interface for creating <strong>families</strong> of <strong>related or dependent objects</strong> without specifying their concrete classes.</p>
-        
-          <a class="article-more-a" href="/2020/07/15/Design%20pattern/Abstract%20factory/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/#more">more >></a>
         
       
 
@@ -1117,10 +1128,6 @@
         		<li class="article-tag-list-item">
         			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
         		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
       		
 		</ul>
 	</div>
@@ -1131,7 +1138,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
+        			<a href="/categories/C-文档笔记//" class="article-tag-list-link color3">C++文档笔记</a>
         		</li>
       		
 		</ul>
@@ -1140,7 +1147,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/15/Design%20pattern/Abstract%20factory/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/">展开全文 >></a>
         </p>
       
 
@@ -1172,7 +1179,7 @@
   
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/3/">Next &amp;raquo;</a>
     </nav>
   
 
