@@ -6,13 +6,17 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>(●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Cpp_Note/IO library/cppp_ch8 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/page/3/index.html">
+  <meta name="description" content="I&#x2F;O libraryIO class   header type    iostream istream，wstream    ostream，wostream    iostream，wiostream   fstream ifstream，wfstream    ofstream，wofstream    fstream，wfstream   sstream istringstream，wi">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cpp_Note&#x2F;IO library&#x2F;cppp_ch8">
+<meta property="og:url" content="http://yoursite.com/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="I&#x2F;O libraryIO class   header type    iostream istream，wstream    ostream，wostream    iostream，wiostream   fstream ifstream，wfstream    ofstream，wofstream    fstream，wfstream   sstream istringstream，wi">
 <meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2020-11-05T14:37:58.052Z">
+<meta property="article:modified_time" content="2020-11-05T15:03:55.208Z">
 <meta property="article:author" content="Conzxy">
 <meta name="twitter:card" content="summary">
   
@@ -231,22 +235,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-    <article id="post-math/转动惯量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+            <article id="post-Cpp_Note/IO library/cppp_ch8" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">转动惯量</a>
+    <h1 class="article-title" itemprop="name">
+      Cpp_Note/IO library/cppp_ch8
     </h1>
   
 
         
-        <a href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/" class="archive-article-date">
-  	<time datetime="2020-07-05T03:40:55.484Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-05</time>
+        <a href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/" class="archive-article-date">
+  	<time datetime="2020-11-05T14:37:58.052Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-05</time>
 </a>
         
         
@@ -254,52 +256,166 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="常见转动惯量的推导"><a href="#常见转动惯量的推导" class="headerlink" title="常见转动惯量的推导"></a>常见转动惯量的推导</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>闲来无事，本人记性差，想着转动惯量还是自己推一遍为好，见课件定积分求法过于麻烦（要找对应的一元微元），于是用重积分（二重、三重）以及曲线（面）积分来求以下七种常见类型的转动惯量，</p>
-        
-          <a class="article-more-a" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/#more">more >></a>
-        
+        <h1 id="I-O-library"><a href="#I-O-library" class="headerlink" title="I/O library"></a>I/O library</h1><h2 id="IO-class"><a href="#IO-class" class="headerlink" title="IO class"></a>IO class</h2><table>
+<thead>
+<tr>
+<th>header</th>
+<th>type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iostream</td>
+<td>istream，wstream</td>
+</tr>
+<tr>
+<td></td>
+<td>ostream，wostream</td>
+</tr>
+<tr>
+<td></td>
+<td>iostream，wiostream</td>
+</tr>
+<tr>
+<td>fstream</td>
+<td>ifstream，wfstream</td>
+</tr>
+<tr>
+<td></td>
+<td>ofstream，wofstream</td>
+</tr>
+<tr>
+<td></td>
+<td>fstream，wfstream</td>
+</tr>
+<tr>
+<td>sstream</td>
+<td>istringstream，wistringstream</td>
+</tr>
+<tr>
+<td></td>
+<td>ostringstream，wostringstream</td>
+</tr>
+<tr>
+<td></td>
+<td>stringstream，wstringstream</td>
+</tr>
+</tbody></table>
+<p>iostream定义了用于读写流的基本类型<br>fstream定义了读写命名文件的类型<br>sstream定义了读写内存string对象的类型</p>
+<p>由于ifstream和istringstream继承自istream，因此可以如同用istream对象一样地使用它们。<br>类似地，ofstream和ostringstream也是继承自ostream。</p>
+
       
 
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
       
     </div>
     <div class="article-info article-info-index">
       
       
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数学//" class="article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">展开全文 >></a>
-        </p>
       
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
+        </div>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
       
       <div class="clearfix"></div>
     </div>
   </div>
 </article>
+
+  
+<nav id="article-nav">
+  
+    <a href="/2020/11/14/STL_note/(multi)map/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          STL_note/(multi)map
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2020/10/29/Effective%20Cpp/Item%205/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">item 5:Know what functions C++ silently writes and calls</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
 
 <aside class="wrap-side-operation">
     <div class="mod-side-operation">
@@ -314,880 +430,32 @@
         </div>
         
         
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Effective Cpp/item 7" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/01/Effective%20Cpp/item%207/">item 7:Declare destructors virtual in polymorphic base classes</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/01/Effective%20Cpp/item%207/" class="archive-article-date">
-  	<time datetime="2020-06-30T16:03:20.221Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-01</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="多态基类应当声明virtual析构函数"><a href="#多态基类应当声明virtual析构函数" class="headerlink" title="多态基类应当声明virtual析构函数"></a>多态基类应当声明virtual析构函数</h1><p>当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。</p>
-        
-          <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#I-O-library"><span class="toc-number">1.</span> <span class="toc-text">I&#x2F;O library</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#IO-class"><span class="toc-number">1.1.</span> <span class="toc-text">IO class</span></a></li></ol></li></ol>
+                    </div>
+                </span>
             </div>
         </div>
         
-        
     </div>
 </aside>
 
 
 
-
-  
-    <article id="post-Cpp_Note/Scope/storage class specifiers" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/">存储类说明符</a>
-    </h1>
   
 
-        
-        <a href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/" class="archive-article-date">
-  	<time datetime="2020-06-27T14:21:49.630Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Storage-class-specifiers"><a href="#Storage-class-specifiers" class="headerlink" title="Storage class specifiers"></a>Storage class specifiers</h1><p>一个名字除了拥有它的作用域，还有两个重要性质：storage duration和linkage。</p>
-        
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/declaration//" class="article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/storage%20class%20specifiers/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Scope/Scope Region" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/">C与C++的作用域</a>
-    </h1>
   
 
-        
-        <a href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/" class="archive-article-date">
-  	<time datetime="2020-06-27T04:52:55.598Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-27</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Scope-Region"><a href="#Scope-Region" class="headerlink" title="Scope Region"></a>Scope Region</h1><p>作用域这个概念不是C++特有的，而是由C继承过来的，但同时添加了C++专属的新作用域，我们先介绍C的作用域再引入C++的作用域。</p>
-        
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/declaration//" class="article-tag-list-link color2">declaration</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/27/Cpp_Note/Scope/Scope%20Region/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Name lookup/Unqualified name lookup" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/">非限定型查找</a>
-    </h1>
   
 
-        
-        <a href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.501Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Unqualified-name-lookup"><a href="#Unqualified-name-lookup" class="headerlink" title="Unqualified name lookup"></a>Unqualified name lookup</h1><blockquote>
-<p>Name lookup stops in the scope in which a name is found and it finds all declarations in that scope matching that name. It does not continue to look in enclosing scopes even when there could be better matching functions located there. Then there’s also ADL, which is a different matter.</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Unqualified%20name%20lookup/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Name lookup/Template define" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/">模板的两段名字查找</a>
-    </h1>
   
 
-        
-        <a href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.499Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Template的名字查找（OL-and-ADL）"><a href="#Template的名字查找（OL-and-ADL）" class="headerlink" title="Template的名字查找（OL and ADL）"></a>Template的名字查找（OL and ADL）</h1><h2 id="name-lookup-in-template-function"><a href="#name-lookup-in-template-function" class="headerlink" title="name lookup in template function"></a>name lookup in template function</h2><p>C++17 Standard said：</p>
-<blockquote>
-<p>Such names are unbound and are looked up at the point of the template instantiation (17.6.4.1) in both the context of the template definition and the context of the point of instantiation.</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/Template%20define/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Name lookup/ADL" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/">ADL</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:09:49.496Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Argument-dependent-name-lookup"><a href="#Argument-dependent-name-lookup" class="headerlink" title="Argument dependent-name lookup"></a>Argument dependent-name lookup</h1>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/名字查找//" class="article-tag-list-link color5">名字查找</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Name%20lookup/ADL/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Namespace/Using-directive" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Namespace/Using-directive/">Using指令</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Namespace/Using-directive/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:07:46.701Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="using指令"><a href="#using指令" class="headerlink" title="using指令"></a>using指令</h1><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><p>A using-directive is a block-declaration（{/<em>block</em>/}）</p>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-directive/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/namespace//" class="article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-directive/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Namespace/Using-declaration" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/">Using声明</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:07:46.699Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Using-声明"><a href="#Using-声明" class="headerlink" title="Using 声明"></a>Using 声明</h1><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><blockquote>
-<p>Introduces a name that is defined elsewhere into the <strong>declarative region</strong> where this using-declaration appears.</p>
-</blockquote>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/namespace//" class="article-tag-list-link color5">namespace</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Namespace/Using-declaration/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/Big Five/assignment operator" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/06/25/Cpp_Note/Big%20Five/assignment%20operator/">swap与copy(and move) assignment</a>
-    </h1>
-  
-
-        
-        <a href="/2020/06/25/Cpp_Note/Big%20Five/assignment%20operator/" class="archive-article-date">
-  	<time datetime="2020-06-25T02:04:34.316Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-06-25</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="std-swap构造拷贝（和移动）赋值运算符的坑"><a href="#std-swap构造拷贝（和移动）赋值运算符的坑" class="headerlink" title="std::swap构造拷贝（和移动）赋值运算符的坑"></a>std::swap构造拷贝（和移动）赋值运算符的坑</h1>
-        
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Big%20Five/assignment%20operator/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Big Five</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/C/class//" class="article-tag-list-link color1">class</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/06/25/Cpp_Note/Big%20Five/assignment%20operator/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-  
-    <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
-    </nav>
   
 
 
@@ -1216,8 +484,8 @@
     <script>
 	var yiliaConfig = {
 		mathjax: false,
-		isHome: true,
-		isPost: false,
+		isHome: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
 		isCategory: false,

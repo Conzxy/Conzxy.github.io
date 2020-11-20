@@ -233,6 +233,412 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-Cppt/Directory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/20/Cppt/Directory/">Cppt/Directory</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/20/Cppt/Directory/" class="archive-article-date">
+  	<time datetime="2020-11-20T14:56:50.409Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-20</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>《C++ Templates》第二版阅读笔记</p>
+<p><a href="https://github.com/Conzxy/CppTemplates_2nd" target="_blank" rel="noopener">CppTemplates</a></p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/20/Cppt/Directory/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-STL_note/(multi)map" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/14/STL_note/(multi)map/">STL_note/(multi)map</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/14/STL_note/(multi)map/" class="archive-article-date">
+  	<time datetime="2020-11-14T13:55:06.020Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-14</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Map-MultiMap阅读笔记"><a href="#Map-MultiMap阅读笔记" class="headerlink" title="Map/MultiMap阅读笔记"></a>Map/MultiMap阅读笔记</h1><p>类接口</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Key,<span class="keyword">typename</span> T,</span><br><span class="line">		 <span class="keyword">typename</span> Compare=less&lt;Key&gt;,</span><br><span class="line">		 <span class="keyword">typename</span> Allocator=allocator&lt;pair&lt;<span class="keyword">const</span> Key,T&gt;&gt;&gt;</span><br><span class="line">        class <span class="built_in">map</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//multimap 同上</span></span><br></pre></td></tr></table></figure>
+
+<p>注意点：</p>
+<ul>
+<li>Key和value都必须是copyable或moveable</li>
+<li>Key必须compareable</li>
+<li>元素类型value_type为pair&lt;const Key,T&gt;</li>
+<li>排序规则遵循严格弱序，故相等性：彼此不小于对方，则视为相等</li>
+</ul>
+<p>map/multimap是通过RB树实现的，因此自动排序，性能优越</p>
+<p>对于multimap，C++11保证次序稳定不变，insert和erase操作后保留等价元素之间的相对次序（即谁在谁前面照旧）</p>
+<h2 id="Key的约束"><a href="#Key的约束" class="headerlink" title="Key的约束"></a>Key的约束</h2><p>由于是根据Key来进行自动排序，因此不能擅自改动</p>
+<p>所以Key有const限定符，以防破坏正确排序</p>
+<p>欲修改Key的值，得先把拥有旧Key的元素删去，再插入你想要的新Key元素</p>
+<h2 id="排序准则的设置"><a href="#排序准则的设置" class="headerlink" title="排序准则的设置"></a>排序准则的设置</h2><ul>
+<li>template实参设置（编译期）</li>
+<li>构造函数参数设置（运行期）</li>
+</ul>
+<p>默认排序准则为<code>less&lt;&gt;</code></p>
+<p>排序准则可用来检查同一容器两个元素的等价性</p>
+<p>不同容器的等价性用==检测</p>
+<h2 id="特殊查找操作"><a href="#特殊查找操作" class="headerlink" title="特殊查找操作"></a>特殊查找操作</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>count(val)</td>
+<td>返回”Key=val”的元素个数</td>
+</tr>
+<tr>
+<td>find(val)</td>
+<td>返回”Key=val”的第一个元素</td>
+</tr>
+<tr>
+<td>lower_bound(val)</td>
+<td>返回”Key&gt;=val”的第一个元素</td>
+</tr>
+<tr>
+<td>upper_bound(val)</td>
+<td>返回”Key&gt;val”的第一个元素</td>
+</tr>
+<tr>
+<td>equal_bound(val)</td>
+<td>返回”Key==val”的元素区间</td>
+</tr>
+</tbody></table>
+<p>lower_bound返回第一个可插入点</p>
+<p>upper_bound返回最后一个可插入点</p>
+<p>equal_bound则是lower_bound和upper_bound之间</p>
+<h2 id="算法限制"><a href="#算法限制" class="headerlink" title="算法限制"></a>算法限制</h2><p>关联容器的迭代器都是Bidirectional</p>
+<p>也就是说random access迭代器才能使用的算法，它不能使用</p>
+<p>同时移除也不能用remove，因为remove本质是覆盖，但Key是cosnt，因此更易型算法都不能使用</p>
+<p>下面给出一个在改变Key（同时保留value）的泛型函数：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="keyword">constexpr</span> </span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">replace_key</span><span class="params">(C&amp; c,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">typename</span> C::key_type <span class="keyword">const</span>&amp; old_key,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">typename</span> C::key_type <span class="keyword">const</span>&amp; new_key)</span></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> pos=c.find(old_key);</span><br><span class="line">    <span class="keyword">if</span>(pos!=c.end())&#123;</span><br><span class="line">        c.insert(<span class="keyword">typename</span> C::value_type(new_key,pos-&gt;second));</span><br><span class="line">        <span class="comment">//c.emplace(new_key,pos-&gt;second);</span></span><br><span class="line">        c.erase(pos);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>当然，还有下标版本：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">coll[<span class="string">"new_key"</span>]=coll[<span class="string">"old_key"</span>];</span><br><span class="line">coll.erase(<span class="string">"old_key"</span>);</span><br></pre></td></tr></table></figure>
+
+<h2 id="插入和移除"><a href="#插入和移除" class="headerlink" title="插入和移除"></a>插入和移除</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th align="left">作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>insert(val)</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>insert(pos,val)</td>
+<td align="left">pos指出插入的查找起点，若提示恰当，则可加快速度</td>
+</tr>
+<tr>
+<td>insert(beg,end)</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>insert(inilist)</td>
+<td align="left"></td>
+</tr>
+<tr>
+<td>emplace(args…)</td>
+<td align="left">插入以args初值的元素</td>
+</tr>
+<tr>
+<td>emplace_hint(pos,args)</td>
+<td align="left">同insert的pos</td>
+</tr>
+<tr>
+<td>erase(val)</td>
+<td align="left">删除与val相等的所有元素，返回其个数</td>
+</tr>
+<tr>
+<td>erase(pos),erase(beg,end)</td>
+<td align="left">return void(C++11前) return iterator(C++11后)</td>
+</tr>
+<tr>
+<td>clear()</td>
+<td align="left">return void</td>
+</tr>
+</tbody></table>
+<p>对于multimap，C++11保证insert、emplace和erase保留等价元素的相对次序，新增元素一定放在已存在等价元素的末尾</p>
+<p>一般你有三种办法传值到map/multimap：</p>
+<ul>
+<li><strong>value_type</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll.insert(<span class="keyword">decltype</span>(coll)::value_type(<span class="string">"otto"</span>,<span class="number">22.3</span>));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>pair&lt;&gt;</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">coll.insert(<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> <span class="built_in">string</span>,<span class="keyword">float</span>&gt;(<span class="string">"otto"</span>,<span class="number">22.3</span>));</span><br><span class="line"><span class="comment">//需要隐式转换</span></span><br><span class="line">coll.insert(<span class="built_in">std</span>::pair&lt;<span class="built_in">string</span>,<span class="keyword">float</span>&gt;(<span class="string">"otto"</span>,<span class="number">22.3</span>));</span><br></pre></td></tr></table></figure>
+
+<ul>
+<li><strong>make_pair()</strong></li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll.insert(make_pair(<span class="string">"otto"</span>,<span class="number">22.3</span>));<span class="comment">//需要隐式转换</span></span><br></pre></td></tr></table></figure>
+
+<p>由于map/multimap都提供了对应的insert模板函数，因此pair&lt;string,float&gt;依然可以编译成功，内部会进行隐式转换</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;iterator, bool&gt; insert(const value_type&amp; x);</span><br><span class="line">pair&lt;iterator, bool&gt; insert(value_type&amp;&amp; x);</span><br><span class="line">template&lt;class P&gt; pair&lt;iterator, bool&gt; insert(P&amp;&amp; x);</span><br></pre></td></tr></table></figure>
+
+<h2 id="emplace"><a href="#emplace" class="headerlink" title="emplace"></a>emplace</h2><p>如果想将参数直接传入pair进行in place构造，则需要用到piecewise_construct_t这个空类tag</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="built_in">std</span>::<span class="built_in">complex</span>&lt;<span class="keyword">float</span>&gt;&gt; m;</span><br><span class="line">m.emplace(<span class="built_in">std</span>::piecewise_construct,</span><br><span class="line">          <span class="built_in">std</span>::make_tuple(<span class="string">"hello"</span>),</span><br><span class="line">          <span class="built_in">std</span>::make_tuple(<span class="number">3.4</span>,<span class="number">7.8</span>));</span><br></pre></td></tr></table></figure>
+
+<h2 id="erase的使用注意"><a href="#erase的使用注意" class="headerlink" title="erase的使用注意"></a>erase的使用注意</h2><p>删除multimap中重复元素的第一个：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">multimap</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">auto</span> pos=coll.find(key);</span><br><span class="line"><span class="keyword">if</span>(pos!=coll.end())</span><br><span class="line">    coll.erase(pos);</span><br></pre></td></tr></table></figure>
+
+<p>遍历删除注意更新迭代器：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos=coll.begin();pos!=coll.end();++pos)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos-&gt;second==value)</span><br><span class="line">        coll.erase(pos);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>若删除了该迭代器，则之后所有迭代器均失效，因此需要多加一道判断更新：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos=coll.begin();pos!=coll.end();)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos-&gt;second==value)</span><br><span class="line">        pos=coll.erase(pos);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ++pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>C++11之前没有返回值，你需要这样写：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos=coll.begin();pos!=coll.end();)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos-&gt;second==value)</span><br><span class="line">        coll.erase(pos++);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ++pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h2 id="和at运算符"><a href="#和at运算符" class="headerlink" title="[]和at运算符"></a>[]和at运算符</h2><table>
+<thead>
+<tr>
+<th>操作</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>c[key]</td>
+<td>如果key未在容器中，则先插入一个。返回一个reference指向key的元素（只有non-const map才有）</td>
+</tr>
+<tr>
+<td>c.at(key)</td>
+<td>返回一个reference指向key的元素，没有则抛出out_of_range异常</td>
+</tr>
+</tbody></table>
+<p>operator[]是一个associative array接口，索引不必然是整数</p>
+<p>而且如果容器中没有key元素，则自动插入一个，value根据其default constructor进行默认初始化（因此你要保证有）</p>
+<p>这个有优点也有缺点：</p>
+<ul>
+<li>优点：接口更方便，符合关联式的直观使用</li>
+</ul>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll[<span class="string">"otto"</span>]=<span class="number">7.7</span>;</span><br><span class="line"><span class="comment">//如果存在，则返回reference</span></span><br><span class="line"><span class="comment">//不存在，自动插入，value默认构造，返回referece指向新元素</span></span><br><span class="line"><span class="comment">//赋值7.7</span></span><br></pre></td></tr></table></figure>
+
+<ul>
+<li>缺点：速度相比insert要慢</li>
+</ul>
+<p>因为新元素要将value初始化后进行真正的赋值，而一般的insert直接赋值，需要考虑value默认初始化的代价</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/14/STL_note/(multi)map/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cpp_Note/IO library/cppp_ch8" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/">Cpp_Note/IO library/cppp_ch8</a>
+    </h1>
+  
+
+        
+        <a href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/" class="archive-article-date">
+  	<time datetime="2020-11-05T14:37:58.052Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-05</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="I-O-library"><a href="#I-O-library" class="headerlink" title="I/O library"></a>I/O library</h1><h2 id="IO-class"><a href="#IO-class" class="headerlink" title="IO class"></a>IO class</h2><table>
+<thead>
+<tr>
+<th>header</th>
+<th>type</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>iostream</td>
+<td>istream，wstream</td>
+</tr>
+<tr>
+<td></td>
+<td>ostream，wostream</td>
+</tr>
+<tr>
+<td></td>
+<td>iostream，wiostream</td>
+</tr>
+<tr>
+<td>fstream</td>
+<td>ifstream，wfstream</td>
+</tr>
+<tr>
+<td></td>
+<td>ofstream，wofstream</td>
+</tr>
+<tr>
+<td></td>
+<td>fstream，wfstream</td>
+</tr>
+<tr>
+<td>sstream</td>
+<td>istringstream，wistringstream</td>
+</tr>
+<tr>
+<td></td>
+<td>ostringstream，wostringstream</td>
+</tr>
+<tr>
+<td></td>
+<td>stringstream，wstringstream</td>
+</tr>
+</tbody></table>
+<p>iostream定义了用于读写流的基本类型<br>fstream定义了读写命名文件的类型<br>sstream定义了读写内存string对象的类型</p>
+<p>由于ifstream和istringstream继承自istream，因此可以如同用istream对象一样地使用它们。<br>类似地，ofstream和ostringstream也是继承自ostream。</p>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Effective Cpp/Item 5" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -799,20 +1205,20 @@
 
 
   
-    <article id="post-Cppt/Cppt19/19.4.4 SFINAE-Friendly" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-Cpp_Note/OOP/primer ch15" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/">19.4.4 SFINAE-friendly traits</a>
+      <a class="article-title" href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/">Object-Oriented Programming</a>
     </h1>
   
 
         
-        <a href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:44:19.807Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
+        <a href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/" class="archive-article-date">
+  	<time datetime="2020-10-28T12:12:43.712Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
 </a>
         
         
@@ -820,9 +1226,16 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="SFINAE-友好traits"><a href="#SFINAE-友好traits" class="headerlink" title="SFINAE-友好traits"></a>SFINAE-友好traits</h1>
+        <h1 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OOP，全名：<strong>Object-Oriented Programming</strong></p>
+<p>其核心思想为：</p>
+<ul>
+<li><p><strong>数据抽象（封装）</strong>：使得类的接口和实现分离</p>
+</li>
+<li><p><strong>继承</strong>：可以建立相似关系模型</p>
+</li>
+<li><p><strong>动态绑定（多态）</strong>：可以在一定程度忽略相似类型的区别从而以统一的方式使用</p>
         
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/#more">more >></a>
+          <a class="article-more-a" href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/#more">more >></a>
         
       
 
@@ -836,7 +1249,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
         		</li>
       		
 		</ul>
@@ -848,11 +1261,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
+        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
+        			<a href="/categories/C/primer笔记//" class="article-tag-list-link color4">primer笔记</a>
         		</li>
       		
 		</ul>
@@ -861,295 +1274,7 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.4.4%20SFINAE-Friendly/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cppt/Cppt19/19.3.4 Result Type Traits" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/">19.3.4 Result Type Traits</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:44:19.807Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="结果类型特性"><a href="#结果类型特性" class="headerlink" title="结果类型特性"></a>结果类型特性</h1>
-        
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.4%20Result%20Type%20Traits/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cppt/Cppt19/19.3.3 Perdicate Traits" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/">19.3.3 Perdicate Traits</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:44:19.806Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="谓词特性"><a href="#谓词特性" class="headerlink" title="谓词特性"></a>谓词特性</h1>
-        
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.3%20Perdicate%20Traits/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cppt/Cppt19/19.3.2 Transformation Traits" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/">19.3.2 Transformation Traits</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:44:19.805Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="转换特性"><a href="#转换特性" class="headerlink" title="转换特性"></a>转换特性</h1>
-        
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note//" class="article-tag-list-link color4">Cpp-templates-note</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19//" class="article-tag-list-link color1">chapter 19</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Cpp-templates-note/chapter-19/chapter-19-3//" class="article-tag-list-link color3">chapter 19.3</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Cppt/Cppt19/19.3.2%20Transformation%20Traits/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/28/Cpp_Note/OOP/primer%20ch15/">展开全文 >></a>
         </p>
       
 
@@ -1181,7 +1306,7 @@
   
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
