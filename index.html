@@ -298,347 +298,6 @@
 
 
   
-    <article id="post-STL_note/(multi)map" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/14/STL_note/(multi)map/">STL_note/(multi)map</a>
-    </h1>
-  
-
-        
-        <a href="/2020/11/14/STL_note/(multi)map/" class="archive-article-date">
-  	<time datetime="2020-11-14T13:55:06.020Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-14</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Map-MultiMap阅读笔记"><a href="#Map-MultiMap阅读笔记" class="headerlink" title="Map/MultiMap阅读笔记"></a>Map/MultiMap阅读笔记</h1><p>类接口</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Key,<span class="keyword">typename</span> T,</span><br><span class="line">		 <span class="keyword">typename</span> Compare=less&lt;Key&gt;,</span><br><span class="line">		 <span class="keyword">typename</span> Allocator=allocator&lt;pair&lt;<span class="keyword">const</span> Key,T&gt;&gt;&gt;</span><br><span class="line">        class <span class="built_in">map</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//multimap 同上</span></span><br></pre></td></tr></table></figure>
-
-<p>注意点：</p>
-<ul>
-<li>Key和value都必须是copyable或moveable</li>
-<li>Key必须compareable</li>
-<li>元素类型value_type为pair&lt;const Key,T&gt;</li>
-<li>排序规则遵循严格弱序，故相等性：彼此不小于对方，则视为相等</li>
-</ul>
-<p>map/multimap是通过RB树实现的，因此自动排序，性能优越</p>
-<p>对于multimap，C++11保证次序稳定不变，insert和erase操作后保留等价元素之间的相对次序（即谁在谁前面照旧）</p>
-<h2 id="Key的约束"><a href="#Key的约束" class="headerlink" title="Key的约束"></a>Key的约束</h2><p>由于是根据Key来进行自动排序，因此不能擅自改动</p>
-<p>所以Key有const限定符，以防破坏正确排序</p>
-<p>欲修改Key的值，得先把拥有旧Key的元素删去，再插入你想要的新Key元素</p>
-<h2 id="排序准则的设置"><a href="#排序准则的设置" class="headerlink" title="排序准则的设置"></a>排序准则的设置</h2><ul>
-<li>template实参设置（编译期）</li>
-<li>构造函数参数设置（运行期）</li>
-</ul>
-<p>默认排序准则为<code>less&lt;&gt;</code></p>
-<p>排序准则可用来检查同一容器两个元素的等价性</p>
-<p>不同容器的等价性用==检测</p>
-<h2 id="特殊查找操作"><a href="#特殊查找操作" class="headerlink" title="特殊查找操作"></a>特殊查找操作</h2><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>count(val)</td>
-<td>返回”Key=val”的元素个数</td>
-</tr>
-<tr>
-<td>find(val)</td>
-<td>返回”Key=val”的第一个元素</td>
-</tr>
-<tr>
-<td>lower_bound(val)</td>
-<td>返回”Key&gt;=val”的第一个元素</td>
-</tr>
-<tr>
-<td>upper_bound(val)</td>
-<td>返回”Key&gt;val”的第一个元素</td>
-</tr>
-<tr>
-<td>equal_bound(val)</td>
-<td>返回”Key==val”的元素区间</td>
-</tr>
-</tbody></table>
-<p>lower_bound返回第一个可插入点</p>
-<p>upper_bound返回最后一个可插入点</p>
-<p>equal_bound则是lower_bound和upper_bound之间</p>
-<h2 id="算法限制"><a href="#算法限制" class="headerlink" title="算法限制"></a>算法限制</h2><p>关联容器的迭代器都是Bidirectional</p>
-<p>也就是说random access迭代器才能使用的算法，它不能使用</p>
-<p>同时移除也不能用remove，因为remove本质是覆盖，但Key是cosnt，因此更易型算法都不能使用</p>
-<p>下面给出一个在改变Key（同时保留value）的泛型函数：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> C&gt;</span><br><span class="line"><span class="keyword">constexpr</span> </span><br><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">replace_key</span><span class="params">(C&amp; c,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">typename</span> C::key_type <span class="keyword">const</span>&amp; old_key,</span></span></span><br><span class="line"><span class="function"><span class="params">                 <span class="keyword">typename</span> C::key_type <span class="keyword">const</span>&amp; new_key)</span></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> pos=c.find(old_key);</span><br><span class="line">    <span class="keyword">if</span>(pos!=c.end())&#123;</span><br><span class="line">        c.insert(<span class="keyword">typename</span> C::value_type(new_key,pos-&gt;second));</span><br><span class="line">        <span class="comment">//c.emplace(new_key,pos-&gt;second);</span></span><br><span class="line">        c.erase(pos);</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>当然，还有下标版本：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">coll[<span class="string">"new_key"</span>]=coll[<span class="string">"old_key"</span>];</span><br><span class="line">coll.erase(<span class="string">"old_key"</span>);</span><br></pre></td></tr></table></figure>
-
-<h2 id="插入和移除"><a href="#插入和移除" class="headerlink" title="插入和移除"></a>插入和移除</h2><table>
-<thead>
-<tr>
-<th>操作</th>
-<th align="left">作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>insert(val)</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td>insert(pos,val)</td>
-<td align="left">pos指出插入的查找起点，若提示恰当，则可加快速度</td>
-</tr>
-<tr>
-<td>insert(beg,end)</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td>insert(inilist)</td>
-<td align="left"></td>
-</tr>
-<tr>
-<td>emplace(args…)</td>
-<td align="left">插入以args初值的元素</td>
-</tr>
-<tr>
-<td>emplace_hint(pos,args)</td>
-<td align="left">同insert的pos</td>
-</tr>
-<tr>
-<td>erase(val)</td>
-<td align="left">删除与val相等的所有元素，返回其个数</td>
-</tr>
-<tr>
-<td>erase(pos),erase(beg,end)</td>
-<td align="left">return void(C++11前) return iterator(C++11后)</td>
-</tr>
-<tr>
-<td>clear()</td>
-<td align="left">return void</td>
-</tr>
-</tbody></table>
-<p>对于multimap，C++11保证insert、emplace和erase保留等价元素的相对次序，新增元素一定放在已存在等价元素的末尾</p>
-<p>一般你有三种办法传值到map/multimap：</p>
-<ul>
-<li><strong>value_type</strong></li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll.insert(<span class="keyword">decltype</span>(coll)::value_type(<span class="string">"otto"</span>,<span class="number">22.3</span>));</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>pair&lt;&gt;</strong></li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">coll.insert(<span class="built_in">std</span>::pair&lt;<span class="keyword">const</span> <span class="built_in">string</span>,<span class="keyword">float</span>&gt;(<span class="string">"otto"</span>,<span class="number">22.3</span>));</span><br><span class="line"><span class="comment">//需要隐式转换</span></span><br><span class="line">coll.insert(<span class="built_in">std</span>::pair&lt;<span class="built_in">string</span>,<span class="keyword">float</span>&gt;(<span class="string">"otto"</span>,<span class="number">22.3</span>));</span><br></pre></td></tr></table></figure>
-
-<ul>
-<li><strong>make_pair()</strong></li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">coll.insert(make_pair(<span class="string">"otto"</span>,<span class="number">22.3</span>));<span class="comment">//需要隐式转换</span></span><br></pre></td></tr></table></figure>
-
-<p>由于map/multimap都提供了对应的insert模板函数，因此pair&lt;string,float&gt;依然可以编译成功，内部会进行隐式转换</p>
-<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">pair&lt;iterator, bool&gt; insert(const value_type&amp; x);</span><br><span class="line">pair&lt;iterator, bool&gt; insert(value_type&amp;&amp; x);</span><br><span class="line">template&lt;class P&gt; pair&lt;iterator, bool&gt; insert(P&amp;&amp; x);</span><br></pre></td></tr></table></figure>
-
-<h2 id="emplace"><a href="#emplace" class="headerlink" title="emplace"></a>emplace</h2><p>如果想将参数直接传入pair进行in place构造，则需要用到piecewise_construct_t这个空类tag</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="built_in">std</span>::<span class="built_in">complex</span>&lt;<span class="keyword">float</span>&gt;&gt; m;</span><br><span class="line">m.emplace(<span class="built_in">std</span>::piecewise_construct,</span><br><span class="line">          <span class="built_in">std</span>::make_tuple(<span class="string">"hello"</span>),</span><br><span class="line">          <span class="built_in">std</span>::make_tuple(<span class="number">3.4</span>,<span class="number">7.8</span>));</span><br></pre></td></tr></table></figure>
-
-<h2 id="erase的使用注意"><a href="#erase的使用注意" class="headerlink" title="erase的使用注意"></a>erase的使用注意</h2><p>删除multimap中重复元素的第一个：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">multimap</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">...</span><br><span class="line"><span class="keyword">auto</span> pos=coll.find(key);</span><br><span class="line"><span class="keyword">if</span>(pos!=coll.end())</span><br><span class="line">    coll.erase(pos);</span><br></pre></td></tr></table></figure>
-
-<p>遍历删除注意更新迭代器：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos=coll.begin();pos!=coll.end();++pos)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos-&gt;second==value)</span><br><span class="line">        coll.erase(pos);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>若删除了该迭代器，则之后所有迭代器均失效，因此需要多加一道判断更新：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos=coll.begin();pos!=coll.end();)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos-&gt;second==value)</span><br><span class="line">        pos=coll.erase(pos);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ++pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>C++11之前没有返回值，你需要这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span>(<span class="keyword">auto</span> pos=coll.begin();pos!=coll.end();)&#123;</span><br><span class="line">    <span class="keyword">if</span>(pos-&gt;second==value)</span><br><span class="line">        coll.erase(pos++);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ++pos;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="和at运算符"><a href="#和at运算符" class="headerlink" title="[]和at运算符"></a>[]和at运算符</h2><table>
-<thead>
-<tr>
-<th>操作</th>
-<th>作用</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>c[key]</td>
-<td>如果key未在容器中，则先插入一个。返回一个reference指向key的元素（只有non-const map才有）</td>
-</tr>
-<tr>
-<td>c.at(key)</td>
-<td>返回一个reference指向key的元素，没有则抛出out_of_range异常</td>
-</tr>
-</tbody></table>
-<p>operator[]是一个associative array接口，索引不必然是整数</p>
-<p>而且如果容器中没有key元素，则自动插入一个，value根据其default constructor进行默认初始化（因此你要保证有）</p>
-<p>这个有优点也有缺点：</p>
-<ul>
-<li>优点：接口更方便，符合关联式的直观使用</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">map</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>,<span class="keyword">float</span>&gt; coll;</span><br><span class="line">coll[<span class="string">"otto"</span>]=<span class="number">7.7</span>;</span><br><span class="line"><span class="comment">//如果存在，则返回reference</span></span><br><span class="line"><span class="comment">//不存在，自动插入，value默认构造，返回referece指向新元素</span></span><br><span class="line"><span class="comment">//赋值7.7</span></span><br></pre></td></tr></table></figure>
-
-<ul>
-<li>缺点：速度相比insert要慢</li>
-</ul>
-<p>因为新元素要将value初始化后进行真正的赋值，而一般的insert直接赋值，需要考虑value默认初始化的代价</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/14/STL_note/(multi)map/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Cpp_Note/IO library/cppp_ch8" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/">Cpp_Note/IO library/cppp_ch8</a>
-    </h1>
-  
-
-        
-        <a href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/" class="archive-article-date">
-  	<time datetime="2020-11-05T14:37:58.052Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-11-05</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="I-O-library"><a href="#I-O-library" class="headerlink" title="I/O library"></a>I/O library</h1><h2 id="IO-class"><a href="#IO-class" class="headerlink" title="IO class"></a>IO class</h2><table>
-<thead>
-<tr>
-<th>header</th>
-<th>type</th>
-</tr>
-</thead>
-<tbody><tr>
-<td>iostream</td>
-<td>istream，wstream</td>
-</tr>
-<tr>
-<td></td>
-<td>ostream，wostream</td>
-</tr>
-<tr>
-<td></td>
-<td>iostream，wiostream</td>
-</tr>
-<tr>
-<td>fstream</td>
-<td>ifstream，wfstream</td>
-</tr>
-<tr>
-<td></td>
-<td>ofstream，wofstream</td>
-</tr>
-<tr>
-<td></td>
-<td>fstream，wfstream</td>
-</tr>
-<tr>
-<td>sstream</td>
-<td>istringstream，wistringstream</td>
-</tr>
-<tr>
-<td></td>
-<td>ostringstream，wostringstream</td>
-</tr>
-<tr>
-<td></td>
-<td>stringstream，wstringstream</td>
-</tr>
-</tbody></table>
-<p>iostream定义了用于读写流的基本类型<br>fstream定义了读写命名文件的类型<br>sstream定义了读写内存string对象的类型</p>
-<p>由于ifstream和istringstream继承自istream，因此可以如同用istream对象一样地使用它们。<br>类似地，ofstream和ostringstream也是继承自ostream。</p>
-
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/11/05/Cpp_Note/IO%20library/cppp_ch8/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Effective Cpp/Item 5" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -702,480 +361,6 @@
       
         <p class="article-more-link">
           <a class="article-more-a" href="/2020/10/29/Effective%20Cpp/Item%205/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Design pattern/结构型/适配器模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">适配器模式</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:45:49.811Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="适配器（Adapter）"><a href="#适配器（Adapter）" class="headerlink" title="适配器（Adapter）"></a>适配器（Adapter）</h1><h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
-<li><p>结构性设计模式</p>
-</li>
-<li><p>使接口不兼容的对象相互合作</p>
-        
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式/结构型//" class="article-tag-list-link color4">结构型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E9%80%82%E9%85%8D%E5%99%A8%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Design pattern/结构型/桥接模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">桥接模式</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:45:49.810Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="桥接模式（Bridge）"><a href="#桥接模式（Bridge）" class="headerlink" title="桥接模式（Bridge）"></a>桥接模式（Bridge）</h1><h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
-<li><p>结构性设计模式</p>
-</li>
-<li><p>可将一个大类或一系列紧密相关的类拆分为<code>抽象</code>或<code>实现</code>两个独立的层次结构，从而能在开发时分别使用</p>
-        
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式/结构型//" class="article-tag-list-link color4">结构型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E6%A1%A5%E6%8E%A5%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Design pattern/结构型/组合模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">组合模式</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:45:49.810Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="组合模式（Composite）"><a href="#组合模式（Composite）" class="headerlink" title="组合模式（Composite）"></a>组合模式（Composite）</h1><h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
-<li><p>结构型设计模式</p>
-</li>
-<li><p>将对象组合成树状结构，并且能像使用独立对象一样使用它们</p>
-</li>
-</ul>
-<p>故得名<code>对象树（Object Tree）</code></p>
-        
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式/结构型//" class="article-tag-list-link color4">结构型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E7%BB%84%E5%90%88%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Design pattern/结构型/对象之间的关系" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">对象之间的关系</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:45:49.809Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="对象之间的关系"><a href="#对象之间的关系" class="headerlink" title="对象之间的关系"></a>对象之间的关系</h1>
-        
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式/预备知识//" class="article-tag-list-link color5">预备知识</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E5%AF%B9%E8%B1%A1%E4%B9%8B%E9%97%B4%E7%9A%84%E5%85%B3%E7%B3%BB/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Design pattern/结构型/代理模式" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">代理模式</a>
-    </h1>
-  
-
-        
-        <a href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/" class="archive-article-date">
-  	<time datetime="2020-10-29T11:45:49.808Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="代理模式（Proxy）"><a href="#代理模式（Proxy）" class="headerlink" title="代理模式（Proxy）"></a>代理模式（Proxy）</h1><h2 id="特征"><a href="#特征" class="headerlink" title="特征"></a>特征</h2><ul>
-<li>结构型设计模式</li>
-<li>可以提供对象的替代品或其占位符。代理控制着原对象的访问，并允许在将请求提交给对象前后进行一些处理
-        
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">设计模式</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式//" class="article-tag-list-link color5">设计模式</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/设计模式/结构型//" class="article-tag-list-link color4">结构型</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/10/29/Design%20pattern/%E7%BB%93%E6%9E%84%E5%9E%8B/%E4%BB%A3%E7%90%86%E6%A8%A1%E5%BC%8F/">展开全文 >></a>
         </p>
       
 
@@ -1304,9 +489,665 @@
 
 
   
+    <article id="post-文档笔记/Conditianal operator" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/">5.16 Conditianal operator</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/" class="archive-article-date">
+  	<time datetime="2020-10-10T03:50:53.102Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-10</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="条件运算符"><a href="#条件运算符" class="headerlink" title="条件运算符"></a>条件运算符</h1><p>【该笔记内容参考的是文档n3337/5.16】</p>
+        
+          <a class="article-more-a" href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C-文档笔记//" class="article-tag-list-link color3">C++文档笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Tree/BinarySearchTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/09/28/Tree/BinarySearchTree/">BinarySearchTree</a>
+    </h1>
+  
+
+        
+        <a href="/2020/09/28/Tree/BinarySearchTree/" class="archive-article-date">
+  	<time datetime="2020-09-28T12:00:27.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree&lt;root&lt;right subtree。</p>
+        
+          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">查找</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/查找//" class="article-tag-list-link color3">查找</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/查找/树//" class="article-tag-list-link color2">树</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cpp_Note/Black magic/SFINAE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/">SFINAE</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/" class="archive-article-date">
+  	<time datetime="2020-08-31T12:50:13.861Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="Substitution-Failure-is-not-an-Error"><a href="#Substitution-Failure-is-not-an-Error" class="headerlink" title="Substitution Failure is not an Error"></a>Substitution Failure is not an Error</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>SFINAE技术是指在编译期将函数模板的形参换成实参，如果替换失败不会算作编译错误，而是继续寻找合适的特化版本，直到所有的模板版本都替换失败编译器才报错。</p>
+        
+          <a class="article-more-a" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Black magic</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/template//" class="article-tag-list-link color4">template</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Heap/BinaryHeap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/08/28/Heap/BinaryHeap/">BinaryHeap</a>
+    </h1>
+  
+
+        
+        <a href="/2020/08/28/Heap/BinaryHeap/" class="archive-article-date">
+  	<time datetime="2020-08-28T06:11:57.254Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。</p>
+        
+          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Heap/BinomialQueue" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/24/Heap/BinomialQueue/">Binomial Queues</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/24/Heap/BinomialQueue/" class="archive-article-date">
+  	<time datetime="2020-07-24T14:36:47.243Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-24</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="二项队列-Binomial-Queues"><a href="#二项队列-Binomial-Queues" class="headerlink" title="二项队列(Binomial Queues)"></a>二项队列(Binomial Queues)</h1><h2 id="名字由来"><a href="#名字由来" class="headerlink" title="名字由来"></a>名字由来</h2><p>首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的<strong>森林(forest)</strong>。</p>
+        
+          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Heap/Lheap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/22/Heap/Lheap/">Leftist heap</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/22/Heap/Lheap/" class="archive-article-date">
+  	<time datetime="2020-07-22T03:06:06.568Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-22</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="左式堆（Leftist-heap）"><a href="#左式堆（Leftist-heap）" class="headerlink" title="左式堆（Leftist heap）"></a>左式堆（Leftist heap）</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>二叉堆不能有效地支持合并操作，而且只使用一个数组的话，我们需要将一个数组复制到另一个数组中，时间复杂度为O(n)。因此我们通过链式来设计一个新的方便合并的堆，这就是左式堆。</p>
+        
+          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Effective Cpp/item 25" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/07/21/Effective%20Cpp/item%2025/">item 25:Consider supprot for a non-throwing swap</a>
+    </h1>
+  
+
+        
+        <a href="/2020/07/21/Effective%20Cpp/item%2025/" class="archive-article-date">
+  	<time datetime="2020-07-21T03:44:51.556Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-21</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="考虑写出一个不抛异常的swap函数"><a href="#考虑写出一个不抛异常的swap函数" class="headerlink" title="考虑写出一个不抛异常的swap函数"></a>考虑写出一个不抛异常的swap函数</h1><p>swap作为STL的一部分，也是异常安全性能编程的脊柱以及用来处理自我赋值的常见机制。</p>
+        
+          <a class="article-more-a" href="/2020/07/21/Effective%20Cpp/item%2025/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C/Designs-and-Declarations//" class="article-tag-list-link color5">Designs and Declarations</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/07/21/Effective%20Cpp/item%2025/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
   
     <nav id="page-nav">
-      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
+      <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1478,10 +1319,6 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">数学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">设计模式</a>
               </li>
              
               <li class="article-tag-list-item">
