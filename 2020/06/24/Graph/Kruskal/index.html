@@ -258,17 +258,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Kruskal"><a href="#Kruskal" class="headerlink" title="Kruskal"></a>Kruskal</h1><p>kruskal与prim不同，是基于边去构造最小生成树，所以适用于边比较少的稀疏图。<br>kruskal需要边的集合，我们称其为边集数组。边集数组按从小到大的顺序排序，方便构造最小生成树。</p>
-<a id="more"></a>
-<h2 id="边集数组"><a href="#边集数组" class="headerlink" title="边集数组"></a>边集数组</h2><p>结构体</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> begin, end, weight;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(edge <span class="keyword">const</span>&amp; rhs)</span><br><span class="line">    &#123;<span class="keyword">return</span> <span class="keyword">this</span>-&gt;weight &lt; rhs.weight;&#125;</span><br><span class="line">&#125;edges[maxsize * (maxsize - <span class="number">1</span>)];</span><br></pre></td></tr></table></figure>
-<p>边集数组构造函数</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_edges_set</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nume; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; u &gt;&gt; v &gt;&gt; w;</span><br><span class="line">        edges[a].begin = u - <span class="string">'A'</span>;</span><br><span class="line">        edges[a].end = v - <span class="string">'A'</span>;</span><br><span class="line">        edges[a++].weight = w;</span><br><span class="line">    &#125;</span><br><span class="line">    sort(edges, edges + a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h2 id="构造最小生成树"><a href="#构造最小生成树" class="headerlink" title="构造最小生成树"></a>构造最小生成树</h2><p>边集数组构造好，vector中根据权值从小到大排序。我们沿着下标选择begin和end连线来构造最小生成树，但是，在连接过程中可能出现成环的现象，这是由于父节点重复了，孩子想与父节点连在一起或是孩子想连在一起而造成的一种严重错误。<br>我们可以通过并查集来避开成环情况。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findset</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (fa[x] == x) ? x : findset(fa[x]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> bb = findset(b);</span><br><span class="line">    <span class="keyword">int</span> ee = findset(e);</span><br><span class="line">    <span class="keyword">if</span> (bb != ee)</span><br><span class="line">        fa[bb] = ee;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxsize; i++)</span><br><span class="line">        fa[i] = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Kruskal</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kruskal</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;&amp; ET)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nume; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> uu = findset(edges[i].begin);</span><br><span class="line">        <span class="keyword">int</span> vv = findset(edges[i].end);</span><br><span class="line">        <span class="keyword">if</span> (uu != vv)</span><br><span class="line">        &#123;</span><br><span class="line">            Union(edges[i].begin, edges[i].end);</span><br><span class="line">            ET.push_back(make_pair(edges[i].begin, edges[i].end));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="Kruskal"><a href="#Kruskal" class="headerlink" title="Kruskal"></a>Kruskal</h1><p>kruskal与prim不同，是基于边去构造最小生成树，所以适用于边比较少的稀疏图。<br>kruskal需要边的集合，我们称其为边集数组。边集数组按从小到大的顺序排序，方便构造最小生成树。<br><a id="more"></a></p>
+<h2 id="边集数组"><a href="#边集数组" class="headerlink" title="边集数组"></a>边集数组</h2><p>结构体<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> begin, end, weight;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(edge <span class="keyword">const</span>&amp; rhs)</span><br><span class="line">    &#123;<span class="keyword">return</span> <span class="keyword">this</span>-&gt;weight &lt; rhs.weight;&#125;</span><br><span class="line">&#125;edges[maxsize * (maxsize - <span class="number">1</span>)];</span><br></pre></td></tr></table></figure><br>边集数组构造函数<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_edges_set</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nume; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; u &gt;&gt; v &gt;&gt; w;</span><br><span class="line">        edges[a].begin = u - <span class="string">'A'</span>;</span><br><span class="line">        edges[a].end = v - <span class="string">'A'</span>;</span><br><span class="line">        edges[a++].weight = w;</span><br><span class="line">    &#125;</span><br><span class="line">    sort(edges, edges + a);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="构造最小生成树"><a href="#构造最小生成树" class="headerlink" title="构造最小生成树"></a>构造最小生成树</h2><p>边集数组构造好，vector中根据权值从小到大排序。我们沿着下标选择begin和end连线来构造最小生成树，但是，在连接过程中可能出现成环的现象，这是由于父节点重复了，孩子想与父节点连在一起或是孩子想连在一起而造成的一种严重错误。<br>我们可以通过并查集来避开成环情况。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findset</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (fa[x] == x) ? x : findset(fa[x]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> bb = findset(b);</span><br><span class="line">    <span class="keyword">int</span> ee = findset(e);</span><br><span class="line">    <span class="keyword">if</span> (bb != ee)</span><br><span class="line">        fa[bb] = ee;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxsize; i++)</span><br><span class="line">        fa[i] = i;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>Kruskal<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kruskal</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;&amp; ET)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nume; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> uu = findset(edges[i].begin);</span><br><span class="line">        <span class="keyword">int</span> vv = findset(edges[i].end);</span><br><span class="line">        <span class="keyword">if</span> (uu != vv)</span><br><span class="line">        &#123;</span><br><span class="line">            Union(edges[i].begin, edges[i].end);</span><br><span class="line">            ET.push_back(make_pair(edges[i].begin, edges[i].end));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;string&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;vector&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;utility&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;algorithm&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"><span class="function"><span class="built_in">string</span> <span class="keyword">const</span> <span class="title">alphabet</span><span class="params">(<span class="string">"ABCDEFGHIJkLMNOPQRSTUVWXYZ"</span>)</span></span>;</span><br><span class="line"><span class="keyword">int</span> <span class="keyword">const</span> maxsize = <span class="number">26</span>;</span><br><span class="line"><span class="keyword">int</span> fa[maxsize];</span><br><span class="line"><span class="keyword">int</span> nume, w;</span><br><span class="line"><span class="keyword">char</span> u, v;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">edge</span> &#123;</span></span><br><span class="line">    <span class="keyword">int</span> begin, end, weight;</span><br><span class="line">    <span class="keyword">bool</span> <span class="keyword">operator</span>&lt;(edge <span class="keyword">const</span>&amp; rhs)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">this</span>-&gt;weight &lt; rhs.weight;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;edges[maxsize * (maxsize - <span class="number">1</span>)];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">get_edges_set</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> a = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nume; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span> &gt;&gt; u &gt;&gt; v &gt;&gt; w;</span><br><span class="line">        edges[a].begin = u - <span class="string">'A'</span>;</span><br><span class="line">        edges[a].end = v - <span class="string">'A'</span>;</span><br><span class="line">        edges[a++].weight = w;</span><br><span class="line">    &#125;</span><br><span class="line">    sort(edges, edges + a);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findset</span><span class="params">(<span class="keyword">int</span> x)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> (fa[x] == x) ? x : findset(fa[x]);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> b, <span class="keyword">int</span> e)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> bb = findset(b);</span><br><span class="line">    <span class="keyword">int</span> ee = findset(e);</span><br><span class="line">    <span class="keyword">if</span> (bb != ee)</span><br><span class="line">        fa[bb] = ee;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">init</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; maxsize; i++)</span><br><span class="line">        fa[i] = i;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">kruskal</span><span class="params">(<span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt;&amp; ET)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; nume; i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> uu = findset(edges[i].begin);</span><br><span class="line">        <span class="keyword">int</span> vv = findset(edges[i].end);</span><br><span class="line">        <span class="keyword">if</span> (uu != vv)</span><br><span class="line">        &#123;</span><br><span class="line">            Union(edges[i].begin, edges[i].end);</span><br><span class="line">            ET.push_back(make_pair(edges[i].begin, edges[i].end));</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">while</span> (<span class="built_in">cin</span> &gt;&gt; nume &amp;&amp; nume &gt; <span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        init();</span><br><span class="line">        <span class="built_in">vector</span>&lt;pair&lt;<span class="keyword">int</span>, <span class="keyword">int</span>&gt;&gt; ET;</span><br><span class="line">        get_edges_set();</span><br><span class="line">        kruskal(ET);</span><br><span class="line"></span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"&#123;"</span>;</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">auto</span> i=ET.begin();i!=ET.end();i++)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">if</span>(i!=prev(ET.end()))</span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; alphabet[(*i).first] &lt;&lt; alphabet[(*i).second] &lt;&lt; <span class="string">","</span>;</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">            <span class="built_in">cout</span> &lt;&lt; alphabet[(*i).first] &lt;&lt; alphabet[(*i).second] ;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"&#125;"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>Tn=O(e)·O(sort)+O(e)·α(v)<br>α是阿克曼的反函数，近乎常数（不超过5）<br>因此Tn=O(eloge);</p>
 
@@ -560,15 +552,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -576,55 +560,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -636,6 +584,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -644,7 +624,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

@@ -259,28 +259,19 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Using-声明"><a href="#Using-声明" class="headerlink" title="Using 声明"></a>Using 声明</h1><h2 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h2><blockquote>
-<p>Introduces a name that is defined elsewhere into the <strong>declarative region</strong> where this using-declaration appears.</p>
-</blockquote>
-<a id="more"></a>
-<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><blockquote>
-<p>Using-declarations can be used to introduce namespace members into other namespaces and block scopes, or to introduce base class members into derived class definitions.</p>
+<p>Introduces a name that is defined elsewhere into the <strong>declarative region</strong> where this using-declaration appears.<br><a id="more"></a></p>
+<h2 id="作用"><a href="#作用" class="headerlink" title="作用"></a>作用</h2><p>Using-declarations can be used to introduce namespace members into other namespaces and block scopes, or to introduce base class members into derived class definitions.</p>
 </blockquote>
 <p>using 声明是实实在在的引入了这个namespace member，这个声明是可以加入name lookup的查找集的，这点与using指令是不同的。</p>
 <h2 id="形式"><a href="#形式" class="headerlink" title="形式"></a>形式</h2><blockquote>
-<p>A using-declaration with more than one using-declarator is equivalent to a corresponding sequence of using-declarations with one using-declarator.</p>
+<p>A using-declaration with more than one using-declarator is equivalent to a corresponding sequence of using-declarations with one using-declarator.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//using declarotor list</span></span><br><span class="line"><span class="keyword">using</span> name,name,name;</span><br><span class="line"><span class="comment">//equivalent:more than one usinng declarator</span></span><br><span class="line"><span class="keyword">using</span> name;<span class="keyword">using</span> name;<span class="keyword">using</span> name;</span><br></pre></td></tr></table></figure></p>
+<h2 id="引入名字的使用"><a href="#引入名字的使用" class="headerlink" title="引入名字的使用"></a>引入名字的使用</h2><p>Names introduced into a namespace scope by a using-declaration can be used just like any other names, including qualified lookup from other scopes:</p>
 </blockquote>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//using declarotor list</span></span><br><span class="line"><span class="keyword">using</span> name,name,name;</span><br><span class="line"><span class="comment">//equivalent:more than one usinng declarator</span></span><br><span class="line"><span class="keyword">using</span> name;<span class="keyword">using</span> name;<span class="keyword">using</span> name;</span><br></pre></td></tr></table></figure>
-<h2 id="引入名字的使用"><a href="#引入名字的使用" class="headerlink" title="引入名字的使用"></a>引入名字的使用</h2><blockquote>
-<p>Names introduced into a namespace scope by a using-declaration can be used just like any other names, including qualified lookup from other scopes:</p>
-</blockquote>
-<p>引入的名字使用和其他名字并无二样，限定性名字也是如此。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> X &#123;</span><br><span class="line">    <span class="keyword">using</span> ::f; <span class="comment">// global f is now visible as ::X::f</span></span><br><span class="line">    <span class="keyword">using</span> A::g; <span class="comment">// A::g is now visible as ::X::g</span></span><br><span class="line">    <span class="keyword">using</span> A::g, A::g; <span class="comment">// (C++17) OK: double declaration allowed at namespace scope</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X::f(); <span class="comment">// calls ::f</span></span><br><span class="line">    X::g(); <span class="comment">// calls A::g</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p>引入的名字使用和其他名字并无二样，限定性名字也是如此。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> X &#123;</span><br><span class="line">    <span class="keyword">using</span> ::f; <span class="comment">// global f is now visible as ::X::f</span></span><br><span class="line">    <span class="keyword">using</span> A::g; <span class="comment">// A::g is now visible as ::X::g</span></span><br><span class="line">    <span class="keyword">using</span> A::g, A::g; <span class="comment">// (C++17) OK: double declaration allowed at namespace scope</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    X::f(); <span class="comment">// calls ::f</span></span><br><span class="line">    X::g(); <span class="comment">// calls A::g</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="声明点后的namspace扩张"><a href="#声明点后的namspace扩张" class="headerlink" title="声明点后的namspace扩张"></a>声明点后的namspace扩张</h2><blockquote>
 <p>If, after the using-declaration was used to take a member from a namespace, the namespace is extended and additional declarations for the same name are introduced, those additional declarations do not become visible through the using-declaration (in contrast with using-directive). One exception is when a using-declaration names a class template: partial specializations introduced later are effectively visible, because their lookup proceeds through the primary template.</p>
 </blockquote>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">using</span> A::f; <span class="comment">// ::f is now a synonym for A::f(int)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> A &#123; <span class="comment">// namespace extension</span></span><br><span class="line">   <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span>)</span></span>; <span class="comment">// does not change what ::f means</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">foo</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    f(<span class="string">'a'</span>); <span class="comment">// calls f(int), even though f(char) exists.</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">bar</span><span class="params">()</span> </span>&#123;</span><br><span class="line">   <span class="keyword">using</span> A::f; <span class="comment">// this f is a synonym for both A::f(int) and A::f(char)</span></span><br><span class="line">   f(<span class="string">'a'</span>); <span class="comment">// calls f(char)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="隐藏和重载一往如旧"><a href="#隐藏和重载一往如旧" class="headerlink" title="隐藏和重载一往如旧"></a>隐藏和重载一往如旧</h2><blockquote>
 <p>All restrictions on regular declarations of the same names, hiding, and overloading rules apply to using-declarations:</p>
 </blockquote>
@@ -582,15 +573,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -598,55 +581,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -658,6 +605,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -666,7 +645,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

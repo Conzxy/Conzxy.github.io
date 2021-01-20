@@ -259,8 +259,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="并查集（Union-Find-Set）"><a href="#并查集（Union-Find-Set）" class="headerlink" title="并查集（Union-Find Set）"></a>并查集（Union-Find Set）</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>并查集正如其名，分为<strong>Union</strong>和<strong>Find</strong>,即合并和查找。</p>
-<a id="more"></a>
+        <h1 id="并查集（Union-Find-Set）"><a href="#并查集（Union-Find-Set）" class="headerlink" title="并查集（Union-Find Set）"></a>并查集（Union-Find Set）</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>并查集正如其名，分为<strong>Union</strong>和<strong>Find</strong>,即合并和查找。<br><a id="more"></a></p>
 <h3 id="代表元"><a href="#代表元" class="headerlink" title="代表元"></a>代表元</h3><p>我们用集合中某个元素来代表这个集合，称为<strong>代表元</strong>。<br>一个集合中的所有元素形成以代表元为根结点的树形结构。<br>对于每一个元素parent[x]指向x在树形结构中的父节点，如果x是根结点，则令parent[x]=x。</p>
 <h3 id="查找操作-Find"><a href="#查找操作-Find" class="headerlink" title="查找操作(Find)"></a>查找操作(Find)</h3><p>就是依据parent[x]一路往上爬，最后找到代表元，从而确定自己所在的集合。</p>
 <h3 id="路径压缩（查找优化）"><a href="#路径压缩（查找优化）" class="headerlink" title="路径压缩（查找优化）"></a>路径压缩（查找优化）</h3><p>为了加快查找速度，我们把x到根结点上的路径上的所有结点的parent都设为根结点。</p>
@@ -274,19 +273,9 @@
 </ul>
 <p>有的题里面集合的数据就是这个集合的标号，也就是说只包含2和3，1省略了<br>初始化的时候，<code>一个集合的parent都是这个集合自己的标号</code>。没有跟它同类的集合，那么这个集合的源头只能是自己了。</p>
 <p>表示方法有两种，结构体和数组，题目简单用数组遍历，复杂则用结构体有条理些。</p>
-<h3 id="查找函数"><a href="#查找函数" class="headerlink" title="查找函数"></a>查找函数</h3><p>查找就是要找到parent的源头，</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(fa[i]==i)</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      Find(fa[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>路径压缩：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">UniFind</span><span class="params">(<span class="keyword">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> root=a;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(root!=fa[a]) <span class="comment">//Find the root</span></span><br><span class="line">      root=<span class="built_in">set</span>[a];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span>(a!=root)      <span class="comment">//compress the path</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">int</span> parentof_a=fa[a];  <span class="comment">//记录a的父结点</span></span><br><span class="line">        fa[a]=root;            <span class="comment">//令当前结点的父节点为root</span></span><br><span class="line">        a=parentof_a;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>还有一种递归写法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">UniFind</span><span class="params">(<span class="keyword">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fa[a]==a?a:(fa[a]=UniFind(fa[a]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<h3 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h3><p><img src="https://img-blog.csdnimg.cn/20200611162913766.png" alt=""><br>最简单的合并只涉及代表元：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> x=Find[i];</span><br><span class="line">  <span class="keyword">int</span> y=Find[j];</span><br><span class="line">  <span class="keyword">if</span>(x==y)  <span class="keyword">return</span> ;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    fa(x)=y;<span class="comment">//or fa[y]=x;</span></span><br><span class="line">    <span class="comment">//没有考虑rank</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
-<p>若涉及rank，则如下：<br></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x=Find[a];</span><br><span class="line">    <span class="keyword">int</span> y=Find[b];</span><br><span class="line">    <span class="keyword">if</span>(x==y) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(rank[x]&gt;rank[y])</span><br><span class="line">      fa[y]=x;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(rank[x]==rank[y]) rank[y]++;<span class="comment">//新结点的深度加1</span></span><br><span class="line">      fa[x]=y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>rank小的向rank大的靠拢，以至于树不会退化严重。</p>
+<h3 id="查找函数"><a href="#查找函数" class="headerlink" title="查找函数"></a>查找函数</h3><p>查找就是要找到parent的源头，<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">Find</span><span class="params">(<span class="keyword">int</span> i)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(fa[i]==i)</span><br><span class="line">      <span class="keyword">return</span> i;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      Find(fa[i]);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>路径压缩：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">UniFind</span><span class="params">(<span class="keyword">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> root=a;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(root!=fa[a]) <span class="comment">//Find the root</span></span><br><span class="line">      root=<span class="built_in">set</span>[a];</span><br><span class="line"></span><br><span class="line">      <span class="keyword">while</span>(a!=root)      <span class="comment">//compress the path</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">int</span> parentof_a=fa[a];  <span class="comment">//记录a的父结点</span></span><br><span class="line">        fa[a]=root;            <span class="comment">//令当前结点的父节点为root</span></span><br><span class="line">        a=parentof_a;</span><br><span class="line">      &#125;</span><br><span class="line"></span><br><span class="line">      <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>还有一种递归写法：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">UniFind</span><span class="params">(<span class="keyword">int</span> a)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> fa[a]==a?a:(fa[a]=UniFind(fa[a]));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h3><p><img src="https://img-blog.csdnimg.cn/20200611162913766.png" alt=""><br>最简单的合并只涉及代表元：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">int</span> x=Find[i];</span><br><span class="line">  <span class="keyword">int</span> y=Find[j];</span><br><span class="line">  <span class="keyword">if</span>(x==y)  <span class="keyword">return</span> ;</span><br><span class="line">  <span class="keyword">else</span></span><br><span class="line">    fa(x)=y;<span class="comment">//or fa[y]=x;</span></span><br><span class="line">    <span class="comment">//没有考虑rank</span></span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>若涉及rank，则如下：<br><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Union</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> x=Find[a];</span><br><span class="line">    <span class="keyword">int</span> y=Find[b];</span><br><span class="line">    <span class="keyword">if</span>(x==y) <span class="keyword">return</span>;</span><br><span class="line">    <span class="keyword">if</span>(rank[x]&gt;rank[y])</span><br><span class="line">      fa[y]=x;</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">if</span>(rank[x]==rank[y]) rank[y]++;<span class="comment">//新结点的深度加1</span></span><br><span class="line">      fa[x]=y;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>rank小的向rank大的靠拢，以至于树不会退化严重。</p>
 <h2 id="用途"><a href="#用途" class="headerlink" title="用途"></a>用途</h2><ul>
 <li>kruskal算法中增加一条边判断是否成环</li>
 <li>维护连通性。判断两个点是否在同一个连通块中，例如有向图中判断其是否为有向树。</li>
@@ -572,15 +561,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -588,55 +569,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -648,6 +593,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -656,7 +633,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

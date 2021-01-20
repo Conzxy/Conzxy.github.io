@@ -288,16 +288,12 @@
 <p>C++ FAQ:<br>Here’s the rule: the compiler does not look in dependent base classes (like A<T>) when looking up non-dependent names (like f).</p>
 </blockquote>
 <p>合理的解释：B的模板定义阶段，B的基类A<T>依赖于模板参数T，此时，A<T>对于B来说是不可见的（还未实例化），此时编译器认为这是个non-member函数；<br>而到了B的模板实例化阶段，编译器已经认为这个函数是个non-member函数，便不会到基类中寻找名字了；</p>
-<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>1.</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">adl</span><span class="params">(T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"T"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">call_adl</span><span class="params">(T t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  adl(S());</span><br><span class="line">  adl(t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">adl</span><span class="params">(S)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"S"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  call_adl(S());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<h2 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h2><p>1.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">adl</span><span class="params">(T)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"T"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">S</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">call_adl</span><span class="params">(T t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  adl(S());</span><br><span class="line">  adl(t);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">adl</span><span class="params">(S)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="built_in">cout</span> &lt;&lt; <span class="string">"S"</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  call_adl(S());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <blockquote>
 <p>Why the result is “TS”?</p>
 </blockquote>
 <p>adl(S())是non-dependent name，只是normal lookup，non-template版本在被调用点以下，那么在实例化阶段才会可见，此时只有template版本可以绑定，所以输出”T”。<br>adl(t)是dependent name，按ADL查找，那么有两个函数可以匹配，但非模板优于模板，所以输出”S”。<br>如果将非模板版本调至调用点之前，则输出”SS”</p>
-<p>2.</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span>)</span></span>; <span class="comment">// first declaration of f</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">g</span>(<span class="title">T</span> <span class="title">t</span>) &#123;</span></span><br><span class="line">    f(<span class="number">1</span>);    <span class="comment">// non-dependent name: lookup finds ::f(char) and binds it now</span></span><br><span class="line">    f(T(<span class="number">1</span>)); <span class="comment">// dependent name: lookup postponed</span></span><br><span class="line">    f(t);    <span class="comment">// dependent name: lookup postponed</span></span><br><span class="line"><span class="comment">//  dd++;    // non-dependent name: lookup finds no declaration</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> E &#123; e &#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(E)</span></span>;   <span class="comment">// second declaration of f</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span>)</span></span>; <span class="comment">// third declaration of f</span></span><br><span class="line"><span class="keyword">double</span> dd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    g(e);  <span class="comment">// instantiates g&lt;E&gt;, at which point</span></span><br><span class="line">           <span class="comment">// the second and the third uses of the name 'f'</span></span><br><span class="line">           <span class="comment">// are looked up and find ::f(char) (by lookup) and ::f(E) (by ADL)</span></span><br><span class="line">           <span class="comment">// then overload resolution chooses ::f(E).</span></span><br><span class="line">           <span class="comment">// This calls f(char), then f(E) twice</span></span><br><span class="line">    g(<span class="number">32</span>); <span class="comment">// instantiates g&lt;int&gt;, at which point</span></span><br><span class="line">           <span class="comment">// the second and the third uses of the name 'f'</span></span><br><span class="line">           <span class="comment">// are looked up and find ::f(char) only</span></span><br><span class="line">           <span class="comment">// then overload resolution chooses ::f(char)</span></span><br><span class="line">           <span class="comment">// This calls f(char) three times</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
+<p>2.<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">char</span>)</span></span>; <span class="comment">// first declaration of f</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="class"><span class="keyword">class</span> <span class="title">T</span>&gt;</span></span><br><span class="line"><span class="class"><span class="title">void</span> <span class="title">g</span>(<span class="title">T</span> <span class="title">t</span>) &#123;</span></span><br><span class="line">    f(<span class="number">1</span>);    <span class="comment">// non-dependent name: lookup finds ::f(char) and binds it now</span></span><br><span class="line">    f(T(<span class="number">1</span>)); <span class="comment">// dependent name: lookup postponed</span></span><br><span class="line">    f(t);    <span class="comment">// dependent name: lookup postponed</span></span><br><span class="line"><span class="comment">//  dd++;    // non-dependent name: lookup finds no declaration</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">enum</span> E &#123; e &#125;;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(E)</span></span>;   <span class="comment">// second declaration of f</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span>)</span></span>; <span class="comment">// third declaration of f</span></span><br><span class="line"><span class="keyword">double</span> dd;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    g(e);  <span class="comment">// instantiates g&lt;E&gt;, at which point</span></span><br><span class="line">           <span class="comment">// the second and the third uses of the name 'f'</span></span><br><span class="line">           <span class="comment">// are looked up and find ::f(char) (by lookup) and ::f(E) (by ADL)</span></span><br><span class="line">           <span class="comment">// then overload resolution chooses ::f(E).</span></span><br><span class="line">           <span class="comment">// This calls f(char), then f(E) twice</span></span><br><span class="line">    g(<span class="number">32</span>); <span class="comment">// instantiates g&lt;int&gt;, at which point</span></span><br><span class="line">           <span class="comment">// the second and the third uses of the name 'f'</span></span><br><span class="line">           <span class="comment">// are looked up and find ::f(char) only</span></span><br><span class="line">           <span class="comment">// then overload resolution chooses ::f(char)</span></span><br><span class="line">           <span class="comment">// This calls f(char) three times</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="为什么要分两次查找"><a href="#为什么要分两次查找" class="headerlink" title="为什么要分两次查找"></a>为什么要分两次查找</h2><blockquote>
 <p>What is the reason for this splitting name lookup into phases? For one thing, we want names to be looked up early, <strong>to spot errors when a template is parsed, rather than used.</strong> However, dependent names simply cannot be looked up before the template arguments are known. Therefore, only nondependent names are bound at the point of definition of a template, and dependent names are bound at the point of instantiation, when a template is actually used.</p>
 </blockquote>
@@ -591,15 +587,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -607,55 +595,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -667,6 +619,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -675,7 +659,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

@@ -260,12 +260,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>希尔排序本质也是插入排序，又称缩小增量排序但效率打破了O(n^2)。<br>希尔排序是将待排序序列分成若干个小序列，并对这些小序列进行直接插入排序，待整个序列都保持“基本有序”时再对整体进行一次直接插入排序。  </p>
-<a id="more"></a>
-<p><img src="https://img-blog.csdnimg.cn/20200625091826558.png" alt=""></p>
+        <h1 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>希尔排序本质也是插入排序，又称缩小增量排序但效率打破了O(n^2)。<br>希尔排序是将待排序序列分成若干个小序列，并对这些小序列进行直接插入排序，待整个序列都保持“基本有序”时再对整体进行一次直接插入排序。<br><a id="more"></a><br><img src="https://img-blog.csdnimg.cn/20200625091826558.png" alt=""></p>
 <h2 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h2><p><img src="https://img-blog.csdnimg.cn/20200625091838988.png" alt=""><br>上面这个示意图正是希尔排序的实例，希尔排序通过每一小块的直接插入排序，并缩小增量，对更小的块进行直接插入排序，从而最后得到的必然是基本有序的序列，再进行一次直接插入排序，从而确定整个序列。</p>
-<h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><p>采用的是除2法</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShellSort</span><span class="params">(List &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,temp;</span><br><span class="line">    <span class="keyword">int</span> d=L.size/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(d&gt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">for</span>(i=d;i&lt;L.size;i++)</span><br><span class="line">      &#123;</span><br><span class="line">        temp=L[i];</span><br><span class="line">        <span class="keyword">for</span>(j=i-d;j&gt;=<span class="number">0</span>&amp;&amp;temp&lt;L[j];j-=d)</span><br><span class="line">        &#123;</span><br><span class="line">          L[j+d]=L[j];</span><br><span class="line">        &#125;</span><br><span class="line">        L[j+d]=temp;    <span class="comment">//因为j-=d所以+d</span></span><br><span class="line">      &#125;</span><br><span class="line">      d=d/<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><p>采用的是除2法<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">ShellSort</span><span class="params">(List &amp;L)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i,j,temp;</span><br><span class="line">    <span class="keyword">int</span> d=L.size/<span class="number">2</span>;</span><br><span class="line">    <span class="keyword">while</span>(d&gt;<span class="number">0</span>)</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">for</span>(i=d;i&lt;L.size;i++)</span><br><span class="line">      &#123;</span><br><span class="line">        temp=L[i];</span><br><span class="line">        <span class="keyword">for</span>(j=i-d;j&gt;=<span class="number">0</span>&amp;&amp;temp&lt;L[j];j-=d)</span><br><span class="line">        &#123;</span><br><span class="line">          L[j+d]=L[j];</span><br><span class="line">        &#125;</span><br><span class="line">        L[j+d]=temp;    <span class="comment">//因为j-=d所以+d</span></span><br><span class="line">      &#125;</span><br><span class="line">      d=d/<span class="number">2</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2><p> 希尔排序的时间复杂度现在依然是个数学难题，不过肯定比冒泡、选择这些用空间换时间的要好，空间复杂度为O(1)。</p>
 
       
@@ -548,15 +545,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -564,55 +553,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -624,6 +577,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -632,7 +617,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

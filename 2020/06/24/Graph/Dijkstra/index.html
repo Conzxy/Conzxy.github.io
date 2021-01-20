@@ -261,8 +261,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h1><p>Dijkstra是一种求得从一个顶点出发到达终点最短路径的算法。<br>Dijkstra本质就是贪心算法，它不是一次求得从起点到终点的最短路径，而是一步步求得它们之间顶点的最短路径，基于已经求出的最短路径的基础上，求得更远顶点的最短路径，最终得到你要的结果。  </p>
-<a id="more"></a>
+        <h1 id="Dijkstra"><a href="#Dijkstra" class="headerlink" title="Dijkstra"></a>Dijkstra</h1><p>Dijkstra是一种求得从一个顶点出发到达终点最短路径的算法。<br>Dijkstra本质就是贪心算法，它不是一次求得从起点到终点的最短路径，而是一步步求得它们之间顶点的最短路径，基于已经求出的最短路径的基础上，求得更远顶点的最短路径，最终得到你要的结果。<br><a id="more"></a></p>
 <h2 id="引入概念"><a href="#引入概念" class="headerlink" title="引入概念"></a>引入概念</h2><h3 id="点权："><a href="#点权：" class="headerlink" title="点权："></a>点权：</h3><p>点权值就是源点到该顶点的最短路径（贪心算法必然的结果），下面的D和dist都是存储点权值的vector，将它们输出可以得到源点到各顶点的最短路径。</p>
 <h3 id="Dijkstra实现关键——松弛操作"><a href="#Dijkstra实现关键——松弛操作" class="headerlink" title="Dijkstra实现关键——松弛操作"></a>Dijkstra实现关键——松弛操作</h3><p>松弛操作是Dijkstra算法的基础操作：如果存在一条从u到v的边，那么从s到v的一条新路径是将边 w(u,v)添加到从s到u的路径尾部来拓展一条从s到v的路径。这条路径的长度是d[u]+w(u,v)。如果这个值比目前已知的d[v]的值要小，那么可以用这个值来替代当前d[v]中的值。松弛边的操作一直运行到所有的d[v]都代表从s到v的最短路径的长度值。松弛操作正是贪心算法的体现。<br>PS:d[x]表示的是源点到x的最短路径。</p>
 <h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><ul>
@@ -272,19 +271,16 @@
 </ul>
 <h2 id="动态演示"><a href="#动态演示" class="headerlink" title="动态演示"></a>动态演示</h2><p><img src="https://img-blog.csdnimg.cn/20200603154824515.gif" alt=""><br>（尽管图上没有显示4和5out，但实际上是要pop的，而且4还要去访问下5，而5的邻接边的顶点都已经访问过了，比较是必然失败的，可设置bool数组记录访问过的顶点来避免重复的比较）</p>
 <h2 id="实现代码"><a href="#实现代码" class="headerlink" title="实现代码"></a>实现代码</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//direct是有向依据，numv是顶点个数，nume是边数</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">getMatrix</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; &amp;g,<span class="keyword">int</span> direct,<span class="keyword">int</span> numv,<span class="keyword">int</span> nume)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;numv;i++)</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;numv;j++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(i==j)</span><br><span class="line">            g[i].push_back(<span class="number">0</span>);</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            g[i].push_back(INF);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nume;i++)</span><br><span class="line">    &#123;   </span><br><span class="line">        <span class="keyword">int</span> u,v,w;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;u&gt;&gt;v&gt;&gt;w;</span><br><span class="line">        <span class="keyword">if</span>(direct==<span class="number">1</span>)</span><br><span class="line">            g[u<span class="number">-1</span>][v<span class="number">-1</span>]=w;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">            g[u<span class="number">-1</span>][v<span class="number">-1</span>]=g[v<span class="number">-1</span>][u<span class="number">-1</span>]=w;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra</span><span class="params">(<span class="keyword">int</span> numv,<span class="keyword">int</span> v,<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&amp; d,<span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt;&amp; p,<span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="keyword">const</span>&amp;g)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> min,k;  </span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">final</span><span class="params">(numv,<span class="literal">false</span>)</span></span>;     <span class="comment">//记录访问过的顶点</span></span><br><span class="line">    d[v]=<span class="number">0</span>;                             <span class="comment">//v到v的距离为0</span></span><br><span class="line">    p.insert(v+<span class="number">1</span>);                      <span class="comment">//存储源点到终点最短路径的顶点</span></span><br><span class="line">    <span class="keyword">final</span>[v]=<span class="literal">true</span>;                      <span class="comment">//v不需要再访问了=&gt;防止吃回头草</span></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;numv;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      d[i]=g[v][i];                     <span class="comment">//记录v的临界边</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;numv;i++)</span><br><span class="line">    &#123;</span><br><span class="line">      min=INF;                          <span class="comment">//点权设为无穷大</span></span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> j=<span class="number">0</span>;j&lt;numv;j++)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">final</span>[j]&amp;&amp;d[j]&lt;min)</span><br><span class="line">        &#123;</span><br><span class="line">          min=d[j];                     <span class="comment">//记录当前最小点权</span></span><br><span class="line">          k=j ;                         <span class="comment">//当前最小点权对应顶点</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">final</span>[k]=<span class="literal">true</span>;                    <span class="comment">//记录最小点权的顶点已访问过</span></span><br><span class="line">      <span class="keyword">for</span>(<span class="keyword">int</span> w=<span class="number">0</span>;w&lt;numv;w++)</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="comment">//松弛操作体现的就是贪心算法，基于现在的最短路径去求得更远处的最短路径</span></span><br><span class="line">        <span class="keyword">if</span>(!<span class="keyword">final</span>[w]&amp;&amp;min+g[k][w]&lt;d[w]) <span class="comment">//若v到k的距离加上k到w的距离比v到w的距离小，则调整v到w的距离</span></span><br><span class="line">        &#123;</span><br><span class="line">          <span class="comment">//松弛操作</span></span><br><span class="line">          d[w]=min+g[k][w];</span><br><span class="line">          p.insert(k+<span class="number">1</span>);           <span class="comment">//p记录w的前驱</span></span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="测试代码"><a href="#测试代码" class="headerlink" title="测试代码"></a>测试代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> numv,nume,direct,u,v,s;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;numv&gt;&gt;nume&gt;&gt;direct;<span class="comment">//顶点数，边数，有向依据</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt;&gt; <span class="title">g</span><span class="params">(numv)</span></span>;</span><br><span class="line">    getMatrix(g,direct,numv,nume);</span><br><span class="line"></span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;s;</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">d</span><span class="params">(numv)</span></span>;</span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; p;</span><br><span class="line">    Dijkstra(numv,s<span class="number">-1</span>,d,p,g);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <h2 id="堆优化"><a href="#堆优化" class="headerlink" title="堆优化"></a>堆优化</h2><p>运用STL中优先队列的性质可以构造小顶堆（或大顶堆），</p>
 <h3 id="实现代码-1"><a href="#实现代码-1" class="headerlink" title="实现代码"></a>实现代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">typedef</span> pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt; ipair;</span><br><span class="line"><span class="comment">//adj存入的是顶点邻接边的另一端和边权值</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addedge_non_direct</span><span class="params">(<span class="built_in">vector</span>&lt;ipair&gt; *adj,<span class="keyword">int</span> u,<span class="keyword">int</span> v,<span class="keyword">int</span> wt=<span class="number">1</span>)</span><span class="comment">//无向图</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//双向记录该边的另一端和边权</span></span><br><span class="line">    adj[u].push_back(make_pair(v,wt));  </span><br><span class="line">    adj[v].push_back(make_pair(u,wt));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">addedge_direct</span><span class="params">(<span class="built_in">vector</span>&lt;ipair&gt; *adj,<span class="keyword">int</span> u,<span class="keyword">int</span> v,<span class="keyword">int</span> wt=<span class="number">1</span>)</span><span class="comment">//有向图</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="comment">//单向记录该边的另一端和边权</span></span><br><span class="line">    adj[u].push_back(make_pair(v,wt));</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Dijkstra_heap</span><span class="params">(<span class="built_in">vector</span>&lt;ipair&gt; *adj,<span class="keyword">int</span> numv,<span class="keyword">int</span> v)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    priority_queue&lt;ipair,<span class="built_in">vector</span>&lt;ipair&gt;,greater&lt;ipair&gt;&gt; pq;</span><br><span class="line">    <span class="comment">//优先队列，按great排序可以构造小根堆，ipair将依次比较first，second</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dist</span><span class="params">(numv,INF)</span></span>;             <span class="comment">//将其他点权置为无穷大</span></span><br><span class="line">    dist[v]=<span class="number">0</span>;                              <span class="comment">//源点点权置为0</span></span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">bool</span>&gt; <span class="title">final</span><span class="params">(numv,<span class="literal">false</span>)</span></span>;         <span class="comment">//防止再度访问</span></span><br><span class="line">    pq.push(make_pair(<span class="number">0</span>,v));                <span class="comment">//将源点放在堆顶</span></span><br><span class="line">    <span class="built_in">set</span>&lt;<span class="keyword">int</span>&gt; p;                             <span class="comment">//存储源点到终点最短路径的顶点</span></span><br><span class="line">    <span class="comment">//pq.push(make_pair(dist[v],v));</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span>(!pq.empty())</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="keyword">int</span> u=pq.top().second;                <span class="comment">//取当前最小点权值对应的顶点</span></span><br><span class="line">      pq.pop();</span><br><span class="line"></span><br><span class="line">      <span class="keyword">if</span>(!<span class="keyword">final</span>[u])                           <span class="comment">//已取过的顶点不再遍历</span></span><br><span class="line">      &#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">auto</span> x:adj[u])                    <span class="comment">//adj[u]的first保存u邻接边的另一端，second保存边权</span></span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">int</span> s=x.first;                    <span class="comment">//邻接边的另一端</span></span><br><span class="line">            <span class="keyword">int</span> weight=x.second;              <span class="comment">//邻接边的边权</span></span><br><span class="line">            <span class="keyword">if</span>(dist[u]+weight&lt;dist[s]&amp;&amp;!<span class="keyword">final</span>[s])        <span class="comment">//可以松弛</span></span><br><span class="line">            &#123;</span><br><span class="line">              <span class="comment">//松弛操作</span></span><br><span class="line">              dist[s]=dist[u]+weight;</span><br><span class="line">              pq.push(make_pair(dist[s],s));</span><br><span class="line">              p.insert(u+<span class="number">1</span>);          </span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">final</span>[u]=<span class="literal">true</span>;                      <span class="comment">//表示该点的邻接边已经全部访问了并防止吃回头草</span></span><br><span class="line">      &#125;</span><br><span class="line">  &#125;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;numv;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(dist[i]==INF)</span><br><span class="line">        &#123;</span><br><span class="line">          dist[i]=<span class="number">-1</span>;                       <span class="comment">//置为-1表示不存在到该顶点的最短路径</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;dist[i]&lt;&lt;<span class="string">" "</span>;                 <span class="comment">//输出源点到每个顶点的最短路径</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;c:p)</span><br><span class="line">      <span class="built_in">cout</span>&lt;&lt;c&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h3 id="测试代码-1"><a href="#测试代码-1" class="headerlink" title="测试代码"></a>测试代码</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span> <span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> numv,nume,direct,u,v,s;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;numv&gt;&gt;nume&gt;&gt;direct;<span class="comment">//顶点数，边数，有向依据</span></span><br><span class="line">    <span class="built_in">vector</span>&lt;ipair&gt; adj[numv];</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;nume;i++)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="built_in">cin</span>&gt;&gt;u&gt;&gt;v;  <span class="comment">//边头部和尾部</span></span><br><span class="line">        <span class="keyword">if</span>(direct==<span class="number">0</span>)&#123;</span><br><span class="line">            addedge_non_direct(adj,u<span class="number">-1</span>,v<span class="number">-1</span>);  <span class="comment">//无权将边权置为1来表示边数，若有权则覆盖默认实参</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">        &#123;</span><br><span class="line">            addedge_direct(adj,u<span class="number">-1</span>,v<span class="number">-1</span>);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">cin</span>&gt;&gt;s;     <span class="comment">//源点</span></span><br><span class="line">    Dijkstra_heap(adj, numv, s<span class="number">-1</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-
 <h2 id="代码部分说明："><a href="#代码部分说明：" class="headerlink" title="代码部分说明："></a>代码部分说明：</h2><h3 id="final-u"><a href="#final-u" class="headerlink" title="!final[u]"></a>!final[u]</h3><p>我们在取出最小权值点其实要对该点进行判定，因为可能是访问过的顶点，堆中存在两个相同顶点的pair，一个是松弛过的，一个是之前的，当然松弛过的肯定会优先弹出来，这样之前的再弹出来也就没意义了，因此要进行一次判定。  </p>
 <h3 id="final-s"><a href="#final-s" class="headerlink" title="!final[s]"></a>!final[s]</h3><p>同时，在对最小权值点邻接边进行遍历时，也需要判定是否访问过，因为反向吃回头草必然不能松弛。</p>
-<h2 id="实例讲解"><a href="#实例讲解" class="headerlink" title="实例讲解"></a>实例讲解</h2><p>无向图没啥好讲的，讲下有向图（无权）吧：<br><img src="https://img-blog.csdnimg.cn/20200603230105328.png" alt=""><br>(如果是1开始的，可以在调用函数时令其减一，所以下面都会比图上数字少1)<br>源点设为1，无权设边权都为1，即边数，dist[0]=0,<br>1）看1的邻接边只有5，5的点权为∞，因此dist[4]=1，即1到5的最短路径为1；<br>2）接下来看5的邻接边有6和2，根据一开始压入的顺序决定谁先开始，但是不管谁先都一样，因为小顶堆的性质决定了谁先pop，现在6的点权是∞，所以dist[5]=2；<br>3）接下来看5的邻接边2，2的点权为∞，所以dist[1]=2；<br>4）现在pop顶点2，2的邻接边有4，1，但是1不予考虑，俗话说的好：好牛不吃回头草，因为对于访问过的结点，dist[u]+weight&lt;dist[s]是不可能的，在求dist[u]的过程中就已经经过s了，加上边权是必然大于dist[s]的，这里可以设置个bool数组来记录访问过的顶点，这样也可以减少时间消耗，当然也牺牲了空间开销（空间换时间，但推荐设置，要是真边多很亏的）。这样直接访问4，4的点权是∞，所以dist[3]=3，同时压入顶点4；<br>5）顶点6的点权比4小，先pop顶点6，6的邻接边有3，2，6到2行不通，因为1到6再到2的路径是3，而2的点权现在是2，if肯定失败。6到3，现在3的点权是∞，所以dist[2]=3，压入顶点3；<br>6）现在优先队列中只有3和4，点权相等，但根据比较器，先pop顶点3，3只有邻接边2，比较肯定失败，因为dist[3]&gt;dist[2]，更别说加上边权了；<br>7）pop顶点4，4的邻接边有1，3，但是都是已经访问过的，比较肯定失败；<br>8）现在优先队列已空，结束while循环，输出源点到各顶点的最小路径后结束函数。</p>
-<h2 id="时间复杂度分析"><a href="#时间复杂度分析" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><p>伪代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1  INITIALIZE-SINGLE-SOURCE(G, s)    </span><br><span class="line">2  S ← Ø					&#x2F;&#x2F;S存储已访问顶点</span><br><span class="line">3  Q ← V[G]            				&#x2F;&#x2F;Q存储所有顶点</span><br><span class="line">4  while Q ≠ Ø</span><br><span class="line">5      do u ← EXTRACT-MIN(Q)         		&#x2F;&#x2F;exact_min</span><br><span class="line">6         S ← S ∪&#123;u&#125;</span><br><span class="line">7         for each vertex v ∈ Adj[u]</span><br><span class="line">8             do RELAX(u, v, w)      	        &#x2F;&#x2F;decrease_key</span><br></pre></td></tr></table></figure>
-
+<h2 id="实例讲解"><a href="#实例讲解" class="headerlink" title="实例讲解"></a>实例讲解</h2><p>无向图没啥好讲的，讲下有向图（无权）吧：<br><img src="https://img-blog.csdnimg.cn/20200603230105328.png" alt=""><br>(如果是1开始的，可以在调用函数时令其减一，所以下面都会比图上数字少1)<br>源点设为1，无权设边权都为1，即边数，dist[0]=0,<br>1）看1的邻接边只有5，5的点权为∞，因此dist[4]=1，即1到5的最短路径为1；<br>2）接下来看5的邻接边有6和2，根据一开始压入的顺序决定谁先开始，但是不管谁先都一样，因为小顶堆的性质决定了谁先pop，现在6的点权是∞，所以dist[5]=2；<br>3）接下来看5的邻接边2，2的点权为∞，所以dist[1]=2；<br>4）现在pop顶点2，2的邻接边有4，1，但是1不予考虑，俗话说的好：好牛不吃回头草，因为对于访问过的结点，dist[u]+weight<dist[s]是不可能的，在求dist[u]的过程中就已经经过s了，加上边权是必然大于dist[s]的，这里可以设置个bool数组来记录访问过的顶点，这样也可以减少时间消耗，当然也牺牲了空间开销（空间换时间，但推荐设置，要是真边多很亏的）。这样直接访问4，4的点权是∞，所以dist[3]=3，同时压入顶点4；  
+5）顶点6的点权比4小，先pop顶点6，6的邻接边有3，2，6到2行不通，因为1到6再到2的路径是3，而2的点权现在是2，if肯定失败。6到3，现在3的点权是∞，所以dist[2]=3，压入顶点3；  
+6）现在优先队列中只有3和4，点权相等，但根据比较器，先pop顶点3，3只有邻接边2，比较肯定失败，因为dist[3]>dist[2]，更别说加上边权了；<br>7）pop顶点4，4的邻接边有1，3，但是都是已经访问过的，比较肯定失败；<br>8）现在优先队列已空，结束while循环，输出源点到各顶点的最小路径后结束函数。</p>
+<h2 id="时间复杂度分析"><a href="#时间复杂度分析" class="headerlink" title="时间复杂度分析"></a>时间复杂度分析</h2><p>伪代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">1  INITIALIZE-SINGLE-SOURCE(G, s)    </span><br><span class="line">2  S ← Ø					&#x2F;&#x2F;S存储已访问顶点</span><br><span class="line">3  Q ← V[G]            				&#x2F;&#x2F;Q存储所有顶点</span><br><span class="line">4  while Q ≠ Ø</span><br><span class="line">5      do u ← EXTRACT-MIN(Q)         		&#x2F;&#x2F;exact_min</span><br><span class="line">6         S ← S ∪&#123;u&#125;</span><br><span class="line">7         for each vertex v ∈ Adj[u]</span><br><span class="line">8             do RELAX(u, v, w)      	        &#x2F;&#x2F;decrease_key</span><br></pre></td></tr></table></figure></p>
 <p>Tn=O(e·Tdk+v·Tem)，Tdk表示decrease_key的时间复杂度，Tem表示exact_min的时间复杂度，这是因为decrease_key体现在松弛操作，松弛操作需要遍历最小权值点的邻接边,最多遍历所有边，以最多遍历的那次代表其他顶点的松弛，所以是e（Big O），而exact_min与顶点数有关，最坏需要遍历所有顶点（一般版本就是要遍历所有顶点），所以是v。<br>一般版本的exact_min是通过for循环，最坏遍历所有顶点，所以是O(v),decrease_key很简单，不需要调整最小路径数组，为O(1),那么时间复杂度为O(e+v^2)=O(v^2)，但我们可以通过优先队列来优化，优先队列可以自动进行堆排序，这个维护堆的过程时间复杂度最坏为O(logv),而exact_min的过程堆排序进行为O(logv)，decrease_key的过程需要维护堆也是O(logv)所以堆优化的Dijkstra的时间复杂度为O((e+v)logv),取同阶时间复杂度为O(nlogn)&gt;O(n^2)。</p>
 
       
@@ -575,15 +571,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -591,55 +579,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -651,6 +603,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -659,7 +643,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

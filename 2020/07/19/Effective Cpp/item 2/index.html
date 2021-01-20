@@ -8,12 +8,12 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>item 2:Prefer consts,enums,and inlines to | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="用consts、enums、inlines替代#define#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
+  <meta name="description" content="用consts、enums、inlines替代#definedefine是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="item 2:Prefer consts,enums,and inlines to">
 <meta property="og:url" content="http://yoursite.com/2020/07/19/Effective%20Cpp/item%202/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="用consts、enums、inlines替代#define#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
+<meta property="og:description" content="用consts、enums、inlines替代#definedefine是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2020-07-19T06:38:28.379Z">
 <meta property="article:modified_time" content="2020-07-22T09:21:26.641Z">
@@ -257,37 +257,19 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="用consts、enums、inlines替代-define"><a href="#用consts、enums、inlines替代-define" class="headerlink" title="用consts、enums、inlines替代#define"></a>用consts、enums、inlines替代#define</h1><p>#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</p>
-<a id="more"></a>
+        <h1 id="用consts、enums、inlines替代-define"><a href="#用consts、enums、inlines替代-define" class="headerlink" title="用consts、enums、inlines替代#define"></a>用consts、enums、inlines替代#define</h1><h1 id="define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。"><a href="#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。" class="headerlink" title="define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。"></a>define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</h1><a id="more"></a>
 <h2 id="define的问题"><a href="#define的问题" class="headerlink" title="#define的问题"></a>#define的问题</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ASPECT_RATIO 1.653</span></span><br></pre></td></tr></table></figure>
 <p>我们要知道，记号ASPECT_RATIO可能未被编译器看到，或者在编译器处理源码之前就被预处理器移走，于是，该记号没有进入记号表（symbol table）。于是导致莫名奇妙的编译错误，错误信息可能会提示1.653，如果这个定义在别人的头文件中，那你是很难追踪的。<br>当然，还可能出现在记号式调试器中，也是因为没有进入到记号表中。</p>
-<h2 id="用const代替-define"><a href="#用const代替-define" class="headerlink" title="用const代替#define"></a>用const代替#define</h2><p>解决上述问题的常见方法：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> AspectRatio=<span class="number">1.653</span>;</span><br></pre></td></tr></table></figure>
-<p>作为语言常量，AspectRatio是肯定被编译器看到的。</p>
-<h2 id="const的特殊情况"><a href="#const的特殊情况" class="headerlink" title="const的特殊情况"></a>const的特殊情况</h2><h3 id="1-常量指针"><a href="#1-常量指针" class="headerlink" title="1.常量指针"></a>1.常量指针</h3><p>常量定义式通常放在头文件中①，因此有必要将指针声明为const。常量的char*-based字符串</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> authorname=<span class="string">"Scott Meyers"</span>;</span><br></pre></td></tr></table></figure>
-<p>这个如何解读？<br>写成<code>char const*const</code>自然明白，从右往左读就是a const pointer to const char，前面的const修饰char，后面的const修饰*。<br>当然，C++有string，这里定义成以下形式更好：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> authorname=<span class="string">"Scott Meryers"</span>;</span><br></pre></td></tr></table></figure>
-<h3 id="2-class-专属常量"><a href="#2-class-专属常量" class="headerlink" title="2.class 专属常量"></a>2.class 专属常量</h3><p>static成员：为了将常量的作用域限制在类中，让它成为member，同时确保该常量具有一份实体让它成为一个static成员②。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GamePlayer</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> NumTurns=<span class="number">5</span>;  <span class="comment">//常量声明式</span></span><br><span class="line">  <span class="keyword">int</span> scores[NumTurens];</span><br><span class="line">  ....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>注意NumTurns是声明式而不是定义式！  </p>
+<h2 id="用const代替-define"><a href="#用const代替-define" class="headerlink" title="用const代替#define"></a>用const代替#define</h2><p>解决上述问题的常见方法：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">double</span> AspectRatio=<span class="number">1.653</span>;</span><br></pre></td></tr></table></figure><br>作为语言常量，AspectRatio是肯定被编译器看到的。</p>
+<h2 id="const的特殊情况"><a href="#const的特殊情况" class="headerlink" title="const的特殊情况"></a>const的特殊情况</h2><h3 id="1-常量指针"><a href="#1-常量指针" class="headerlink" title="1.常量指针"></a>1.常量指针</h3><p>常量定义式通常放在头文件中①，因此有必要将指针声明为const。常量的char<em>-based字符串<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">char</span>* <span class="keyword">const</span> authorname=<span class="string">"Scott Meyers"</span>;</span><br></pre></td></tr></table></figure><br>这个如何解读？<br>写成`char const</em>const`自然明白，从右往左读就是a const pointer to const char，前面的const修饰char，后面的const修饰*。<br>当然，C++有string，这里定义成以下形式更好：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="built_in">std</span>::<span class="built_in">string</span> authorname=<span class="string">"Scott Meryers"</span>;</span><br></pre></td></tr></table></figure></p>
+<h3 id="2-class-专属常量"><a href="#2-class-专属常量" class="headerlink" title="2.class 专属常量"></a>2.class 专属常量</h3><p>static成员：为了将常量的作用域限制在类中，让它成为member，同时确保该常量具有一份实体让它成为一个static成员②。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GamePlayer</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">static</span> <span class="keyword">const</span> <span class="keyword">int</span> NumTurns=<span class="number">5</span>;  <span class="comment">//常量声明式</span></span><br><span class="line">  <span class="keyword">int</span> scores[NumTurens];</span><br><span class="line">  ....</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>注意NumTurns是声明式而不是定义式！  </p>
 <blockquote>
 <p>通常C++要求你对你所用的任何东西提供一个定义式，但如果它是个class专属变量又是static且为整数类型（integral type，如ints,chars,bools），则需特殊处理。只要不取它们的地址，你可以声明并使用它们而无须提供定义式。</p>
 </blockquote>
-<p>但是如果你要取地址或者你的编译器坚持要看到定义时，那么提供定义式如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> GamePlayer::NumTurns;</span><br></pre></td></tr></table></figure>
-<p>这个定义式请放入实现文件而非头文件③。你可能会疑问定义式为什么不设初值？那是因为声明时已经获得初值了。</p>
-<p>由2可以引出一个#define与const的不同：前者无法创建一个class专属常量。<br>#define不重视作用域，在宏定义后的编译过程中都可以看见它（除非#undef），这意味着宏没有封装性（即无private）</p>
-<h2 id="enum"><a href="#enum" class="headerlink" title="enum"></a>enum</h2><p>我们首先要了解：“一个属于枚举类型的数值可权充ints被使用”，因此如果你的编译器错误地不允许“static整数型class常量”完成“in-class初值设定”，可以改用枚举类型补偿。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GamePlayer</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">enum</span>&#123;NumTurns=<span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> scores[NumTurns];</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>这里介绍枚举类型纯粹是实用主义，而且枚举类型有点类似#define，比如不能取一个enum的地址。</p>
-<h2 id="宏带来的另一个麻烦：文本替换"><a href="#宏带来的另一个麻烦：文本替换" class="headerlink" title="宏带来的另一个麻烦：文本替换"></a>宏带来的另一个麻烦：文本替换</h2><p>我们可能会写出如下宏：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CALL_WITH_MAX(a,b) f((a)&gt;(b)?(a):(b))</span></span><br></pre></td></tr></table></figure>
-<p>尽管这不会招致函数调用带来的额外开销，但这种函数形式的宏有着太多的缺点，首先你必须要注意小括号(因为文本替换)，即使这个处理好，文本替换带来的问题还没完，如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">5</span>,b=<span class="number">0</span>;</span><br><span class="line">CALL_WITH_MAX(++a,b);     <span class="comment">//a累加2次</span></span><br><span class="line">CALL_WITH_MAX(++a,b+<span class="number">10</span>);  <span class="comment">//a累加1次</span></span><br></pre></td></tr></table></figure>
-<p>因为文本替换，所以++a&gt;b和++a都算一次，取决于“被拿来和谁比较”，这可能不是我们希望的。<br>我们不需要为这种事烦恼，我们可以写出template inline函数来获得宏带来的效率。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callwithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  f(a&gt;b?a:b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这样我们就不用考虑为参数加上括号以及担心参数被核算多次等问题。</p>
+<p>但是如果你要取地址或者你的编译器坚持要看到定义时，那么提供定义式如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> <span class="keyword">int</span> GamePlayer::NumTurns;</span><br></pre></td></tr></table></figure><br>这个定义式请放入实现文件而非头文件③。你可能会疑问定义式为什么不设初值？那是因为声明时已经获得初值了。</p>
+<p>由2可以引出一个#define与const的不同：前者无法创建一个class专属常量。  </p>
+<h1 id="define不重视作用域，在宏定义后的编译过程中都可以看见它（除非-undef），这意味着宏没有封装性（即无private）"><a href="#define不重视作用域，在宏定义后的编译过程中都可以看见它（除非-undef），这意味着宏没有封装性（即无private）" class="headerlink" title="define不重视作用域，在宏定义后的编译过程中都可以看见它（除非#undef），这意味着宏没有封装性（即无private）"></a>define不重视作用域，在宏定义后的编译过程中都可以看见它（除非#undef），这意味着宏没有封装性（即无private）</h1><h2 id="enum"><a href="#enum" class="headerlink" title="enum"></a>enum</h2><p>我们首先要了解：“一个属于枚举类型的数值可权充ints被使用”，因此如果你的编译器错误地不允许“static整数型class常量”完成“in-class初值设定”，可以改用枚举类型补偿。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">GamePlayer</span>&#123;</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="keyword">enum</span>&#123;NumTurns=<span class="number">5</span>&#125;;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">int</span> scores[NumTurns];</span><br><span class="line">  ...</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>这里介绍枚举类型纯粹是实用主义，而且枚举类型有点类似#define，比如不能取一个enum的地址。</p>
+<h2 id="宏带来的另一个麻烦：文本替换"><a href="#宏带来的另一个麻烦：文本替换" class="headerlink" title="宏带来的另一个麻烦：文本替换"></a>宏带来的另一个麻烦：文本替换</h2><p>我们可能会写出如下宏：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> CALL_WITH_MAX(a,b) f((a)&gt;(b)?(a):(b))</span></span><br></pre></td></tr></table></figure><br>尽管这不会招致函数调用带来的额外开销，但这种函数形式的宏有着太多的缺点，首先你必须要注意小括号(因为文本替换)，即使这个处理好，文本替换带来的问题还没完，如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> a=<span class="number">5</span>,b=<span class="number">0</span>;</span><br><span class="line">CALL_WITH_MAX(++a,b);     <span class="comment">//a累加2次</span></span><br><span class="line">CALL_WITH_MAX(++a,b+<span class="number">10</span>);  <span class="comment">//a累加1次</span></span><br></pre></td></tr></table></figure><br>因为文本替换，所以++a&gt;b和++a都算一次，取决于“被拿来和谁比较”，这可能不是我们希望的。<br>我们不需要为这种事烦恼，我们可以写出template inline函数来获得宏带来的效率。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">callwithMax</span><span class="params">(<span class="keyword">const</span> T&amp; a,<span class="keyword">const</span> T&amp; b)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  f(a&gt;b?a:b);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这样我们就不用考虑为参数加上括号以及担心参数被核算多次等问题。</p>
 <h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>有了const<strong>s</strong>、enum<strong>s</strong>和inline<strong>s</strong>，我们对预处理器（#define）的需求降低了，但#include、#ifdef/#ifndef仍然需要。</p>
 <hr>
 <p>①：对于const namespace scoped object来说链接属性是interal linkage，所以常量定义式不会引发重复定义，再加上是常量，方便被不同的源代码包含。<br>②：对于static数据成员，无论const都是external linkage，我们可以把static数据成员看作全局变量，只不过作用域不同，。<br>③：防止重复定义，像全局变量一样定义是在实现文件中</p>
@@ -452,7 +434,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#用consts、enums、inlines替代-define"><span class="toc-number">1.</span> <span class="toc-text">用consts、enums、inlines替代#define</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#define的问题"><span class="toc-number">1.1.</span> <span class="toc-text">#define的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用const代替-define"><span class="toc-number">1.2.</span> <span class="toc-text">用const代替#define</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const的特殊情况"><span class="toc-number">1.3.</span> <span class="toc-text">const的特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-常量指针"><span class="toc-number">1.3.1.</span> <span class="toc-text">1.常量指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-class-专属常量"><span class="toc-number">1.3.2.</span> <span class="toc-text">2.class 专属常量</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#enum"><span class="toc-number">1.4.</span> <span class="toc-text">enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏带来的另一个麻烦：文本替换"><span class="toc-number">1.5.</span> <span class="toc-text">宏带来的另一个麻烦：文本替换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">1.6.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#用consts、enums、inlines替代-define"><span class="toc-number">1.</span> <span class="toc-text">用consts、enums、inlines替代#define</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。"><span class="toc-number">2.</span> <span class="toc-text">define是一个预处理指令，表示一个宏，它不被视为语言的一部分，这正是问题所在。</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#define的问题"><span class="toc-number">2.1.</span> <span class="toc-text">#define的问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#用const代替-define"><span class="toc-number">2.2.</span> <span class="toc-text">用const代替#define</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#const的特殊情况"><span class="toc-number">2.3.</span> <span class="toc-text">const的特殊情况</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-常量指针"><span class="toc-number">2.3.1.</span> <span class="toc-text">1.常量指针</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-class-专属常量"><span class="toc-number">2.3.2.</span> <span class="toc-text">2.class 专属常量</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#define不重视作用域，在宏定义后的编译过程中都可以看见它（除非-undef），这意味着宏没有封装性（即无private）"><span class="toc-number">3.</span> <span class="toc-text">define不重视作用域，在宏定义后的编译过程中都可以看见它（除非#undef），这意味着宏没有封装性（即无private）</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#enum"><span class="toc-number">3.1.</span> <span class="toc-text">enum</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#宏带来的另一个麻烦：文本替换"><span class="toc-number">3.2.</span> <span class="toc-text">宏带来的另一个麻烦：文本替换</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">3.3.</span> <span class="toc-text">总结</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -576,15 +558,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -592,55 +566,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -652,6 +590,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -660,7 +630,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

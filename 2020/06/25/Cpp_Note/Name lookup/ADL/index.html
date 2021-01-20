@@ -262,21 +262,11 @@
 <h2 id="引入情景"><a href="#引入情景" class="headerlink" title="引入情景"></a>引入情景</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> N</span><br><span class="line">&#123;</span><br><span class="line">  <span class="class"><span class="keyword">class</span> <span class="title">X</span> &#123;</span>&#125;;</span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(X)</span></span>;</span><br><span class="line">  X&amp; <span class="keyword">operator</span>++(X&amp;);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// define an object of type X</span></span><br><span class="line">  N::X x;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// apply f to it</span></span><br><span class="line">  N::f(x);</span><br><span class="line"></span><br><span class="line">  <span class="comment">// apply operator++ to it</span></span><br><span class="line">  ???</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <blockquote>
 <p>Of course you could have written N::operator++(x), but that would have defeated the whole point of operator overloading. Therefore a solution had to be found which allowed the compiler to find operator++(X&amp;) despite the fact that it was not in scope. On the other hand, it still should not find another operator++ defined in another, unrelated namespace which might make the call ambiguous (in this simple example, you wouldn’t get ambiguity, but in more complex examples, you might). The solution was Argument Dependent Lookup (ADL), called that way since the lookup depends on the argument (more exactly, on the argument’s type). Since the scheme was invented by Andrew R. Koenig, it is also often called Koenig lookup.</p>
-</blockquote>
-<blockquote>
 <p>The trick is that for function calls, in addition to normal name lookup (which finds names in scope at the point of use), there is done a second lookup in the scopes of the types of any arguments given to the function. So in the above example, if you write x++ in main, it looks for operator++ not only in global scope, but additionally in the scope where the type of x, N::X, was defined, i.e. in namespace N. And there it finds a matching operator++, and therefore x++ just works. Another operator++ defined in another namespace, say N2, will not be found, however. Since ADL is not restricted to namespaces, you also can use f(x) instead of N::f(x) in main().</p>
 </blockquote>
-<p>所以没有ADL，今日的Hello world应该这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ADL</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"Hello world!"</span>&lt;&lt;<span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//non-ADL</span></span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">operator</span>&lt;&lt;(<span class="built_in">std</span>::<span class="keyword">operator</span>&lt;&lt;(<span class="built_in">std</span>::<span class="built_in">cout</span>,<span class="string">"Hello world!"</span>),<span class="string">"\n"</span>);</span><br></pre></td></tr></table></figure>
-<p>这就违背了运算符重载的初衷了。有了ADL，我们处理&lt;&lt;就没有这么麻烦，可以去参数cout的所在namespace中寻找operator&lt;&lt;并选择最佳匹配（模板实例化阶段用ADL匹配），然后你会发现每个operator&lt;&lt;的左参数是std的，所以现在我们可以写出</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"......"</span>&lt;&lt;<span class="string">"....."</span>&lt;&lt;<span class="string">"...."</span>&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure>
-<p>但要注意endl必须要加std，因为endl是std的名字，<br>那么我们必须这样写：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;  <span class="comment">//error.endl is not declaration in this namespace;</span></span><br><span class="line"><span class="built_in">endl</span>(<span class="built_in">std</span>::<span class="built_in">cout</span>)   <span class="comment">//true.The argument of endl is in std namespace so it finds the std::endl;</span></span><br></pre></td></tr></table></figure>
+<p>所以没有ADL，今日的Hello world应该这样写：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//ADL</span></span><br><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"Hello world!"</span>&lt;&lt;<span class="string">"\n"</span>;</span><br><span class="line"><span class="comment">//non-ADL</span></span><br><span class="line"><span class="built_in">std</span>::<span class="keyword">operator</span>&lt;&lt;(<span class="built_in">std</span>::<span class="keyword">operator</span>&lt;&lt;(<span class="built_in">std</span>::<span class="built_in">cout</span>,<span class="string">"Hello world!"</span>),<span class="string">"\n"</span>);</span><br></pre></td></tr></table></figure><br>这就违背了运算符重载的初衷了。有了ADL，我们处理&lt;&lt;就没有这么麻烦，可以去参数cout的所在namespace中寻找operator&lt;&lt;并选择最佳匹配（模板实例化阶段用ADL匹配），然后你会发现每个operator&lt;&lt;的左参数是std的，所以现在我们可以写出<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"......"</span>&lt;&lt;<span class="string">"....."</span>&lt;&lt;<span class="string">"...."</span>&lt;&lt;<span class="built_in">std</span>::<span class="built_in">endl</span>;</span><br></pre></td></tr></table></figure><br>但要注意endl必须要加std，因为endl是std的名字，<br>那么我们必须这样写：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="built_in">endl</span>;  <span class="comment">//error.endl is not declaration in this namespace;</span></span><br><span class="line"><span class="built_in">endl</span>(<span class="built_in">std</span>::<span class="built_in">cout</span>)   <span class="comment">//true.The argument of endl is in std namespace so it finds the std::endl;</span></span><br></pre></td></tr></table></figure></p>
 <h2 id="ADL的触发条件"><a href="#ADL的触发条件" class="headerlink" title="ADL的触发条件"></a>ADL的触发条件</h2><blockquote>
-<p>First, the argument-dependent lookup is not considered if the lookup set produced by usual unqualified lookup contains any of the following:<br></p>
-</blockquote>
-<p>1) a declaration of a class member<br><br>2) a declaration of a function at block scope (that’s not a using-declaration)<br><br>3) any declaration that is not a function or a function template (e.g. a function object or another variable whose name conflicts with the name of the function that’s being looked up)<br></p>
-<blockquote>
+<p>First, the argument-dependent lookup is not considered if the lookup set produced by usual unqualified lookup contains any of the following:<br><br>1) a declaration of a class member<br><br>2) a declaration of a function at block scope (that’s not a using-declaration)<br><br>3) any declaration that is not a function or a function template (e.g. a function object or another variable whose name conflicts with the name of the function that’s being looked up)<br></p>
 <p>What this means is that ADL is ignored only when unqualified lookup produces one of the above three results. Since we are not dealing with a class member, the function is declared at namespace scope, not block scope, and we <strong>only find functions</strong> we continue on and use ADL.</p>
 </blockquote>
 <p>所以，如果查找集中有类成员声明、在块作用域中的函数声明（没有using声明）或者所有声明都不是函数的声明（包括模板），那么ADL不会被考虑（区别block scope和namespace scope）。</p>
@@ -284,9 +274,7 @@
 <p>As the simple code example above demonstrates, Koenig lookup provides convenience and ease of usage to the programmer. Without Koenig lookup there would be an overhead on the programmer, to repeatedly specify the fully qualified names, or instead, use numerous using-declarations.</p>
 </blockquote>
 <h2 id="ADL的弊端"><a href="#ADL的弊端" class="headerlink" title="ADL的弊端"></a>ADL的弊端</h2><p>Consider the example of std::swap, which is a standard library algorithm to swap two values. <br><br>With the Koenig lookup one would have to be cautious while using this algorithm because:</p>
-<p><code>std::swap(obj1,obj2);</code><br><br>may not show the same behavior as:</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::swap;</span><br><span class="line">swap(obj1, obj2);</span><br></pre></td></tr></table></figure>
-<p>With ADL, which version of swap function gets called would depend on the namespace of the arguments passed to it.<br><br>If there exists an namespace A and if A::obj1, A::obj2 &amp; A::swap() exist then the second example will result in a call to A::swap(), which might not be what the user wanted.<br></p>
+<p><code>std::swap(obj1,obj2);</code><br><br>may not show the same behavior as:<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> <span class="built_in">std</span>::swap;</span><br><span class="line">swap(obj1, obj2);</span><br></pre></td></tr></table></figure><br>With ADL, which version of swap function gets called would depend on the namespace of the arguments passed to it.<br><br>If there exists an namespace A and if A::obj1, A::obj2 &amp; A::swap() exist then the second example will result in a call to A::swap(), which might not be what the user wanted.<br></p>
 <p>Further, if for some reason both <code>A::swap(A::MyClass&amp;, A::MyClass&amp;)</code> and <code>std::swap(A::MyClass&amp;, A::MyClass&amp;)</code>are defined, then the first example will call <code>std::swap(A::MyClass&amp;, A::MyClass&amp;)</code> but the second will not compile because <code>swap(obj1, obj2)</code> would be ambiguous.</p>
 <h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> A &#123;</span><br><span class="line">      <span class="class"><span class="keyword">struct</span> <span class="title">X</span>;</span></span><br><span class="line">      <span class="class"><span class="keyword">struct</span> <span class="title">Y</span>;</span></span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span>)</span></span>;</span><br><span class="line">      <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">(X)</span></span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">namespace</span> B &#123;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">f</span><span class="params">(<span class="keyword">int</span> i)</span> </span>&#123;</span><br><span class="line">        f(i);   <span class="comment">// calls B::f (endless recursion)</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">g</span><span class="params">(A::X x)</span> </span>&#123;</span><br><span class="line">        g(x);   <span class="comment">// Error: ambiguous between B::g (ordinary lookup)</span></span><br><span class="line">                <span class="comment">//        and A::g (argument-dependent lookup)</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">void</span> <span class="title">h</span><span class="params">(A::Y y)</span> </span>&#123;</span><br><span class="line">        h(y);   <span class="comment">// calls B::h (endless recursion): ADL examines the A namespace</span></span><br><span class="line">                <span class="comment">// but finds no A::h, so only B::h from ordinary lookup is used</span></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
@@ -578,15 +566,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -594,55 +574,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -654,6 +598,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -662,7 +638,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

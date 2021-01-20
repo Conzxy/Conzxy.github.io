@@ -267,18 +267,15 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。</p>
-<a id="more"></a>
+        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。<br><a id="more"></a></p>
 <h2 id="关键操作"><a href="#关键操作" class="headerlink" title="关键操作"></a>关键操作</h2><h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><h4 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h4><p>插入14<br><img src="https://img-blog.csdnimg.cn/20200828150941281.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941245.png" alt=""></p>
 <h4 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> BinaryHeap&lt;T&gt;::insert(<span class="keyword">const</span> T&amp; x)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">if</span>(currentSize+<span class="number">1</span>==<span class="built_in">array</span>.size())</span><br><span class="line">            <span class="built_in">array</span>.resize(<span class="number">2</span>*<span class="built_in">array</span>.size());   <span class="comment">//扩容</span></span><br><span class="line"></span><br><span class="line">        <span class="comment">/*</span></span><br><span class="line"><span class="comment">         * 上滤操作（percolate up）：与下滤操作类似，但是不是调整根结点，而是child。</span></span><br><span class="line"><span class="comment">         * hole是新增位置的child，其parent是最后一个父结点，通过父结点不断往上爬直到</span></span><br><span class="line"><span class="comment">         * 欲插入值不小于父结点停止。</span></span><br><span class="line"><span class="comment">         * 最后用储存插入值的哨兵填上hole。</span></span><br><span class="line"><span class="comment">         */</span></span><br><span class="line">        <span class="keyword">int</span> hole=++currentSize;</span><br><span class="line">        T copy=x;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">array</span>[<span class="number">0</span>]=<span class="built_in">std</span>::move(copy);</span><br><span class="line">        <span class="keyword">for</span>(;x&lt;<span class="built_in">array</span>[hole/<span class="number">2</span>];hole/=<span class="number">2</span>)</span><br><span class="line">            <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[hole/<span class="number">2</span>]);<span class="comment">//x&lt;parent，hole percolate up</span></span><br><span class="line">        <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
 <h4 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h4><p>如果insert采用一般的swap上滤，则需要3次赋值，设上滤层数为d，那么总共就需要3d次赋值，而这里的方法只需要d+1次赋值（开始哨兵不算）。<br>最坏情况上滤层数为[logN]，因此时间复杂度为O(logn)（平均为O(1))</p>
 <h3 id="deleteMin"><a href="#deleteMin" class="headerlink" title="deleteMin"></a>deleteMin</h3><h4 id="Example-1"><a href="#Example-1" class="headerlink" title="Example"></a>Example</h4><p><img src="https://img-blog.csdnimg.cn/20200828150941244.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941232.png" alt=""><br><img src="https://img-blog.csdnimg.cn/20200828150941209.png" alt=""></p>
 <h4 id="Code-1"><a href="#Code-1" class="headerlink" title="Code"></a>Code</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> BinaryHeap&lt;T&gt;::deleteMin() &#123;</span><br><span class="line">        <span class="keyword">if</span>(isEmpty())</span><br><span class="line">            <span class="keyword">throw</span> UnderflowException&#123;&#125;;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">array</span>[<span class="number">1</span>]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[currentSize--]);</span><br><span class="line">        percolateDown(<span class="number">1</span>);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
-<p>把最后一个叶子结点调至根结点，此时根结点失衡，于是percolateDown调整平衡维持堆序性质。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 下滤操作：调整失衡点（不满足堆序性质），以失衡点为根结点，在子树中找到满足堆序的位置。</span></span><br><span class="line"><span class="comment">     * 方式：通过child挖hole，如果最小child&lt;失衡点，那么最小child成为失衡点的parent，原来位置成为hole，</span></span><br><span class="line"><span class="comment">     * 如此反复，得到一个“下滤”的形态。如果到达leaf层或已经满足堆序（到达leaf层自然满足），即可终止循环。</span></span><br><span class="line"><span class="comment">     * 最后用储存原来失衡点的局部变量来填上hole。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> BinaryHeap&lt;T&gt;::percolateDown(<span class="keyword">int</span> hole) &#123;</span><br><span class="line">        <span class="keyword">int</span> child;</span><br><span class="line">        T tmp=<span class="built_in">std</span>::move(<span class="built_in">array</span>[hole]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(;hole*<span class="number">2</span>&lt;=currentSize;hole=child)</span><br><span class="line">        &#123;</span><br><span class="line">            child=hole*<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(child!=currentSize&amp;&amp;<span class="built_in">array</span>[child+<span class="number">1</span>]&lt;<span class="built_in">array</span>[child])</span><br><span class="line">                ++child;    <span class="comment">//找到最小child</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">array</span>[child]&lt;tmp)</span><br><span class="line">                <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[child]);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">break</span>;  <span class="comment">//如果array[child]&gt;=tmp,此时已满足minheap的性质</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(tmp);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<p>把最后一个叶子结点调至根结点，此时根结点失衡，于是percolateDown调整平衡维持堆序性质。<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">    <span class="comment">/*</span></span><br><span class="line"><span class="comment">     * 下滤操作：调整失衡点（不满足堆序性质），以失衡点为根结点，在子树中找到满足堆序的位置。</span></span><br><span class="line"><span class="comment">     * 方式：通过child挖hole，如果最小child&lt;失衡点，那么最小child成为失衡点的parent，原来位置成为hole，</span></span><br><span class="line"><span class="comment">     * 如此反复，得到一个“下滤”的形态。如果到达leaf层或已经满足堆序（到达leaf层自然满足），即可终止循环。</span></span><br><span class="line"><span class="comment">     * 最后用储存原来失衡点的局部变量来填上hole。</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line">    <span class="keyword">void</span> BinaryHeap&lt;T&gt;::percolateDown(<span class="keyword">int</span> hole) &#123;</span><br><span class="line">        <span class="keyword">int</span> child;</span><br><span class="line">        T tmp=<span class="built_in">std</span>::move(<span class="built_in">array</span>[hole]);</span><br><span class="line"></span><br><span class="line">        <span class="keyword">for</span>(;hole*<span class="number">2</span>&lt;=currentSize;hole=child)</span><br><span class="line">        &#123;</span><br><span class="line">            child=hole*<span class="number">2</span>;</span><br><span class="line">            <span class="keyword">if</span>(child!=currentSize&amp;&amp;<span class="built_in">array</span>[child+<span class="number">1</span>]&lt;<span class="built_in">array</span>[child])</span><br><span class="line">                ++child;    <span class="comment">//找到最小child</span></span><br><span class="line">            <span class="keyword">if</span>(<span class="built_in">array</span>[child]&lt;tmp)</span><br><span class="line">                <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(<span class="built_in">array</span>[child]);</span><br><span class="line">            <span class="keyword">else</span></span><br><span class="line">                <span class="keyword">break</span>;  <span class="comment">//如果array[child]&gt;=tmp,此时已满足minheap的性质</span></span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">array</span>[hole]=<span class="built_in">std</span>::move(tmp);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="算法复杂度-1"><a href="#算法复杂度-1" class="headerlink" title="算法复杂度"></a>算法复杂度</h4><p>最坏同上滤操作，为O(logn)。</p>
-<h3 id="buildHeap"><a href="#buildHeap" class="headerlink" title="buildHeap"></a>buildHeap</h3><p>方案一：<br>通过向空堆insert来建堆，共N个insert，因此最坏时间复杂度为O(nlogn),平均为O(N)。<br>方案二：  </p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*建堆操作：从最后一个根结点开始建堆，因为每个根结点都是不平衡状态（假设）*/</span></span><br><span class="line"><span class="keyword">void</span> BinaryHeap&lt;T&gt;::buildHeap()&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=currentSize/<span class="number">2</span>;i&gt;<span class="number">0</span>;i--)</span><br><span class="line">            percolateDown(i);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure>
+<h3 id="buildHeap"><a href="#buildHeap" class="headerlink" title="buildHeap"></a>buildHeap</h3><p>方案一：<br>通过向空堆insert来建堆，共N个insert，因此最坏时间复杂度为O(nlogn),平均为O(N)。<br>方案二：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*建堆操作：从最后一个根结点开始建堆，因为每个根结点都是不平衡状态（假设）*/</span></span><br><span class="line"><span class="keyword">void</span> BinaryHeap&lt;T&gt;::buildHeap()&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=currentSize/<span class="number">2</span>;i&gt;<span class="number">0</span>;i--)</span><br><span class="line">            percolateDown(i);</span><br><span class="line">    &#125;</span><br></pre></td></tr></table></figure></p>
 <h4 id="算法复杂度（方案二）"><a href="#算法复杂度（方案二）" class="headerlink" title="算法复杂度（方案二）"></a>算法复杂度（方案二）</h4><p>这里先证明一个定理：<br><img src="https://img-blog.csdnimg.cn/20200828144526345.gif#pic_center" alt=""></p>
 <p>证明：</p>
 <p><img src="https://img-blog.csdnimg.cn/20200828145230975.gif#pic_center" alt=""></p>
@@ -573,15 +570,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -589,55 +578,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -649,6 +602,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -657,7 +642,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

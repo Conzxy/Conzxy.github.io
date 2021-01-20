@@ -283,7 +283,8 @@
 <h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><p>合并操作我们假设有H1和H2，如下图所示</p>
 <p><img src="https://img-blog.csdnimg.cn/20200725102418747.png" alt=""></p>
 <p>这里先提一下rank（阶）的意思，</p>
-<pre><code>rank=No. of children=height of tree</code></pre><p>我们会以H1作为新堆，合并操作结束后H2置为空，合并就是看两个二项队列中有没有同阶的，有同阶的则进行合并，没有同阶的则保留到新H1中，因此合并结果为：</p>
+<pre><code>rank=No. of children=height of tree
+</code></pre><p>我们会以H1作为新堆，合并操作结束后H2置为空，合并就是看两个二项队列中有没有同阶的，有同阶的则进行合并，没有同阶的则保留到新H1中，因此合并结果为：</p>
 <p><img src="https://img-blog.csdnimg.cn/20200725102948616.png" alt=""></p>
 <p>从这里也可以看出我们需要提供一个同阶二项树的算法，这个在后面有所体现。  </p>
 <h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>合并两个同阶二项树的操作仅需常数时间，而二项树最多有O(logn)个，所以最坏情况为O(logn)。<br>我们再来看下插入，插入是合并的一种情形，即单结点树与二项树合并，那么最坏时间复杂度为O(logn)。最好情况呢？当二项队列为<strong>偶数</strong>时，B0是空的，此时插入就是O(1)，但是实际上我们很难遇到最坏情况，我们这里采用<strong>摊还分析</strong>来得到平均时间：</p>
@@ -296,9 +297,7 @@
 <p>我们用H’’表示子树形成的新二项队列，而H’表示原来除最小根植树的其他二项树组成的二项队列，然后这两个二项队列进行合并，这样得到的新二项队列就是我们想要的。</p>
 <h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>由上面流程可以得知分两步：找最小根植O(logn)和合并O(logn)，加起来还是O(logn)。</p>
 <h2 id="实现（implement）"><a href="#实现（implement）" class="headerlink" title="实现（implement）"></a>实现（implement）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BinomialNode</span>&#123;</span></span><br><span class="line">    DataType element;</span><br><span class="line">    BinomialNode* leftchild;</span><br><span class="line">    BinomialNode* nextSibling;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>用的是兄弟-儿子表示法。<br>同时我们会弄一个数组来存储每个根结点</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;BinomialNode*&gt; theTrees;</span><br></pre></td></tr></table></figure>
-<p>如用图表示大概就是这样：</p>
+<p>用的是兄弟-儿子表示法。<br>同时我们会弄一个数组来存储每个根结点<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;BinomialNode*&gt; theTrees;</span><br></pre></td></tr></table></figure><br>如用图表示大概就是这样：</p>
 <p><img src="https://img-blog.csdnimg.cn/20200725134334871.png" alt=""></p>
 <p>为了操作的便利，我们要求儿子按照子树的大小按顺序排列。数组的下标代表着二项树的rank。同时你会发现儿子以及兄弟都会以<strong>扩散式</strong>的递减，如图中的14是个r(2)树，而儿子和兄弟是r(1)，直至到r(0)。</p>
 <p>我们来看下代码吧：</p>
@@ -309,8 +308,7 @@
 <h4 id="merge-1"><a href="#merge-1" class="headerlink" title="merge"></a>merge</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(Binomial&lt;T&gt; &amp;rhs)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>==&amp;rhs)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line"></span><br><span class="line">    currentSize+=rhs.currentSize;</span><br><span class="line">    <span class="keyword">if</span>(currentSize&gt;capacity())</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">int</span> oldNumTrees=theTrees.size();</span><br><span class="line">        <span class="keyword">int</span> newNumTrees=<span class="built_in">std</span>::max(theTrees.size(),rhs.theTrees.size())+<span class="number">1</span>;</span><br><span class="line">        theTrees.resize(newNumTrees);</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=oldNumTrees;i&lt;newNumTrees;i++)</span><br><span class="line">        &#123;</span><br><span class="line">            theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    BNode *carry=<span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>,j=<span class="number">1</span>;j&lt;=currentSize;i++,j*=<span class="number">2</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        BNode* t1=theTrees[i];</span><br><span class="line">        BNode* t2=i&lt;rhs.theTrees.size()?rhs.theTrees[i]:<span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">        <span class="keyword">int</span> whichcase=t1==<span class="literal">nullptr</span>?<span class="number">0</span>:<span class="number">1</span>;</span><br><span class="line">        whichcase+=t2==<span class="literal">nullptr</span>?<span class="number">0</span>:<span class="number">2</span>;</span><br><span class="line">        whichcase+=carry==<span class="literal">nullptr</span>?<span class="number">0</span>:<span class="number">4</span>;</span><br><span class="line"></span><br><span class="line">        <span class="keyword">switch</span>(whichcase)</span><br><span class="line">        &#123;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">0</span>:<span class="comment">/*No Trees*/</span></span><br><span class="line">            <span class="keyword">case</span> <span class="number">1</span>:<span class="comment">/*only this*/</span></span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">2</span>:<span class="comment">/*only rhs*/</span></span><br><span class="line">                theTrees[i]=t2;</span><br><span class="line">                rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">4</span>:<span class="comment">/*only carry*/</span></span><br><span class="line">                theTrees[i]=carry;  <span class="comment">//浅拷贝，转让资源管理权</span></span><br><span class="line">                carry=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">3</span>:<span class="comment">/*this and rhs*/</span></span><br><span class="line">                carry=combineTrees(t1,t2);</span><br><span class="line">                theTrees[i]=rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">5</span>:<span class="comment">/*this and carry*/</span></span><br><span class="line">                carry=combineTrees(t1,carry);</span><br><span class="line">                theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">6</span>:<span class="comment">/*rhs and carry*/</span></span><br><span class="line">                carry=combineTrees(t2,carry);</span><br><span class="line">                rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">            <span class="keyword">case</span> <span class="number">7</span>:<span class="comment">/*all three*/</span></span><br><span class="line">                theTrees[i]=carry;</span><br><span class="line">                carry=combineTrees(t1,t2);</span><br><span class="line">                rhs.theTrees[i]=<span class="literal">nullptr</span>;</span><br><span class="line">                <span class="keyword">break</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> &amp;root:rhs.theTrees)</span><br><span class="line">        root=<span class="literal">nullptr</span>;</span><br><span class="line">    rhs.currentSize=<span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>这段代码我只想说真看懂了前面合并以及各标识符的意义自然就懂。<br>i表示的是rank，而j是i的限制条件，转换来就是i&lt;=log（currentSize）<br>carry是上一步得到的树，当前case生成的carry为i+1阶，用的carry是上阶段得到的i阶。最后会以case4结束整个循环，置为nullptr（转让资源管理权）（不过不是只有最后一步才会使case4）</p>
 <h4 id="deleteMin-1"><a href="#deleteMin-1" class="headerlink" title="deleteMin"></a>deleteMin</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">deleteMin</span><span class="params">(T&amp; minItem)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(isEmpty())</span><br><span class="line">        <span class="keyword">throw</span> UnderflowException&#123;&#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> minIndex=findMinIndex();</span><br><span class="line">    minItem=theTrees[minIndex]-&gt;element;</span><br><span class="line"></span><br><span class="line">    BNode* oldroot=theTrees[minIndex];</span><br><span class="line">    BNode* deleteTrees=oldroot-&gt;leftchild;</span><br><span class="line">    <span class="keyword">delete</span> oldroot;</span><br><span class="line">    theTrees[minIndex]=<span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//construct H''</span></span><br><span class="line">    Binomial deleteQueue;</span><br><span class="line">    deleteQueue.theTrees.resize(minIndex);</span><br><span class="line">    deleteQueue.currentSize=(<span class="number">1</span>&lt;&lt;minIndex)<span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=minIndex<span class="number">-1</span>;i&gt;=<span class="number">0</span>;i--)</span><br><span class="line">    &#123;</span><br><span class="line">        deleteQueue.theTrees[i]=deleteTrees;</span><br><span class="line">        deleteTrees=deleteTrees-&gt;nextSibling;</span><br><span class="line">        deleteQueue.theTrees[i]-&gt;nextSibling=<span class="literal">nullptr</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//consturct H'</span></span><br><span class="line">    currentSize-=deleteQueue.currentSize+<span class="number">1</span>;</span><br><span class="line"></span><br><span class="line">    merge(deleteQueue);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>这个很显然的，在下面补个findMinIndex：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findMinIndex</span><span class="params">()</span><span class="keyword">const</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> minIndex;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;theTrees[i]==<span class="literal">nullptr</span>;i++)</span><br><span class="line">        ;<span class="comment">//找到第一个非空根结点</span></span><br><span class="line">    <span class="keyword">for</span>(minIndex=i;i&lt;theTrees.size();i++)</span><br><span class="line">        <span class="keyword">if</span>(theTrees[i]!=<span class="literal">nullptr</span>&amp;&amp;theTrees[i]-&gt;element&lt;theTrees[minIndex]-&gt;element)</span><br><span class="line">            minIndex=i;</span><br><span class="line">    <span class="keyword">return</span> minIndex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这个很显然的，在下面补个findMinIndex：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">findMinIndex</span><span class="params">()</span><span class="keyword">const</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> minIndex;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(i=<span class="number">0</span>;theTrees[i]==<span class="literal">nullptr</span>;i++)</span><br><span class="line">        ;<span class="comment">//找到第一个非空根结点</span></span><br><span class="line">    <span class="keyword">for</span>(minIndex=i;i&lt;theTrees.size();i++)</span><br><span class="line">        <span class="keyword">if</span>(theTrees[i]!=<span class="literal">nullptr</span>&amp;&amp;theTrees[i]-&gt;element&lt;theTrees[minIndex]-&gt;element)</span><br><span class="line">            minIndex=i;</span><br><span class="line">    <span class="keyword">return</span> minIndex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 
       
 
@@ -600,15 +598,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -616,55 +606,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -676,6 +630,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -684,7 +670,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

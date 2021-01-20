@@ -264,12 +264,13 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="左式堆（Leftist-heap）"><a href="#左式堆（Leftist-heap）" class="headerlink" title="左式堆（Leftist heap）"></a>左式堆（Leftist heap）</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>二叉堆不能有效地支持合并操作，而且只使用一个数组的话，我们需要将一个数组复制到另一个数组中，时间复杂度为O(n)。因此我们通过链式来设计一个新的方便合并的堆，这就是左式堆。</p>
-<a id="more"></a>
+        <h1 id="左式堆（Leftist-heap）"><a href="#左式堆（Leftist-heap）" class="headerlink" title="左式堆（Leftist heap）"></a>左式堆（Leftist heap）</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>二叉堆不能有效地支持合并操作，而且只使用一个数组的话，我们需要将一个数组复制到另一个数组中，时间复杂度为O(n)。因此我们通过链式来设计一个新的方便合并的堆，这就是左式堆。<br><a id="more"></a></p>
 <h2 id="性质"><a href="#性质" class="headerlink" title="性质"></a>性质</h2><p>我们要介绍左式堆首先要介绍<strong>零路径长（null path length，简写为npl）</strong>  </p>
-<pre><code>设结点X，则npl（X)=X到不具有两个儿子结点的最短路径。</code></pre><p>所以只有一个儿子或是没有儿子的结点的零路径长为0。<br>左式堆的性质是：每个结点的左儿子的零路径长大于等于右儿子。因此左式堆是不平衡堆，偏向于向左增加深度，也因此便于合并，故得名——Leftist。<br>事实上，右路径是左式堆路径中最短的，否则，将会破坏左式堆性质。</p>
+<pre><code> 设结点X，则npl（X)=X到不具有两个儿子结点的最短路径。
+</code></pre><p>所以只有一个儿子或是没有儿子的结点的零路径长为0。<br>左式堆的性质是：每个结点的左儿子的零路径长大于等于右儿子。因此左式堆是不平衡堆，偏向于向左增加深度，也因此便于合并，故得名——Leftist。<br>事实上，右路径是左式堆路径中最短的，否则，将会破坏左式堆性质。</p>
 <h2 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h2><p>这里我们来证明一个定理：</p>
-<pre><code>在右路径上有r个结点的左式堆至少有2^r-1个结点</code></pre><p>证明：<br><img src="https://img-blog.csdnimg.cn/20200722122747426.gif" alt=""></p>
+<pre><code>在右路径上有r个结点的左式堆至少有2^r-1个结点
+</code></pre><p>证明：<br><img src="https://img-blog.csdnimg.cn/20200722122747426.gif" alt=""></p>
 <p>也就是说含有N个结点的左式堆，有一条最多含有[log(N+1)]个结点的右路径。<br>也正因此我们处理左式堆的一般思路就是将一切工作都放在右路径上进行，这样尽可能地保证了树的深度小（后面的操作有体现）。</p>
 <h2 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h2><p>我们主要侧重来看一下合并是如何进行的。<br>先声明一下，插入是合并的一种特殊形式，看做单个点构成的左式堆与左式堆（也可能是单个点甚至为空）合并即可。<br>我们主要是通过递归来得到合并后的左式堆的，就像数学归纳法一样，如果一次合并成功了，那么递归得到的左式堆也应该是成功的。<br>下面是两个左式堆H1和H2：</p>
 <p><img src="https://img-blog.csdnimg.cn/2020072212321743.png" alt=""></p>
@@ -572,15 +573,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -588,55 +581,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -648,6 +605,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -656,7 +645,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

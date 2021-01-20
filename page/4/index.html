@@ -254,7 +254,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="O-logn-O-nlogn"><a href="#O-logn-O-nlogn" class="headerlink" title="O(logn!)=O(nlogn)"></a>O(logn!)=O(nlogn)</h1><p>我们可以证明logn！小于nlogn而大于一个常数倍的nlogn(当n大于某一常数时）。  </p>
+        <h1 id="O-logn-O-nlogn"><a href="#O-logn-O-nlogn" class="headerlink" title="O(logn!)=O(nlogn)"></a>O(logn!)=O(nlogn)</h1><p>我们可以证明logn！小于nlogn而大于一个常数倍的nlogn(当n大于某一常数时）。<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/Proof%20of%20O(logn!)=O(nlogn)/#more">more >></a>
         
@@ -342,7 +342,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>归并排序的基本思想是：首先将a[0..n-1]看成是n个长度为1的有序表，将相邻的k（k≥2）个有序子表成对归并，得到n/k个长度为k的有序子表；然后再将这些有序子表继续归并，得到n/k2个长度为k2的有序子表，如此反复进行下去，最后得到一个长度为n的有序表。</p>
+        <h1 id="归并排序"><a href="#归并排序" class="headerlink" title="归并排序"></a>归并排序</h1><h2 id="基本思路"><a href="#基本思路" class="headerlink" title="基本思路"></a>基本思路</h2><p>归并排序的基本思想是：首先将a[0..n-1]看成是n个长度为1的有序表，将相邻的k（k≥2）个有序子表成对归并，得到n/k个长度为k的有序子表；然后再将这些有序子表继续归并，得到n/k2个长度为k2的有序子表，如此反复进行下去，最后得到一个长度为n的有序表。<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/MergeSort/#more">more >></a>
         
@@ -430,7 +430,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><h2 id="直接插入排序"><a href="#直接插入排序" class="headerlink" title="直接插入排序"></a>直接插入排序</h2><p>直接插入排序就是无序区有和有序区反序的元素，那么就将这个元素插入到有序区中合适的位置，使之成为有序区的元素   </p>
+        <h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><h2 id="直接插入排序"><a href="#直接插入排序" class="headerlink" title="直接插入排序"></a>直接插入排序</h2><p>直接插入排序就是无序区有和有序区反序的元素，那么就将这个元素插入到有序区中合适的位置，使之成为有序区的元素<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/InsertSort/#more">more >></a>
         
@@ -518,7 +518,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>堆</strong>，分为大（顶）堆和小（顶）堆，是顺序存储的完全二叉树，并且满足一下特性之一：  </p>
+        <h1 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h1><h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><p><strong>堆</strong>，分为大（顶）堆和小（顶）堆，是顺序存储的完全二叉树，并且满足一下特性之一：<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/HeapSort/#more">more >></a>
         
@@ -606,7 +606,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>计数排序是一种线性排序算法，它利用了一个数组，因为数组下标的增长是线性的，所以它就把自己的元素转换成新开辟数组的下标。但是数组元素有正有负，下标只有非负值，那么我们就应该考虑如何转换。这也不是很难，只要我们将该元素值减去数组最小值即可得到count数组的下标（类似映射函数）。</p>
+        <h1 id="计数排序"><a href="#计数排序" class="headerlink" title="计数排序"></a>计数排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>计数排序是一种线性排序算法，它利用了一个数组，因为数组下标的增长是线性的，所以它就把自己的元素转换成新开辟数组的下标。但是数组元素有正有负，下标只有非负值，那么我们就应该考虑如何转换。这也不是很难，只要我们将该元素值减去数组最小值即可得到count数组的下标（类似映射函数）。<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/CountSort/#more">more >></a>
         
@@ -694,7 +694,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>桶排序的思想近乎彻底的分治思想。<br>桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。  </p>
+        <h1 id="桶排序"><a href="#桶排序" class="headerlink" title="桶排序"></a>桶排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>桶排序的思想近乎彻底的分治思想。<br>桶排序假设待排序的一组数均匀独立的分布在一个范围中，并将这一范围划分成几个子范围（桶）。<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/BucketSort/#more">more >></a>
         
@@ -782,7 +782,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>冒泡排序分为趟数和交换次数。<br>外层循环为趟数，如果有n个元素则要循环n-1趟。<br>内层循环主要做每一趟的交换，从第0个元素开始如果发现当前元素大于它的后一个元素，将其交换，每一趟下来，前面的有序区新增一个最小值（相比无序区最小），然后在无序区的第一个元素开始到最后一个元素冒泡排序，将最小值冒出来，以此循环。</p>
+        <h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><h2 id="基本思想"><a href="#基本思想" class="headerlink" title="基本思想"></a>基本思想</h2><p>冒泡排序分为趟数和交换次数。<br>外层循环为趟数，如果有n个元素则要循环n-1趟。<br>内层循环主要做每一趟的交换，从第0个元素开始如果发现当前元素大于它的后一个元素，将其交换，每一趟下来，前面的有序区新增一个最小值（相比无序区最小），然后在无序区的第一个元素开始到最后一个元素冒泡排序，将最小值冒出来，以此循环。<br>
         
           <a class="article-more-a" href="/2020/06/25/Sort/BubbleSort/#more">more >></a>
         
@@ -870,7 +870,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="并查集（Union-Find-Set）"><a href="#并查集（Union-Find-Set）" class="headerlink" title="并查集（Union-Find Set）"></a>并查集（Union-Find Set）</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>并查集正如其名，分为<strong>Union</strong>和<strong>Find</strong>,即合并和查找。</p>
+        <h1 id="并查集（Union-Find-Set）"><a href="#并查集（Union-Find-Set）" class="headerlink" title="并查集（Union-Find Set）"></a>并查集（Union-Find Set）</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>并查集正如其名，分为<strong>Union</strong>和<strong>Find</strong>,即合并和查找。<br>
         
           <a class="article-more-a" href="/2020/06/24/Graph/Union_Find%20set/#more">more >></a>
         
@@ -1057,7 +1057,7 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Kruskal"><a href="#Kruskal" class="headerlink" title="Kruskal"></a>Kruskal</h1><p>kruskal与prim不同，是基于边去构造最小生成树，所以适用于边比较少的稀疏图。<br>kruskal需要边的集合，我们称其为边集数组。边集数组按从小到大的顺序排序，方便构造最小生成树。</p>
+        <h1 id="Kruskal"><a href="#Kruskal" class="headerlink" title="Kruskal"></a>Kruskal</h1><p>kruskal与prim不同，是基于边去构造最小生成树，所以适用于边比较少的稀疏图。<br>kruskal需要边的集合，我们称其为边集数组。边集数组按从小到大的顺序排序，方便构造最小生成树。<br>
         
           <a class="article-more-a" href="/2020/06/24/Graph/Kruskal/#more">more >></a>
         
@@ -1241,15 +1241,7 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1257,55 +1249,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">排序</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1317,6 +1273,38 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
               </li>
              
@@ -1325,7 +1313,19 @@ return o(i(t),arguments.length<2?void 0:u(arguments[1]))}})},function(t,n,r){var
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>
