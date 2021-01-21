@@ -11,18 +11,18 @@
   <meta name="description" content="钢条切割问题Problem:  Given a rod of length n inches and a table of prices p[i] for i&#x3D;1,2,…,n,determine the maximum revenue r[n] obtainable by cutting up rod and selling the prices.Note that if the price p[">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rod Cutting">
-<meta property="og:url" content="http://yoursite.com/2021/01/20/CLRS/Rod%20Cutting/index.html">
+<meta property="og:url" content="http://yoursite.com/2021/01/20/Rod%20Cutting/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
 <meta property="og:description" content="钢条切割问题Problem:  Given a rod of length n inches and a table of prices p[i] for i&#x3D;1,2,…,n,determine the maximum revenue r[n] obtainable by cutting up rod and selling the prices.Note that if the price p[">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="c:/Users/谁敢反对宁宁，我就打爆他狗头！/AppData/Roaming/Typora/typora-user-images/image-20210120201441216.png">
-<meta property="og:image" content="c:/Users/谁敢反对宁宁，我就打爆他狗头！/AppData/Roaming/Typora/typora-user-images/image-20210120215456969.png">
+<meta property="og:image" content="http://yoursite.com/.com//image-20210120201441216-1611200378988.png">
+<meta property="og:image" content="http://yoursite.com/.com//image-20210120215456969.png">
 <meta property="article:published_time" content="2021-01-20T14:34:03.675Z">
-<meta property="article:modified_time" content="2021-01-20T16:25:50.396Z">
+<meta property="article:modified_time" content="2021-01-21T03:39:58.140Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="dynamic programming">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="c:/Users/谁敢反对宁宁，我就打爆他狗头！/AppData/Roaming/Typora/typora-user-images/image-20210120201441216.png">
+<meta name="twitter:image" content="http://yoursite.com/.com//image-20210120201441216-1611200378988.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -239,7 +239,7 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-CLRS/Rod Cutting" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Rod Cutting" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
@@ -251,7 +251,7 @@
   
 
         
-        <a href="/2021/01/20/CLRS/Rod%20Cutting/" class="archive-article-date">
+        <a href="/2021/01/20/Rod%20Cutting/" class="archive-article-date">
   	<time datetime="2021-01-20T14:34:03.675Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
 </a>
         
@@ -319,7 +319,7 @@ T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归�
 <p>2.假设当n=m时，$T(n)=2^m$成立</p>
 <p>3.当n=m+1时，$T(m+1)=1+\sum ^{m}_{j=0}T(j)=1+2^0+2^1+…+2^m=2^{m+1}$，命题得证</p>
 <p>还有一种思路就是画出<strong>递归树（recursion tree）</strong>：</p>
-<p><img src="C:\Users\谁敢反对宁宁，我就打爆他狗头！\AppData\Roaming\Typora\typora-user-images\image-20210120201441216.png" alt="image-20210120201441216"></p>
+<p><img src="/.com//image-20210120201441216-1611200378988.png" alt="image-20210120201441216"></p>
 <p>除了最上面这个根节点，其他根节点为子问题，那么总结点数与时间复杂度同阶</p>
 <p>通过乘法原理，将切与不切看做bit，所有子问题组成bit vector，假设长度为m，那么总数目就是$2^m$，即总结点数</p>
 <p>还有一种想法就是用牛顿二项式定理，不再赘述</p>
@@ -336,7 +336,7 @@ T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归�
 <p>这样时间复杂度取决于嵌套for循环的次数：</p>
 <p>$T(n)=1+2+..+n= \frac {n(n+1)}{2}$~$O(n^2)$</p>
 <p>这个方法没有用到递归而是单纯的循环，因此不需要压栈</p>
-<p><img src="C:\Users\谁敢反对宁宁，我就打爆他狗头！\AppData\Roaming\Typora\typora-user-images\image-20210120215456969.png" alt="image-20210120215456969"></p>
+<p><img src="/.com//image-20210120215456969.png" alt="image-20210120215456969"></p>
 <p>这样的图我们称之为<strong>子问题图（subproblems graph）</strong>，我们注意到外层循环其实就是顶点数，而内层循环是边数。</p>
 <p>带备忘的自顶向下法类似于DFS，而自底向上法类似于逆序拓扑排序</p>
 <p>动态规划问题具有两个性质：</p>
@@ -454,7 +454,7 @@ T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归�
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/20/CLRS/Rod%20Cutting/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/20/Rod%20Cutting/" alt="微信分享二维码">
     </div>
 </div>
 
