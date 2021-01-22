@@ -6,15 +6,22 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Category: Algorithm | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Activity-Selection | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta property="og:type" content="website">
-<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:url" content="http://yoursite.com/categories/Algorithm/index.html">
+  <meta name="description" content="活动选择问题 Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S&#x3D;\{a">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Activity-Selection">
+<meta property="og:url" content="http://yoursite.com/2021/01/21/CLRS/Activity-Selection/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:description" content="活动选择问题 Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S&#x3D;\{a">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png">
+<meta property="article:published_time" content="2021-01-21T13:37:18.121Z">
+<meta property="article:modified_time" content="2021-01-22T08:55:06.968Z">
 <meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="greedy algorithm">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -231,36 +238,192 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            
-  
-  
+            <article id="post-CLRS/Activity-Selection" class="article article-type-post " itemscope itemprop="blogPost">
+  <div class="article-inner">
     
-    
-      
-      
-      <section class="archives-wrap">
-        <div class="archive-year-wrap">
-          <a href="/archives/2021" class="archive-year">2021</a>
-        </div>
-        <div class="archives">
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/21/CLRS/Activity-Selection/" class="archive-article-date">
-  	<time datetime="2021-01-21T13:37:18.121Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-21</time>
-</a>
-        </div>
-    	 
+      <header class="article-header">
+        
   
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/21/CLRS/Activity-Selection/">Activity-Selection</a>
+    <h1 class="article-title" itemprop="name">
+      Activity-Selection
     </h1>
   
 
-        <div class="article-info info-on-right">
-          
+        
+        <a href="/2021/01/21/CLRS/Activity-Selection/" class="archive-article-date">
+  	<time datetime="2021-01-21T13:37:18.121Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-21</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="活动选择问题"><a href="#活动选择问题" class="headerlink" title="活动选择问题"></a>活动选择问题</h1><blockquote>
+<p>Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S=\{a_1,a_2,…,a_n\}$ of n proposed <strong>activities</strong> that wish to use a resource,such as a lecture,which can serve only one activity at a time.Each activity $a_i$ has a <strong>start time</strong> $s_i$ and a <strong>finish time</strong> $f_i$,where $0 \leq s_i &lt; f_i &lt; \infty$.If selected,activity $a_i$ takes place during the half-open time interval $[s_i,f_i)$.Activities $a_i$ and $a_j$ are <strong>compatible</strong> if the intervals $[s_i,f_i)$ and $[s_j,f_j)$ do not overlap.i.e.,$a_i$ and $a_j$ are compatible if $f_i \le s_j$ or $f_j \le s_i $.</p>
+</blockquote>
+<a id="more"></a>
+<p>为了操作方便，我们做出如下假设：</p>
+<script type="math/tex; mode=display">
+f_1 \le f_2 \le f_3 \le ···\le f_{n-1} \le f_{n}.</script><p>活动时间表如下：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>i</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$s_i$</td>
+<td>1</td>
+<td>3</td>
+<td>0</td>
+<td>5</td>
+<td>3</td>
+<td>5</td>
+<td>6</td>
+<td>8</td>
+<td>8</td>
+<td>2</td>
+<td>12</td>
+</tr>
+<tr>
+<td>$f_i$</td>
+<td>4</td>
+<td>5</td>
+<td>6</td>
+<td>7</td>
+<td>9</td>
+<td>9</td>
+<td>10</td>
+<td>11</td>
+<td>12</td>
+<td>14</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+</div>
+<h1 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h1><p>我们先用动态规划的方法解决，那么得先找到最优子结构。</p>
+<p>我们令$S_{ij}=\{a_k \in S :s_k \ge f_i \ and \ f_k \le s_j \}$,并令$A_{ij}$为其最大兼容子集，且$a_k \in A_{ij}$，因为$a_k$包含在最优解中，我们可以将原问题分解成两个子问题：$S_{ik}$和$S_{kj}$,自然地，令（这里并没有说$A_{ik}$和$A_{kj}$就是最大兼容子集）</p>
+<script type="math/tex; mode=display">
+A_{ik}=A_{ij} \cap S_{ik} \\
+A_{kj}=A_{ij} \cap S_{kj}</script><p>很明显，$A_{ik}$和$A_{kj}$都没有包含$a_k$，因此$A_{ij}=A_{ik} \cup A_{kj} \cup \{ a_k \}$,故</p>
+<script type="math/tex; mode=display">
+|A_{ij}|=|A_{ik}|+|A_{kj}|+1</script><p>我们可以通过<strong>cut-and-paste</strong>方法证明：$A_{ij}$一定包含$S_{ik}$和$S_{kj}$的最优解，即证明$A_{ik}$和$A_{kj}$是子问题的最大兼容子集</p>
+<p>$Proof$</p>
+<p>假设$A’_{ik}$是$S_{ik}$的最优解，$|A’_{ik}| &gt; |A_{ik}|$.</p>
+<p>则$|A’_{ik}|+|A_{kj}|+1&gt;|A_{ik}|+|A_{kj}|+1$与$A_{ij}$为最优解矛盾</p>
+<p>$A_{ik}$是$S_{ik}$的最优解</p>
+<p>对于$A_{kj}$也是一样        $\blacksquare$</p>
+<p>我们用$c[i,j]$表示$S_{ij}$的最优解，则</p>
+<script type="math/tex; mode=display">
+c[i,j]=
+\begin{cases}
+0 & if \ S_{ij} \ = \emptyset \\
+\max \limits_{a_k \in S_{ij}} \ \{c[i,k]+c[k,j]+1 \} \ & if \ S_{ij} \ \ne \emptyset
+\end{cases}</script><p>用bottom-up法编写伪代码如下：</p>
+<p>$DYNAMIC-ACTIVITY-SELECTOR(s,f,n)$</p>
+<p>1    $let \ c[0…n+1,0…n+1] \ and \ act[0…n+1,0…n+1] to \ be \ new \ table$</p>
+<p>2    <strong>for</strong> $j  ← 0 $ to  $n+1$ do</p>
+<p>3        <strong>for</strong> $i ← n+1$ to $j$ do</p>
+<p>4            $c[i,j]←0$</p>
+<p>5    $tmp ← 0$</p>
+<p>6    <strong>for</strong> $j ← 1 $ to $n+1$ do</p>
+<p>7        <strong>for</strong> $i ← 0$ to $j-1$ do</p>
+<p>8            <strong>for</strong> $k ← i+1$ to $j-1$ do</p>
+<p>9                <strong>if</strong> $f[i] \le s[k] $ and $f[k] \le s[j]$</p>
+<p>10                    <strong>if</strong> $c[i,k]+c[k,j]+1 &gt; tmp$</p>
+<p>11                        $tmp ←c[i,k]+c[k,j]+1$</p>
+<p>12                        $act[i,j]←k$</p>
+<p>13          $c[i,j]←tmp$</p>
+<p>14          $tmp ← 0$            </p>
+<p>15         <strong>print</strong> $c[0][n+1]$</p>
+<p>16         $PRINT-ACT(act,i,j)$</p>
+<p>$PRINT-ACT(act,i,j)$</p>
+<p>1    <strong>if</strong> $act[i][j]&gt;0$</p>
+<p>2        $PRINT-ACT(act,i,k)$</p>
+<p>3        $PRINT-ACT(act,k,j)$</p>
+<p>4        <strong>print</strong> $’a’$</p>
+<p>5        <strong>print</strong>  $k$</p>
+<p>由三重循环不难得知该算法时间复杂度为$O(n^3)$</p>
+<p>接下来考虑用贪心算法优化该问题</p>
+<h1 id="Greedy-Choice"><a href="#Greedy-Choice" class="headerlink" title="Greedy Choice"></a>Greedy Choice</h1><p>根据直觉，我们要选择集合S中最先完成的活动，因为这样就可以尽可能的留下其他（兼容）活动去选择。而根据前面的假设，完成时间$f_i$是单调递增的，因此我们做出第一个贪心选择：$a_1$</p>
+<p>现在的子问题是：在$a_1$完成后开始的活动中选择第一个完成的活动。我们并不需要考虑在$a_1$开始前完成的活动，因为满足该条件的活动必然不兼容：$a_1 &lt; f_1 \ but \ f_j(j&gt;1) &gt;f_1 \ $ 所以 $\ f_j&gt;a_1$。</p>
+<p>令$S_k=\{a_i \in S :s_i \ge f_k\}$，$S_k$既是个活动集合，也是个子问题。原问题是在S中找到最大兼容子集，这里为了编码方便，令$S_0=S,f_0=0$。由最优子结构可知，原问题的最优解包含$a_1$和相关子问题中的所有最先完成活动。</p>
+<p>接下来，验证该直觉是否正确:</p>
+<blockquote>
+<p>Theorem</p>
+<p>Consider $\forall S_k \ne \emptyset$，and let $a_m \in S_k$ with the earlist finish time.Let $A_k$ be a maximum-size subset of mutually compatible activites of $S_k$,then $a_m$ is include in some $A_k$.</p>
+</blockquote>
+<p>$Proof:$</p>
+<p>设$A_k$中最先完成活动为$a_j$,</p>
+<p>if $a_m = a_j$，显然，$a_m \in A_k$</p>
+<p>else，令$A’_k=A_k- \{ a_j \}  \cup \{a_m\}$，因为$A_k$即使将$a_j$剔除也相互兼容，而$a_m$是$S_k$中最先完成的活动（比$a_j$先），因此加入到$A_k$中能保证相互兼容。因为$|A_k|=|A’_k|$,所以$A’_k$也是一个最大兼容子集，$a_m \in A’_k$满足条件</p>
+<p>命题得证。</p>
+<p>这个定理告诉我们：子问题（原问题）的最先完成活动必然是最大兼容子集的元素，因此原问题的最优解包含子问题的最优解，该问题具备最优子结构性质。</p>
+<p>由于完成时间是单调递增的，因此每个活动只需要考虑一次，也正因此，时间复杂度为$O(n)$</p>
+<h2 id="递归版本"><a href="#递归版本" class="headerlink" title="递归版本"></a>递归版本</h2><p>$RECURSIVE-ACTIVITY-SELECTOR(s,f,k,n)$<br>1    $m ← k+1$<br>2    <strong>while</strong> $ m \le n $ and $ s[m]&lt;f[k]$<br>3        $m ← m+1$</p>
+<p>4    <strong>if</strong>  $m \le n$ then<br>5    <strong>return</strong> $\{a_m\} \cup  RECURSIVE-ACTIVITY-SELECTOR(s,f,m,n)$</p>
+<p>6    <strong>else</strong> <strong>return</strong> $\emptyset$</p>
+<p>翻译成C++如下：</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Activities_Choice</span><span class="params">(<span class="keyword">int</span>* s,<span class="keyword">int</span>* f,<span class="keyword">int</span> k,<span class="keyword">int</span> n,<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;&amp; act)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m=k+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(m&lt;=n&amp;&amp;s[m]&lt;f[k])</span><br><span class="line">        ++m;</span><br><span class="line">    <span class="keyword">if</span>(m&lt;=n) &#123;</span><br><span class="line">        act.emplace_back(<span class="string">"a"</span> + <span class="built_in">std</span>::to_string(m));</span><br><span class="line">        Activities_Choice(s,f,m,n,act);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>鉴于完成时间数组并不一定是单调递增的，我们可以用set容器帮忙排序</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">using</span> intPair=pair&lt;<span class="keyword">int</span>,<span class="keyword">int</span>&gt;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">iP_comp</span>&#123;</span></span><br><span class="line">    <span class="function"><span class="keyword">bool</span> <span class="title">operator</span> <span class="params">()</span> <span class="title">const</span><span class="params">(intPair <span class="keyword">const</span>&amp; p1,intPair <span class="keyword">const</span>&amp; p2)</span></span>&#123;</span><br><span class="line">        <span class="keyword">return</span> p1.second&lt;=p2.second;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; act;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">set</span>&lt;intPair,iP_comp&gt; time&#123;</span><br><span class="line">            &#123;<span class="number">0</span>,<span class="number">0</span>&#125;,</span><br><span class="line">            &#123;<span class="number">1</span>,<span class="number">4</span>&#125;,</span><br><span class="line">            &#123;<span class="number">3</span>,<span class="number">5</span>&#125;,</span><br><span class="line">            &#123;<span class="number">0</span>,<span class="number">6</span>&#125;,</span><br><span class="line">            &#123;<span class="number">12</span>,<span class="number">16</span>&#125;,</span><br><span class="line">            &#123;<span class="number">2</span>,<span class="number">14</span>&#125;,</span><br><span class="line">            &#123;<span class="number">5</span>,<span class="number">7</span>&#125;,</span><br><span class="line">            &#123;<span class="number">5</span>,<span class="number">9</span>&#125;,</span><br><span class="line">            &#123;<span class="number">3</span>,<span class="number">9</span>&#125;,</span><br><span class="line">            &#123;<span class="number">6</span>,<span class="number">10</span>&#125;,</span><br><span class="line">            &#123;<span class="number">8</span>,<span class="number">12</span>&#125;,</span><br><span class="line">            &#123;<span class="number">8</span>,<span class="number">11</span>&#125;</span><br><span class="line">    &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> s[<span class="number">12</span>],f[<span class="number">12</span>];</span><br><span class="line">    <span class="keyword">auto</span> b=time.begin();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;time.size();++i)&#123;</span><br><span class="line">        s[i]=b-&gt;first;</span><br><span class="line">        f[i]=b-&gt;second;</span><br><span class="line">        ++b;</span><br><span class="line">    &#125;</span><br><span class="line">   </span><br><span class="line">    Activities_Choice(s,f,<span class="number">0</span>,<span class="number">11</span>,act);</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">auto</span> <span class="keyword">const</span>&amp; ac:act)&#123;</span><br><span class="line">        <span class="built_in">cout</span>&lt;&lt;ac&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>示意图如下：</p>
+<p><img src="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png" alt="image.png"></p>
+<h2 id="迭代版本"><a href="#迭代版本" class="headerlink" title="迭代版本"></a>迭代版本</h2><p>实际上，由“尾递归”转换为迭代是十分容易的：</p>
+<p>$ITERATIVE-ACTIVITY-SELECTIOR(s,f)$</p>
+<p>1    $n←s.length$</p>
+<p>2    $A ←\{a_1\}$</p>
+<p>3    $k←1$</p>
+<p>4    <strong>while</strong> $m←2$ to $n$ do</p>
+<p>5        <strong>if</strong> $s[m]\ge f[k]$ then</p>
+<p>6            $A ← A \cup \{ a_m \}$</p>
+<p>7            $k←m$</p>
+<p>8    <strong>return</strong> $A$</p>
+<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>贪心算法并不关注重叠子问题，而是做出贪心选择，然后继续执行对应的子问题从而达到最优解，因此它并不会像bottom-up那样遍历所有先决子问题最后来解决自己，而是选择一条路径来解决</p>
+
+      
+
+      
+        <div class="page-reward">
+          <a href="javascript:;" class="page-reward-btn tooltip-top">
+            <div class="tooltip tooltip-east">
+            <span class="tooltip-item">
+              赏
+            </span>
+            <span class="tooltip-content">
+              <span class="tooltip-text">
+                <span class="tooltip-inner">
+                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
+                  <div class="reward-box">
+                    
+                    
+                  </div>
+                </span>
+              </span>
+            </span>
+          </div>
+          </a>
+        </div>
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
@@ -272,7 +435,7 @@
 		</ul>
 	</div>
 
-          
+      
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
@@ -289,70 +452,145 @@
 	</div>
 
 
+      
+
+      
+        
+<div class="share-btn share-icons tooltip-left">
+  <div class="tooltip tooltip-east">
+    <span class="tooltip-item">
+      <a href="javascript:;" class="share-sns share-outer">
+        <i class="icon icon-share"></i>
+      </a>
+    </span>
+    <span class="tooltip-content">
+      <div class="share-wrap">
+        <div class="share-icons">
+          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
+            <i class="icon icon-weibo"></i>
+          </a>
+          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
+            <i class="icon icon-weixin"></i>
+          </a>
+          <a class="qq share-sns" href="javascript:;" data-type="qq">
+            <i class="icon icon-qq"></i>
+          </a>
+          <a class="douban share-sns" href="javascript:;" data-type="douban">
+            <i class="icon icon-douban"></i>
+          </a>
+          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
+            <i class="icon icon-qzone"></i>
+          </a>
+          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
+            <i class="icon icon-facebook"></i>
+          </a>
+          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
+            <i class="icon icon-twitter"></i>
+          </a>
+          <a class="google share-sns" href="javascript:;" data-type="google">
+            <i class="icon icon-google"></i>
+          </a>
         </div>
-        <div class="clearfix"></div>
-    </header>
+      </div>
+    </span>
+  </div>
+</div>
+
+<div class="page-modal wx-share js-wx-box">
+    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <div class="wx-qrcode">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/21/CLRS/Activity-Selection/" alt="微信分享二维码">
+    </div>
+</div>
+
+<div class="mask js-mask"></div>
+      
+      <div class="clearfix"></div>
+    </div>
   </div>
 </article>
+
   
-    
-    
-    <article class="archive-article archive-type-post">
-  <div class="archive-article-inner">
-    <header class="archive-article-header">
-      	<div class="article-meta">
-	      	<a href="/2021/01/20/CLRS/Rod%20Cutting/" class="archive-article-date">
-  	<time datetime="2021-01-20T14:34:03.675Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
-</a>
+<nav id="article-nav">
+  
+  
+    <a href="/2021/01/21/Cppt/Directory/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">C++ Templates reading note</div>
+      <i class="icon-circle-right"></i>
+    </a>
+  
+</nav>
+
+<span id="busuanzi_container_page_pv">
+        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
+ </span>
+
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
         </div>
-    	 
-  
-    <h1 itemprop="name">
-      <a class="archive-article-title" href="/2021/01/20/CLRS/Rod%20Cutting/">Rod Cutting</a>
-    </h1>
-  
-
-        <div class="article-info info-on-right">
-          
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">dynamic programming</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-          
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Algorithm//" class="article-tag-list-link color5">Algorithm</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Algorithm/DP//" class="article-tag-list-link color3">DP</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
+        
+        
+        <div class="toc-container tooltip-left">
+            <i class="icon-font icon-category"></i>
+            <div class="tooltip tooltip-east">
+                <span class="tooltip-item">
+                </span>
+                <span class="tooltip-content">
+                    <div class="toc-article">
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#活动选择问题"><span class="toc-number">1.</span> <span class="toc-text">活动选择问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DP"><span class="toc-number">2.</span> <span class="toc-text">DP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Greedy-Choice"><span class="toc-number">3.</span> <span class="toc-text">Greedy Choice</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#递归版本"><span class="toc-number">3.1.</span> <span class="toc-text">递归版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭代版本"><span class="toc-number">3.2.</span> <span class="toc-text">迭代版本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+                    </div>
+                </span>
+            </div>
         </div>
-        <div class="clearfix"></div>
-    </header>
-  </div>
-</article>
+        
+    </div>
+</aside>
+
+
+
   
+
   
-    </div></section>
+
   
+
+  
+
+  
+    <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
+<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
+
+<script type="text/javascript">
+
+if(true){
+    var gitalk = new Gitalk({
+    clientID: '777f04a5b126f26c2e07',
+    clientSecret: '8f8dd09899f1d1d8f688e50ab6119b788982da7d',
+    repo: 'Conzxy.github.io',
+    owner: 'Conzxy',
+    admin: ['Conzxy'],
+    id: 'Thu Jan 21 2021 21:37:18 GMT+0800',
+    distractionFreeMode: 'true'
+})
+gitalk.render('gitalk-container')
+}
+</script>
 
     
+    
+  
 
 
           </div>
@@ -381,10 +619,10 @@
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: false,
+		isPost: true,
 		isArchive: false,
 		isTag: false,
-		isCategory: true,
+		isCategory: false,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",

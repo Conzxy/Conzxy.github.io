@@ -233,6 +233,100 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CLRS/Activity-Selection" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/21/CLRS/Activity-Selection/">Activity-Selection</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/21/CLRS/Activity-Selection/" class="archive-article-date">
+  	<time datetime="2021-01-21T13:37:18.121Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-21</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="活动选择问题"><a href="#活动选择问题" class="headerlink" title="活动选择问题"></a>活动选择问题</h1><blockquote>
+<p>Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S=\{a_1,a_2,…,a_n\}$ of n proposed <strong>activities</strong> that wish to use a resource,such as a lecture,which can serve only one activity at a time.Each activity $a_i$ has a <strong>start time</strong> $s_i$ and a <strong>finish time</strong> $f_i$,where $0 \leq s_i &lt; f_i &lt; \infty$.If selected,activity $a_i$ takes place during the half-open time interval $[s_i,f_i)$.Activities $a_i$ and $a_j$ are <strong>compatible</strong> if the intervals $[s_i,f_i)$ and $[s_j,f_j)$ do not overlap.i.e.,$a_i$ and $a_j$ are compatible if $f_i \le s_j$ or $f_j \le s_i $.</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2021/01/21/CLRS/Activity-Selection/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">greedy algorithm</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Algorithm//" class="article-tag-list-link color5">Algorithm</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Algorithm/贪心//" class="article-tag-list-link color3">贪心</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/21/CLRS/Activity-Selection/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Cppt/Directory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -348,7 +442,7 @@
       
         <h1 id="钢条切割问题"><a href="#钢条切割问题" class="headerlink" title="钢条切割问题"></a>钢条切割问题</h1><p>Problem:</p>
 <blockquote>
-<p>Given a rod of length n inches and a table of prices p[i] for i=1,2,…,n,determine the maximum revenue r[n] obtainable by cutting up rod and selling the prices.Note that if the price p[n] for a rod of length n is large enough,an optimal solution may requires no cutting at all</p>
+<p>Given a rod of length n inches and a table of prices $p_i$ for i=1,2,…,n,determine the maximum revenue $r_n$ obtainable by cutting up rod and selling the prices.Note that if the price $p_i$ for a rod of length n is large enough,an optimal solution may requires no cutting at all</p>
 </blockquote>
         
           <a class="article-more-a" href="/2021/01/20/CLRS/Rod%20Cutting/#more">more >></a>
@@ -1079,102 +1173,6 @@
 
 
   
-    <article id="post-Heap/Lheap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/22/Heap/Lheap/">Leftist heap</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/22/Heap/Lheap/" class="archive-article-date">
-  	<time datetime="2020-07-22T03:06:06.568Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-22</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="左式堆（Leftist-heap）"><a href="#左式堆（Leftist-heap）" class="headerlink" title="左式堆（Leftist heap）"></a>左式堆（Leftist heap）</h1><h2 id="引入"><a href="#引入" class="headerlink" title="引入"></a>引入</h2><p>二叉堆不能有效地支持合并操作，而且只使用一个数组的话，我们需要将一个数组复制到另一个数组中，时间复杂度为O(n)。因此我们通过链式来设计一个新的方便合并的堆，这就是左式堆。<br>
-        
-          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/22/Heap/Lheap/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1390,6 +1388,10 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
               </li>
             
             <div class="clearfix"></div>
