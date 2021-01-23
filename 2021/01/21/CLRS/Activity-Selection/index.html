@@ -17,7 +17,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png">
 <meta property="article:published_time" content="2021-01-21T13:37:18.121Z">
-<meta property="article:modified_time" content="2021-01-22T15:04:03.105Z">
+<meta property="article:modified_time" content="2021-01-23T02:31:46.269Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="greedy algorithm">
 <meta name="twitter:card" content="summary">
@@ -334,7 +334,8 @@ c[i,j]=
 \begin{cases}
 0 & if \ S_{ij} \ = \emptyset \\
 \max \limits_{a_k \in S_{ij}} \ \{c[i,k]+c[k,j]+1 \} \ & if \ S_{ij} \ \ne \emptyset
-\end{cases}</script><p>首先明确什么时候$S_{ij}=\emptyset$，由其定义可知：</p>
+\end{cases}</script><p>(你可能会对$a_k \in S_{ij}$感到疑问，但是注意max，我们并不知道$a_k$在哪个最大兼容子集中，因此选其最大者就是$A_{ij}$)</p>
+<p>首先明确什么时候$S_{ij}=\emptyset$，由其定义可知：</p>
 <script type="math/tex; mode=display">
 f_i \le s_k < f_k \le s_j <f_j
 \\ \to i<k<j
