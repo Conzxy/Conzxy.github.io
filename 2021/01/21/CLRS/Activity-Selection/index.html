@@ -17,7 +17,7 @@
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png">
 <meta property="article:published_time" content="2021-01-21T13:37:18.121Z">
-<meta property="article:modified_time" content="2021-01-23T02:31:46.269Z">
+<meta property="article:modified_time" content="2021-01-23T04:37:31.363Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="greedy algorithm">
 <meta name="twitter:card" content="summary">
@@ -357,15 +357,16 @@ f_i \le s_k < f_k \le s_j <f_j
 <p>接下来，验证该直觉是否正确:</p>
 <blockquote>
 <p>Theorem</p>
-<p>Consider $\forall S_k \ne \emptyset$，and let $a_m \in S_k$ with the earlist finish time.Let $A_k$ be a maximum-size subset of mutually compatible activites of $S_k$,then $a_m$ is include in some $A_k$.</p>
+<p>Consider $\forall S_k \ne \emptyset$，and let $a_m \in S_k$ with the earlist finish time.Let $A_k$ be a maximum-size subset of mutually compatible activites of $S_k$,then $a_m$ is included in some $A_k$.</p>
 </blockquote>
 <p>$Proof:$</p>
 <p>设$A_k$中最先完成活动为$a_j$,</p>
 <p>if $a_m = a_j$，显然，$a_m \in A_k$</p>
 <p>else，令$A’_k=A_k- \{ a_j \}  \cup \{a_m\}$，因为$A_k$即使将$a_j$剔除也相互兼容，而$a_m$是$S_k$中最先完成的活动（比$a_j$先），因此加入到$A_k$中能保证相互兼容。因为$|A_k|=|A’_k|$,所以$A’_k$也是一个最大兼容子集，$a_m \in A’_k$满足条件</p>
 <p>命题得证。</p>
-<p>这个定理告诉我们：子问题（原问题）的最先完成活动必然是最大兼容子集的元素，因此原问题的最优解包含子问题的最优解，该问题具备最优子结构性质。</p>
-<p>由于完成时间是单调递增的，因此每个活动只需要考虑一次，也正因此，时间复杂度为$O(n)$</p>
+<p>这个定理告诉我们：子问题（原问题）的最先完成活动必然是其最大兼容子集的元素。</p>
+<p>依次考虑每个活动，其中兼容的活动加入到$S$的最大兼容集合中，不是每个子问题的最先完成活动都是$A_0$的元素，但是$A_0$的元素一定在子问题中，我们只要取舍就行了。</p>
+<p>由于完成时间是单调递增的，因此每个活动只需要考虑一次，也正因此，时间复杂度为$O(n)$。</p>
 <h2 id="递归版本"><a href="#递归版本" class="headerlink" title="递归版本"></a>递归版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RECURSIVE-ACTIVITY-SELECTOR(s,f,k,n)</span><br><span class="line">m ← k+1</span><br><span class="line">while m &lt;&#x3D; n and s[m]&lt;f[k] do</span><br><span class="line">	m ← m+1</span><br><span class="line">if  m &lt;&#x3D; n then</span><br><span class="line">	return &#123;a_m&#125; ∪  RECURSIVE-ACTIVITY-SELECTOR(s,f,m,n)</span><br><span class="line">else return ∅</span><br></pre></td></tr></table></figure>
 <p>翻译成C++如下：</p>
 <figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Activities_Choice</span><span class="params">(<span class="keyword">int</span>* s,<span class="keyword">int</span>* f,<span class="keyword">int</span> k,<span class="keyword">int</span> n,<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;&amp; act)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m=k+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(m&lt;=n&amp;&amp;s[m]&lt;f[k])</span><br><span class="line">        ++m;</span><br><span class="line">    <span class="keyword">if</span>(m&lt;=n) &#123;</span><br><span class="line">        act.emplace_back(<span class="string">"a"</span> + <span class="built_in">std</span>::to_string(m));</span><br><span class="line">        Activities_Choice(s,f,m,n,act);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
