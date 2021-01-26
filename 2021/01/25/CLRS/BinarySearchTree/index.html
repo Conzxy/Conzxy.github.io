@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png">
 <meta property="article:published_time" content="2021-01-24T16:25:19.699Z">
-<meta property="article:modified_time" content="2021-01-26T06:49:23.398Z">
+<meta property="article:modified_time" content="2021-01-26T07:59:58.327Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Tree">
 <meta name="twitter:card" content="summary">
@@ -338,6 +338,7 @@
 <hr>
 <h3 id="TREE-TRANSPLANT"><a href="#TREE-TRANSPLANT" class="headerlink" title="TREE-TRANSPLANT"></a>TREE-TRANSPLANT</h3><p>因为删除操作涉及顶替，我们需要准备一个顶替操作，称为$TARANSPLANT$，</p>
 <p>设$v$为原节点，欲顶替节点为$u$，处理的树为$T$，先判断$v$是否为根节点，如果是根节点，直接更新$T.root$，否则将$v.p’s$的孩子重定向为$u$，然后根据$u$是不是$NIL$，决定是否重定向$u.p$，移植操作并不处理链接方式，链接方式由$TREE-DELETE$设置</p>
+<p>PS：实际上，你可能会想重定向孩子可以直接$v=u$，为什么要通过$v.p$？因$v=u$使得顶替节点占据了原节点位置，这样在$TREE-DELETE$中会删除$u$，而不是$v$，因此通过$v.p$重定向，这样不会弄混节点的绝对位置</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TREE-TRANSPLANT(T,v,u)</span><br><span class="line">if v.p &#x3D; NIL</span><br><span class="line"> then T.root ← u</span><br><span class="line"></span><br><span class="line">if v.p.right&#x3D;v</span><br><span class="line"> then v.p.right ← u</span><br><span class="line"> else if</span><br><span class="line">  then v.p.left ← u</span><br><span class="line"></span><br><span class="line">if u ≠ NIL</span><br><span class="line"> then u.p ← v.p</span><br></pre></td></tr></table></figure>
 <hr>
 <h3 id="CASE-1，2："><a href="#CASE-1，2：" class="headerlink" title="CASE 1，2："></a>CASE 1，2：</h3><p><img src="https://i.loli.net/2021/01/26/1eRKDlVaTJ3MAz8.png" alt="image.png"></p>
