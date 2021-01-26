@@ -21,7 +21,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png">
 <meta property="article:published_time" content="2021-01-24T16:25:19.699Z">
-<meta property="article:modified_time" content="2021-01-26T06:43:12.277Z">
+<meta property="article:modified_time" content="2021-01-26T06:49:23.398Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Tree">
 <meta name="twitter:card" content="summary">
@@ -291,6 +291,7 @@
 </ul>
 <p>这里引入一个定理：</p>
 <blockquote>
+<p>Problem 12.2-6</p>
 <p>Suppose a binary search tree $T$ whose keyss are distinct.Show that if the right subtree of a node $x$ in $T$ is empty and $x$ has a successor $y$,then $y$ is the lowest ancestor of $x$ whose left child is also an ansestor of $x$.</p>
 </blockquote>
 <p>这个定理实际上就是习题12.2-6的题干,我们将证明这是正确的</p>
@@ -300,7 +301,7 @@
 <p>因此$y$一定是$x$的祖先。</p>
 <p>假设$y$的右孩子是$x$的祖先，那么$x$出现在$y$的右子树中，意味着$x&gt;y$，与$y$是$x$的后继矛盾</p>
 <p>因此$y$的左孩子一定是$x$的祖先。</p>
-<p>假设$y$不是最近的祖先，则$\exist y \ne y’$是具有“左孩子为$x$祖先”性质的最近祖先</p>
+<p>假设$y$不是最近的祖先，则$\exists  y \ne y’$是具有“左孩子为$x$祖先”性质的最近祖先</p>
 <p>假设$y’.left=z$，$z$是$x$的祖先，则必然有$x \le z &lt;y’$，因为$y$不是最近祖先且左孩子也为$x$祖先，因此$y’&lt;y$，</p>
 <p>即有 $x &lt; y’ &lt;y$，与$y$是$x$的后继矛盾，故不存在这样的$y’$使得$y$是$x$的后继，</p>
 <p>i.e.$y$是$x$的最近祖先且其左孩子为其祖先$\blacksquare$</p>
