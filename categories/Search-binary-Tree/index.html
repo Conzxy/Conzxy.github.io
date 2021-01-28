@@ -6,20 +6,14 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>BinarySearchTree | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Category: Search binary tree | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="二叉查找树二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree">
-<meta property="og:type" content="article">
-<meta property="og:title" content="BinarySearchTree">
-<meta property="og:url" content="http://yoursite.com/2020/09/28/Tree/BinarySearchTree/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:url" content="http://yoursite.com/categories/Search-binary-tree/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="二叉查找树二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2020-09-28T12:00:27.032Z">
-<meta property="article:modified_time" content="2020-09-28T13:15:16.148Z">
 <meta property="article:author" content="Conzxy">
-<meta property="article:tag" content="查找">
-<meta property="article:tag" content="树">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -237,253 +231,75 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Tree/BinarySearchTree" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      BinarySearchTree
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2021" class="archive-year">2021</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2021/01/26/CLRS/BlackRedTree/" class="archive-article-date">
+  	<time datetime="2021-01-26T11:59:53.132Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2021/01/26/CLRS/BlackRedTree/">Red-Black tree</a>
     </h1>
   
 
-        
-        <a href="/2020/09/28/Tree/BinarySearchTree/" class="archive-article-date">
-  	<time datetime="2020-09-28T12:00:27.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-28</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree<root<right subtree。
-<a id="more"></a><br>排序原则基于&lt;，所以树的元素应该提供operator&lt;。<br>还有一点就是树的算法基本都是递归实现，但是树的深度只有O(logN)，因此不需要担心stack空间用尽。接下来讲几个有关的操作。</p>
-<h2 id="Operation"><a href="#Operation" class="headerlink" title="Operation"></a>Operation</h2><p>基本上都是提供一个recursive function作为接口，因此只讲该接口。</p>
-<h3 id="Contains"><a href="#Contains" class="headerlink" title="Contains"></a>Contains</h3><p>contains函数就是查找算法，其实挺无脑的，直接递归即可。<br>代码如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">bool</span> <span class="title">contains</span><span class="params">(<span class="keyword">const</span> T&amp; item,BinaryNode* t)</span><span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t==<span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">false</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(t-&gt;element&lt;item)</span><br><span class="line">        <span class="keyword">return</span> contains(item,t-&gt;right);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(item&lt;t-&gt;element)</span><br><span class="line">        <span class="keyword">return</span> contains(item,t-&gt;left);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> <span class="literal">true</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>注意一下，这里传的是pointer,后面传的有些会是reference to pointer,前者是出于原件的安全，使用副本，而后者则是有在原件上修改的需要，这里并不是基于效率来考虑的，实际上传引用和传指针效率差不多，因为底层来看指针和引用是同一个东西（语法糖），用法不同而已（比较好的习惯就是不修改就用const&amp;，其他场合根据需要用指针）。</p>
-<h3 id="findMin"><a href="#findMin" class="headerlink" title="findMin"></a>findMin</h3><p>findMin用递归实现<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BinaryNode* <span class="title">findMin</span><span class="params">(BinaryNode* t)</span><span class="keyword">const</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t==<span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(t-&gt;left!=<span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> findMin(t-&gt;left);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="findMax"><a href="#findMax" class="headerlink" title="findMax"></a>findMax</h3><p>findMax用迭代方式实现<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BinaryNode* <span class="title">findMax</span><span class="params">(BinaryNode* t)</span><span class="keyword">const</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t!=<span class="literal">nullptr</span>)</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">while</span>(t-&gt;right!=<span class="literal">nullptr</span>)</span><br><span class="line">            t=t-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> t;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="insert"><a href="#insert" class="headerlink" title="insert"></a>insert</h3><p>insert提供移动语义<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(T <span class="keyword">const</span>&amp; item,BinaryNode* &amp;t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t==<span class="literal">nullptr</span>)</span><br><span class="line">        t=<span class="keyword">new</span> BinaryNode&#123;item,<span class="literal">nullptr</span>,<span class="literal">nullptr</span>&#125;;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(item&lt;t-&gt;element)</span><br><span class="line">        insert(item,t-&gt;left);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(t-&gt;element&lt;item)</span><br><span class="line">        insert(item,t-&gt;right);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ;   <span class="comment">//duplicate;do nothing</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert</span><span class="params">(T&amp;&amp; item,BinaryNode* &amp;t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t==<span class="literal">nullptr</span>)</span><br><span class="line">        t=<span class="keyword">new</span> BinaryNode&#123;<span class="built_in">std</span>::move(item),<span class="literal">nullptr</span>,<span class="literal">nullptr</span>&#125;;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(item&lt;t-&gt;element)</span><br><span class="line">        insert(<span class="built_in">std</span>::move(item),t-&gt;left);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(t-&gt;element&lt;item)</span><br><span class="line">        insert(<span class="built_in">std</span>::move(item),t-&gt;right);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        ;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
-<h3 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h3><p>remove在这些操作中应该是最难的（相对而言）。分两类讨论：①two child；②one child（zero child包含在内）  </p>
-<ul>
-<li><p>two child<br>将欲删除结点的值改写为右子树中最小结点的值，同时remove递归删除该最小结点便可。</p>
-</li>
-<li><p>one child（and zero child）<br>将它的链接交给它的child，delete自己即可。如果没child直接delete。</p>
-</li>
-</ul>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">remove</span><span class="params">(T <span class="keyword">const</span>&amp; item,BinaryNode* &amp;t)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(t==<span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    <span class="keyword">if</span>(item&lt;t-&gt;element)</span><br><span class="line">        remove(item,t-&gt;left);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(t-&gt;element&lt;item)</span><br><span class="line">        remove(item,t-&gt;right);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(t-&gt;left!=<span class="literal">nullptr</span>&amp;&amp;t-&gt;right!=<span class="literal">nullptr</span>)    <span class="comment">//two child</span></span><br><span class="line">    &#123;</span><br><span class="line">        t-&gt;element=findMin(t-&gt;right)-&gt;element;</span><br><span class="line">        <span class="comment">//the element of the smallest entry in right subtree replace the element of parent</span></span><br><span class="line">        remove(t-&gt;element,t-&gt;right);</span><br><span class="line">        <span class="comment">//remove the smallest entry in right subtree,ensure property of binary search tree normal</span></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>    <span class="comment">//one child or single node</span></span><br><span class="line">    &#123;</span><br><span class="line">        <span class="keyword">auto</span> oldNode = t;</span><br><span class="line">        t = (t-&gt;right != <span class="literal">nullptr</span>) ? t-&gt;right : t-&gt;left; <span class="comment">//child replace oldNode</span></span><br><span class="line">        <span class="keyword">delete</span> oldNode;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="算法复杂度"><a href="#算法复杂度" class="headerlink" title="算法复杂度"></a>算法复杂度</h2><p>除了makeEmpty和clone是线性以外，其他都是O(logN)。这个挺显然的，就懒证了。</p>
-<h2 id="GitHub"><a href="#GitHub" class="headerlink" title="GitHub"></a>GitHub</h2><p>接口：<a href="https://github.com/Conzxy/Data-Structures/blob/master/Binary%20search%20tree/BST.h" target="_blank" rel="noopener">BinarySearchTree_interface</a><br>实现：<a href="https://github.com/Conzxy/Data-Structures/blob/master/Binary%20search%20tree/BST_impl.h" target="_blank" rel="noopener">BinarySearchTree_implement</a></p>
-
-      
-
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
-        </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
+        <div class="article-info info-on-right">
+          
 	<div class="article-tag tagcloud">
 		<i class="icon-price-tags icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">查找</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Balanced Search tree</a>
         		</li>
       		
 		</ul>
 	</div>
 
-      
+          
 	<div class="article-category tagcloud">
 		<i class="icon-book icon"></i>
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/查找//" class="article-tag-list-link color3">查找</a>
+        			<a href="/categories/Search-binary-tree//" class="article-tag-list-link color4">Search binary tree</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/查找/树//" class="article-tag-list-link color2">树</a>
+        			<a href="/categories/Search-binary-tree/Balanced-Search-tree//" class="article-tag-list-link color1">Balanced Search tree</a>
         		</li>
       		
 		</ul>
 	</div>
 
 
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
         </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2020/09/28/Tree/BinarySearchTree/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2020/10/10/%E6%96%87%E6%A1%A3%E7%AC%94%E8%AE%B0/Conditianal%20operator/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          5.16 Conditianal operator
-        
-      </div>
-    </a>
   
   
-    <a href="/2020/08/31/Cpp_Note/Black%20magic/SFINAE/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">SFINAE</div>
-      <i class="icon-circle-right"></i>
-    </a>
+    </div></section>
   
-</nav>
-
-<span id="busuanzi_container_page_pv">
-        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
- </span>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#二叉查找树"><span class="toc-number">1.</span> <span class="toc-text">二叉查找树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Operation"><span class="toc-number">1.1.</span> <span class="toc-text">Operation</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Contains"><span class="toc-number">1.1.1.</span> <span class="toc-text">Contains</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#findMin"><span class="toc-number">1.1.2.</span> <span class="toc-text">findMin</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#findMax"><span class="toc-number">1.1.3.</span> <span class="toc-text">findMax</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#insert"><span class="toc-number">1.1.4.</span> <span class="toc-text">insert</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#remove"><span class="toc-number">1.1.5.</span> <span class="toc-text">remove</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#算法复杂度"><span class="toc-number">1.2.</span> <span class="toc-text">算法复杂度</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#GitHub"><span class="toc-number">1.3.</span> <span class="toc-text">GitHub</span></a></li></ol></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-    <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-<script type="text/javascript">
-
-if(true){
-    var gitalk = new Gitalk({
-    clientID: '777f04a5b126f26c2e07',
-    clientSecret: '8f8dd09899f1d1d8f688e50ab6119b788982da7d',
-    repo: 'Conzxy.github.io',
-    owner: 'Conzxy',
-    admin: ['Conzxy'],
-    id: 'Mon Sep 28 2020 20:00:27 GMT+0800',
-    distractionFreeMode: 'true'
-})
-gitalk.render('gitalk-container')
-}
-</script>
 
     
-    
-  
 
 
           </div>
@@ -512,10 +328,10 @@ gitalk.render('gitalk-container')
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
+		isPost: false,
 		isArchive: false,
 		isTag: false,
-		isCategory: false,
+		isCategory: true,
 		open_in_new: false,
 		toc_hide_index: true,
 		root: "/",
@@ -701,7 +517,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tree</a>
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
               </li>
             
             <div class="clearfix"></div>

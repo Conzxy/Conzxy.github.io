@@ -8,22 +8,23 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>BinarySearchTree | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="搜索二叉树这里不对搜索二叉树做出定义，仅讲解主要操作 数据类型结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值 树仅保存$root$，表示整个树的根节点 $NIL$表示该位置为空（一般用空指针表示）">
+  <meta name="description" content="搜索二叉树这里不对搜索二叉树做出定义，仅讲解主要操作 DATATYPE结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值 树仅保存$root$，表示整个树的根节点 $NIL$表示该位置为空（一般用空指针表示）">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BinarySearchTree">
 <meta property="og:url" content="http://yoursite.com/2021/01/25/CLRS/BinarySearchTree/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="搜索二叉树这里不对搜索二叉树做出定义，仅讲解主要操作 数据类型结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值 树仅保存$root$，表示整个树的根节点 $NIL$表示该位置为空（一般用空指针表示）">
+<meta property="og:description" content="搜索二叉树这里不对搜索二叉树做出定义，仅讲解主要操作 DATATYPE结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值 树仅保存$root$，表示整个树的根节点 $NIL$表示该位置为空（一般用空指针表示）">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://riyugo.com/i/2021/01/25/12rovko.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/26/BUOjdQNGqk5l9Vn.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/1eRKDlVaTJ3MAz8.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/8aW1eQxriOjTA5p.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png">
 <meta property="article:published_time" content="2021-01-24T16:25:19.699Z">
-<meta property="article:modified_time" content="2021-01-26T07:59:58.327Z">
+<meta property="article:modified_time" content="2021-01-28T07:44:13.135Z">
 <meta property="article:author" content="Conzxy">
-<meta property="article:tag" content="Tree">
+<meta property="article:tag" content="Search binary Tree">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://riyugo.com/i/2021/01/25/12rovko.png">
   
@@ -264,7 +265,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="搜索二叉树"><a href="#搜索二叉树" class="headerlink" title="搜索二叉树"></a>搜索二叉树</h1><p>这里不对搜索二叉树做出定义，仅讲解主要操作</p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值</p>
+<h2 id="DATATYPE"><a href="#DATATYPE" class="headerlink" title="DATATYPE"></a>DATATYPE</h2><p>结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值</p>
 <p>树仅保存$root$，表示整个树的根节点</p>
 <p>$NIL$表示该位置为空（一般用空指针表示）</p>
 <a id="more"></a>
@@ -305,10 +306,17 @@
 <p>假设$y’.left=z$，$z$是$x$的祖先，则必然有$x \le z &lt;y’$，因为$y$不是最近祖先且左孩子也为$x$祖先，因此$y’&lt;y$，</p>
 <p>即有 $x &lt; y’ &lt;y$，与$y$是$x$的后继矛盾，故不存在这样的$y’$使得$y$是$x$的后继，</p>
 <p>i.e.$y$是$x$的最近祖先且其左孩子为其祖先$\blacksquare$</p>
-<p>另外，$x$不可能在$y.left$的左子树中，否则$y.left$会成为具有”左孩子为$x$祖先”性质的最近祖先，与$y$矛盾</p>
+<p>另外，</p>
+<ul>
+<li>当$y.left \ne x$，那么$x$不可能在$y.left$的左子树中，否则$y.left$会成为具有”左孩子为$x$祖先”性质的最近祖先，与$y$矛盾</li>
+</ul>
 <p>因此$x$必然在$z$的右子树中，且必然是斜树，否则又会出现新的具有”左孩子为$x$祖先”的最近祖先</p>
 <p>这样我们可以得到右子树为空的节点后继的树模型（蓝色椭圆表示右子斜树）：</p>
 <p><img src="https://riyugo.com/i/2021/01/25/12rovko.png" alt></p>
+<ul>
+<li>当$y.left =x$时，因为$x$可以是$x$的祖先，亦然满足条件</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/26/BUOjdQNGqk5l9Vn.png" alt="image.png"></p>
 <p>前继与后继是对称的，不难得知：</p>
 <p>前继一定是最近祖先且其右孩子为其祖先</p>
 <ul>
@@ -391,7 +399,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tree</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Search binary Tree</a>
         		</li>
       		
 		</ul>
@@ -403,7 +411,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Tree//" class="article-tag-list-link color5">Tree</a>
+        			<a href="/categories/Search-binary-Tree//" class="article-tag-list-link color4">Search binary Tree</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-Tree/plain//" class="article-tag-list-link color1">plain</a>
         		</li>
       		
 		</ul>
@@ -472,6 +484,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2021/01/26/CLRS/BlackRedTree/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          Red-Black tree
+        
+      </div>
+    </a>
+  
   
     <a href="/2021/01/21/CLRS/Activity-Selection/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Activity-Selection</div>
@@ -505,7 +526,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搜索二叉树"><span class="toc-number">1.</span> <span class="toc-text">搜索二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#数据类型"><span class="toc-number">1.1.</span> <span class="toc-text">数据类型</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#INSERT"><span class="toc-number">1.2.</span> <span class="toc-text">INSERT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SEARCH"><span class="toc-number">1.3.</span> <span class="toc-text">SEARCH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MAXIMUM-amp-MINIMUM"><span class="toc-number">1.4.</span> <span class="toc-text">MAXIMUM&amp;MINIMUM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SUCCESSOR"><span class="toc-number">1.5.</span> <span class="toc-text">SUCCESSOR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DELETE"><span class="toc-number">1.6.</span> <span class="toc-text">DELETE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TREE-TRANSPLANT"><span class="toc-number">1.6.1.</span> <span class="toc-text">TREE-TRANSPLANT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-1，2："><span class="toc-number">1.6.2.</span> <span class="toc-text">CASE 1，2：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-3"><span class="toc-number">1.6.3.</span> <span class="toc-text">CASE 3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间复杂度"><span class="toc-number">1.7.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-implementation"><span class="toc-number">2.</span> <span class="toc-text">C++ implementation</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搜索二叉树"><span class="toc-number">1.</span> <span class="toc-text">搜索二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DATATYPE"><span class="toc-number">1.1.</span> <span class="toc-text">DATATYPE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#INSERT"><span class="toc-number">1.2.</span> <span class="toc-text">INSERT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SEARCH"><span class="toc-number">1.3.</span> <span class="toc-text">SEARCH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MAXIMUM-amp-MINIMUM"><span class="toc-number">1.4.</span> <span class="toc-text">MAXIMUM&amp;MINIMUM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SUCCESSOR"><span class="toc-number">1.5.</span> <span class="toc-text">SUCCESSOR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DELETE"><span class="toc-number">1.6.</span> <span class="toc-text">DELETE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TREE-TRANSPLANT"><span class="toc-number">1.6.1.</span> <span class="toc-text">TREE-TRANSPLANT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-1，2："><span class="toc-number">1.6.2.</span> <span class="toc-text">CASE 1，2：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-3"><span class="toc-number">1.6.3.</span> <span class="toc-text">CASE 3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间复杂度"><span class="toc-number">1.7.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-implementation"><span class="toc-number">2.</span> <span class="toc-text">C++ implementation</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -766,7 +787,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tree</a>
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
               </li>
             
             <div class="clearfix"></div>

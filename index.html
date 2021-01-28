@@ -233,6 +233,106 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CLRS/BlackRedTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/CLRS/BlackRedTree/">Red-Black tree</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/26/CLRS/BlackRedTree/" class="archive-article-date">
+  	<time datetime="2021-01-26T11:59:53.132Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><p>红黑树保证两颗子树之间高度不会相差两倍以上，因此是（红黑）<strong>“近似平衡”</strong>（黑节点是<strong>完美平衡</strong>）的</p>
+<p>红黑树满足以下性质（约定称为<strong>RB性质</strong>）：</p>
+<ul>
+<li>Every node either red or black</li>
+<li>The root and leaves(NIL ‘s)are black</li>
+<li>If a node is red,then its parent is black</li>
+<li>All simple paths from any node $x$ to a descendant leaf have the same number of black nodes =<strong>black-height($x$)</strong> or <strong>bh($x$)</strong>  </li>
+</ul>
+<p>（注意$bh(x)$不包含$x$本身，即本身是黑节点不记数，否则黑高和等价2-3-4树的高度不等）</p>
+        
+          <a class="article-more-a" href="/2021/01/26/CLRS/BlackRedTree/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Balanced Search tree</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-tree//" class="article-tag-list-link color4">Search binary tree</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-tree/Balanced-Search-tree//" class="article-tag-list-link color1">Balanced Search tree</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/26/CLRS/BlackRedTree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-CLRS/BinarySearchTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -255,7 +355,7 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="搜索二叉树"><a href="#搜索二叉树" class="headerlink" title="搜索二叉树"></a>搜索二叉树</h1><p>这里不对搜索二叉树做出定义，仅讲解主要操作</p>
-<h2 id="数据类型"><a href="#数据类型" class="headerlink" title="数据类型"></a>数据类型</h2><p>结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值</p>
+<h2 id="DATATYPE"><a href="#DATATYPE" class="headerlink" title="DATATYPE"></a>DATATYPE</h2><p>结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值</p>
 <p>树仅保存$root$，表示整个树的根节点</p>
 <p>$NIL$表示该位置为空（一般用空指针表示）</p>
         
@@ -273,7 +373,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Tree</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Search binary Tree</a>
         		</li>
       		
 		</ul>
@@ -285,7 +385,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Tree//" class="article-tag-list-link color5">Tree</a>
+        			<a href="/categories/Search-binary-Tree//" class="article-tag-list-link color4">Search binary Tree</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-Tree/plain//" class="article-tag-list-link color1">plain</a>
         		</li>
       		
 		</ul>
@@ -884,102 +988,6 @@
 
 
   
-    <article id="post-Tree/BinarySearchTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/09/28/Tree/BinarySearchTree/">BinarySearchTree</a>
-    </h1>
-  
-
-        
-        <a href="/2020/09/28/Tree/BinarySearchTree/" class="archive-article-date">
-  	<time datetime="2020-09-28T12:00:27.032Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-09-28</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="二叉查找树"><a href="#二叉查找树" class="headerlink" title="二叉查找树"></a>二叉查找树</h1><p>二叉查找树是最简单的查找树，其性质除了树应有的以外，满足这样的关系:left subtree<root<right subtree。
-        
-          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">查找</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">树</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/查找//" class="article-tag-list-link color3">查找</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/查找/树//" class="article-tag-list-link color2">树</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/09/28/Tree/BinarySearchTree/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
     <article id="post-Cpp_Note/Black magic/SFINAE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -1390,7 +1398,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Tree</a>
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
               </li>
             
             <div class="clearfix"></div>
