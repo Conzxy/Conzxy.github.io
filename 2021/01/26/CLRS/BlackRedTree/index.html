@@ -15,11 +15,12 @@
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
 <meta property="og:description" content="红黑树红黑树保证两颗子树之间高度不会相差两倍以上，因此是（红黑）“近似平衡”（黑节点是完美平衡）的 红黑树满足以下性质（约定称为RB性质）：  Every node either red or black The root and leaves(NIL ‘s)are black If a node is red,then its parent is black All simple paths f">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/DuMzf2mkOcLEV3Z.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/29/NT8bKqtfuEzUV3m.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/CSnR3xZTMibtHKr.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/WMtSbYBQGAJDoqN.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/yisjQBV1gND6CYW.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/8oCfRzYAUgnHW3D.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/29/uixIdDj8WCZ1YsR.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/DkyHbS7T3rf5J4j.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/t8ZAnVNBxzovk6F.png">
@@ -31,11 +32,11 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png">
 <meta property="article:published_time" content="2021-01-26T11:59:53.132Z">
-<meta property="article:modified_time" content="2021-01-28T14:17:12.076Z">
+<meta property="article:modified_time" content="2021-01-29T02:51:44.999Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Balanced Search tree">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/01/26/DuMzf2mkOcLEV3Z.png">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/29/NT8bKqtfuEzUV3m.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -286,7 +287,7 @@
 <p>我们称<strong>leaf</strong>为<strong>external node</strong>，而其他保存键值的为<strong>internal node</strong></p>
 <p>这里的NIL并不是用空指针表示，而是用一个实际的节点$T.nil$表示，颜色为BLACK，其他随意。用作哨兵处理边界条件。不设成RED是因为出现两个连续红节点的情况会增多（或概率增大），而这违反了性质3。同时为了节省空间，叶节点和根节点的父节点都用NIL表示。</p>
 <p>红黑树示意图（实际上根节点的父节点也是NIL，省去了）：</p>
-<p><img src="https://i.loli.net/2021/01/26/DuMzf2mkOcLEV3Z.png" alt="image.png"></p>
+<p><img src="https://i.loli.net/2021/01/29/NT8bKqtfuEzUV3m.png" alt="image.png"></p>
 <p>为了说明红黑树的优越性引入一条定理：</p>
 <blockquote>
 <p>Theorem</p>
@@ -357,9 +358,16 @@
 <h2 id="流程讲解"><a href="#流程讲解" class="headerlink" title="流程讲解"></a>流程讲解</h2><p>插入一个红节点，结果出现了连续红节点，违反了RB性质3，我们会将这个破坏上移两个层次给它的grandpa，直到可以通过旋转和染色终止循环。（PS：当出现两个红节点时，grandpa一定存在）</p>
 <p>（假设以下示意图中其他子树均满足RB性质，设插入点为$x$）</p>
 <h3 id="CASE-1-x-’s-uncle-is-red"><a href="#CASE-1-x-’s-uncle-is-red" class="headerlink" title="CASE 1:$x$’s uncle is red"></a>CASE 1:$x$’s uncle is red</h3><p>我们约定父亲的兄弟为<strong>uncle/aunt</strong>,如果uncle为红色，我们就重染色。那么染色方案如何选择？我们先想一下为什么要插入红节点？因为RB性质4必须保证黑高一致，而插入黑节点就破坏了性质4，也正因此，我们可以把uncle和parents都染黑，grandpa染红，这样这个节点就平衡了，性质4也得以维持，只不过grandpa可能也会违反，如此反复下去即可（因此只达成局部平衡）。这个情形我们称之为CASE1</p>
+<p><img src="https://i.loli.net/2021/01/29/uixIdDj8WCZ1YsR.png" alt="image.png"></p>
+<p>但是这个循环什么时候终止呢？</p>
+<ul>
+<li><p>一直上升。由于是以两个层次单位进行，若$new \ x$为$T.root$的孩子，因为根节点是黑的；若$new \ x$为$T.root$，则将两个孩子染黑，$new \ x$虽然染红了，但是特殊情况特殊处理，这种情况会再度染黑，这样，即使黑高增1，性质4也没有被破坏，而性质3也得以维护</p>
+</li>
+<li><p>uncle为黑。进入CASE2或CASE3</p>
+</li>
+</ul>
+<p>下图是插入15时的处理：</p>
 <p><img src="https://i.loli.net/2021/01/27/DkyHbS7T3rf5J4j.png" alt="image.png"></p>
-<p>但是这个循环什么时候终止呢？<strong>直到uncle为黑色时结束</strong></p>
-<p>这时我们可以通过旋转和重染色来修复失衡，达成整体平衡。</p>
 <h3 id="CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child"><a href="#CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child" class="headerlink" title="CASE 2:$x$’s uncle is black and $x$ is a right child"></a>CASE 2:$x$’s uncle is black and $x$ is a right child</h3><p><img src="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png" alt="image.png"></p>
 <p>这个是CASE2的图，我们要把它转成CASE3，你可能会想为什么要怎么做？</p>
 <p>我们先看下CASE3在哪里优于CASE2：</p>
@@ -447,7 +455,7 @@ c(color)=\begin{cases}
 <p>因为$x$和$w$都是黑色，我们可以同时去除它们的黑色给$x.p$，如果$x.p=RED$（比如CASE1$\rightarrow$CASE2)，就可以退出循环然后将其染黑达成去除extra black的目的，性质4得到了维持；如果$x.p=BLACK$，$new \ x$是双黑点，则继续循环</p>
 <p>你可能会说：如果这条路径全部都是黑节点咋办，遇不到红节点，而根节点是黑的，已经上不去了啊？</p>
 <p>注意这种极端情况，一般情况，我们是通过移除extra black给父节点，直到遇到红节点，将它染黑。</p>
-<p>但是根节点是$new \ x$的话，已经上不去了，<strong>但也没有上去的必要了</strong>，这里通过将兄弟染红，使得黑高减1但是黑高仍相等，并没有违反性质4，因此是合理的（当然遇到红节点最好，直接退出循环）</p>
+<p>但是根节点是$new \ x$的话，已经上不去了，<strong>但也没有上去的必要了</strong>，根节点是双黑点，但是extra black已经吐不出来了，因为它的parents是$T.nil$，那就不吐了，直接将兄弟染红，使得黑高减1但是黑高仍相等，并没有违反性质4，因此是合理的（当然遇到红节点最好，直接退出循环），你可以试着画一颗全黑树，就是可以一直上升最终把根节点的另一个孩子染红了（网上博客有人还评论全黑树怎么删，写算法都不考虑边界条件的吗）</p>
 <h3 id="CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black"><a href="#CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black" class="headerlink" title="CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black"></a>CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black</h3><p><img src="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png" alt="image.png"></p>
 <p>CASE3是CASE4的过渡态。主要是为了让红节点成为兄弟的右孩子，这个并不难，我们只需要把左孩子转换成右孩子</p>
 <ul>
@@ -478,10 +486,10 @@ c(color)=\begin{cases}
 <p>红黑树相比一般的BST要修改插入和删除，因为要维护红黑树的性质。</p>
 <p>插入除一个过渡态CASE2，实际上只有两种情形：</p>
 <ul>
-<li>uncle是红（CASE1）</li>
+<li>uncle是红（CASE1），将parents和uncle染黑，grandpa染红，从而将破坏部分上移，直到进入CASE2或CASE3</li>
 <li>uncle是黑，$x$，parents和grandpa在一条线上（CASE3）而不是”&lt;”形（CASE2）</li>
 </ul>
-<p>插入很简单，相比删除那真是弟弟</p>
+<p>（吐槽：插入相比删除那真是弟弟）</p>
 <p>删除操作涉及两个过渡态，起调整作用的情况也只有两种情形，但是更为复杂，因为你破坏了3个性质，而不是插入那样只破坏一个（其实CASE2和CASE3也不一定会被破坏，而且它们都是维护性质4送的，维护起来很简单）</p>
 <ul>
 <li><p>sibling是红，过渡到sibling是黑（CASE1），进入CASE2，CASE3，CASE4</p>
@@ -492,16 +500,17 @@ c(color)=\begin{cases}
 <ul>
 <li><p>若parents为红色，染黑就此打住；</p>
 </li>
-<li><p>若parents为黑色，即双黑点，继续循环</p>
+<li><p>若parents为黑色，即双黑点，继续循环（<strong>与插入CASE 1的IDEA一样，将破坏上移</strong>）</p>
 </li>
 </ul>
 </li>
 <li><p>左红右黑（CASE3），过渡态。将左红转化为右红（CASE4）</p>
 </li>
-<li>右红（左任意，CASE4）。依赖parents去除extra black（重染色+一次旋转）</li>
+<li>右红（左任意，CASE4）。依赖parents去除extra black（<strong>与插入CASE 3的IDEA一样，通过旋转和重染色修复被破坏部分</strong>）</li>
 </ul>
 </li>
 </ul>
+<p>所以插入和删除的IDEA是一致的，能够将破坏上移就上移，直到能修复它（当然一直上移也可以修复，只不过插入会使得黑高增1而删除会使得黑高减1但不违反性质4）</p>
 <p>（注意以上所有情形都是相对uncle或sibling在左边的情形，实际上还有对称情形省略了）</p>
 <h1 id="一个可以测试红黑树的网站"><a href="#一个可以测试红黑树的网站" class="headerlink" title="一个可以测试红黑树的网站"></a>一个可以测试红黑树的网站</h1><p><a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html" target="_blank" rel="noopener">红黑树可视化调试</a></p>
 <p>这个网站的理论和该文是一致的，只不过删除时用的是前继而不是后继，所以要稍微变换一下</p>
