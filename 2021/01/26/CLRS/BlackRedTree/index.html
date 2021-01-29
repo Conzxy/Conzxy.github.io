@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png">
 <meta property="article:published_time" content="2021-01-26T11:59:53.132Z">
-<meta property="article:modified_time" content="2021-01-29T02:55:19.686Z">
+<meta property="article:modified_time" content="2021-01-29T03:08:04.439Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Balanced Search tree">
 <meta name="twitter:card" content="summary">
@@ -511,7 +511,7 @@ c(color)=\begin{cases}
 </ul>
 </li>
 </ul>
-<p>所以插入和删除的IDEA是一致的，能够将破坏上移就上移，直到能修复它（当然一直上移也可以修复，只不过插入会使得黑高增1而删除会使得黑高减1但不违反性质4）</p>
+<p>所以插入和删除的IDEA是一致的，能够将破坏上移就上移，直到能修复它（当然一直上移也可以修复，只不过插入会使得黑高增1而删除会使得黑高减1但不违反性质4，为什么会出现这种情况呢？因为我们将破坏上移，一般不会到根节点，这样新的破坏位置就是子树根节点，是路径途经点，而树根节点的话，插入时，红色会染黑，而原来的红色染黑了，黑高增1；删除时，黑色吸收的extra black无法吐出来而吃的黑高减1，可以自己画图试试）</p>
 <p>（注意以上所有情形都是相对uncle或sibling在左边的情形，实际上还有对称情形省略了）</p>
 <h1 id="一个可以测试红黑树的网站"><a href="#一个可以测试红黑树的网站" class="headerlink" title="一个可以测试红黑树的网站"></a>一个可以测试红黑树的网站</h1><p><a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html" target="_blank" rel="noopener">红黑树可视化调试</a></p>
 <p>这个网站的理论和该文是一致的，只不过删除时用的是前继而不是后继，所以要稍微变换一下</p>
