@@ -16,7 +16,7 @@
 <meta property="og:description" content="Breadth-first search">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-02-01T08:00:34.059Z">
-<meta property="article:modified_time" content="2021-02-02T06:55:02.703Z">
+<meta property="article:modified_time" content="2021-02-15T04:56:50.928Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="graph">
 <meta property="article:tag" content="BFS">
@@ -272,8 +272,10 @@
 <p>GRAY是中间色，表示已发现，但是它的邻接点还有白色的，实际上灰色代表着上面提到的边界</p>
 <p>BLACK表示已发现，并且它的邻接点都已染灰或黑，没有白色的</p>
 <script type="math/tex; mode=display">
-WHITE \rightarrow GRAY \rightarrow BLACK \\
-initialization \rightarrow frontier \ bewteen \ discovered's \ and \ undiscovered's \rightarrow discovered \ and \ their \ adj \ full \ examined</script><p>为了记录路径，我们给每个顶点赋予一个属性表示前驱：$v.\pi$（无前驱记为NIL），除此之外还给顶点赋予颜色和距离：$v.color$和$v.d$，如果无法到达，距离记为$\infty$。实际上这些属性根据自己的想法可以用数组保存，不一定要赋予给顶点），</p>
+\begin{align}
+&WHITE \rightarrow &GRAY \rightarrow &BLACK \\
+&initialization \rightarrow &frontier \ bewteen \ discovered's \ and \ undiscovered's \rightarrow &discovered \ and \ their \ adj \ full \ examined
+\end{align}</script><p>为了记录路径，我们给每个顶点赋予一个属性表示前驱：$v.\pi$（无前驱记为NIL），除此之外还给顶点赋予颜色和距离：$v.color$和$v.d$，如果无法到达，距离记为$\infty$。实际上这些属性根据自己的想法可以用数组保存，不一定要赋予给顶点），</p>
 <p>为了管理灰色顶点，用一个队列保存，第一个进来的灰色顶点第一个出去（实际上，队列中自始至终都只含有灰色节点）</p>
 <p>伪代码如下：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">BFS(G,s)	&#x2F;&#x2F;s is a source vertex</span><br><span class="line">for each vertex u ∈ G.V-&#123;s&#125;	&#x2F;&#x2F;去掉源点进行初始化</span><br><span class="line"> u.color ← WHITE</span><br><span class="line"> u.d ← ∞</span><br><span class="line"> u.π ← NIL</span><br><span class="line">s.color ← GRAY		&#x2F;&#x2F;源点设置属性</span><br><span class="line">s.d ← 0</span><br><span class="line">s.π ← NIL</span><br><span class="line">Q ← ∅				&#x2F;&#x2F;管理灰色节点的队列</span><br><span class="line">ENQUEUE(Q,s)		&#x2F;&#x2F;源点入队</span><br><span class="line">while Q ≠ ∅</span><br><span class="line"> u ← DEQUEUE(Q)	&#x2F;&#x2F;等价于front之后再pop</span><br><span class="line"> for each v ∈ G.Adj[u]	&#x2F;&#x2F;G.Adj[u]表示u的邻接边</span><br><span class="line">  if v.color &#x3D; WHITE</span><br><span class="line">   then v.color ← GRAY</span><br><span class="line">        v.d ← u.d+1</span><br><span class="line">        v.π ← u</span><br><span class="line">        ENQUEUE(Q,v)</span><br><span class="line"> u.color ← BLACK			&#x2F;&#x2F;所有邻接边均已考察，染黑</span><br></pre></td></tr></table></figure>
@@ -485,7 +487,7 @@ G_\pi=(V_\pi,E_\pi)
     </a>
   
   
-    <a href="/2021/01/26/CLRS/BlackRedTree/" id="article-nav-older" class="article-nav-link-wrap">
+    <a href="/2021/01/26/CLRS/Search-Tree/BlackRedTree/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">Red-Black tree</div>
       <i class="icon-circle-right"></i>
     </a>
@@ -795,6 +797,22 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
               </li>
             
             <div class="clearfix"></div>

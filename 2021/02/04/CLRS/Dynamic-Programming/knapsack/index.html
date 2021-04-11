@@ -6,23 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Rod Cutting | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Knapsack problem | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="钢条切割问题Problem:  Given a rod of length n inches and a table of prices $p_i$ for i&#x3D;1,2,…,n,determine the maximum revenue $r_n$ obtainable by cutting up rod and selling the prices.Note that if the price">
+  <meta name="description" content="背包问题">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rod Cutting">
-<meta property="og:url" content="http://yoursite.com/2021/01/20/CLRS/Rod%20Cutting/index.html">
+<meta property="og:title" content="Knapsack problem">
+<meta property="og:url" content="http://yoursite.com/2021/02/04/CLRS/Dynamic-Programming/knapsack/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="钢条切割问题Problem:  Given a rod of length n inches and a table of prices $p_i$ for i&#x3D;1,2,…,n,determine the maximum revenue $r_n$ obtainable by cutting up rod and selling the prices.Note that if the price">
+<meta property="og:description" content="背包问题">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/01/21/yYjiPJNhpM9Wqe3.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/21/uY8wyKsk3vWeoqz.png">
-<meta property="article:published_time" content="2021-01-20T14:34:03.675Z">
-<meta property="article:modified_time" content="2021-01-26T06:29:32.610Z">
+<meta property="article:published_time" content="2021-02-04T04:58:52.549Z">
+<meta property="article:modified_time" content="2021-04-11T05:48:32.409Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="dynamic programming">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/01/21/yYjiPJNhpM9Wqe3.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -239,20 +236,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-CLRS/Rod Cutting" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-CLRS/Dynamic-Programming/knapsack" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Rod Cutting
+      Knapsack problem
     </h1>
   
 
         
-        <a href="/2021/01/20/CLRS/Rod%20Cutting/" class="archive-article-date">
-  	<time datetime="2021-01-20T14:34:03.675Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-20</time>
+        <a href="/2021/02/04/CLRS/Dynamic-Programming/knapsack/" class="archive-article-date">
+  	<time datetime="2021-02-04T04:58:52.549Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-02-04</time>
 </a>
         
         
@@ -260,96 +257,65 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="钢条切割问题"><a href="#钢条切割问题" class="headerlink" title="钢条切割问题"></a>钢条切割问题</h1><p>Problem:</p>
-<blockquote>
-<p>Given a rod of length n inches and a table of prices $p_i$ for i=1,2,…,n,determine the maximum revenue $r_n$ obtainable by cutting up rod and selling the prices.Note that if the price $p_i$ for a rod of length n is large enough,an optimal solution may requires no cutting at all</p>
+        <h1 id="背包问题"><a href="#背包问题" class="headerlink" title="背包问题"></a>背包问题</h1><a id="more"></a>
+<h2 id="0-1背包"><a href="#0-1背包" class="headerlink" title="0-1背包"></a>0-1背包</h2><blockquote>
+<p>A thief robbing a store finds n items.The ith item is worth $w_i$ dollars and weighs $w_i$ pounds,where $v_i$ and $w_i$ pounds,where $v_i$ and $w_i$ are integers.The thief wants to take as valuable a load as possible,but he can carry at most W pounds in his knapsack,for some integer W.which items should he take?</p>
 </blockquote>
-<a id="more"></a>
-<p>长度与价格的关系表如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>Length i</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-<th>10</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Price $p_i$</td>
-<td>1</td>
-<td>5</td>
-<td>8</td>
-<td>9</td>
-<td>10</td>
-<td>17</td>
-<td>17</td>
-<td>20</td>
-<td>24</td>
-<td>30</td>
-</tr>
-</tbody>
-</table>
-</div>
-<p>按照动态规划的两个特征，先找到该问题是否具有<strong>最优子结构（optimal substructure）</strong>性质：</p>
-<p>先切成两段，分成两个相异的子问题，这样就会产生许多两段切割方案，然后在这些方案中取最大收益即可</p>
-<script type="math/tex; mode=display">
-r_n=\mathop {max}  \{p_n,r_1+r_{n-1},r_2+r_{n-2},...,r_{n-1}+r_1\}</script><p>原问题的最优解包含相关子问题的最优解，因此该问题具有最优子结构的性质</p>
-<p>不过这样有两个相关子问题，因此我们考虑先切下一段长度为i的钢条（i∈[1,n]），然后只有右边剩余部分可以继续分割，这样我们就得到了所有的“先切一段”方案（当i=n时，为不切方案，不过视作“切了”，$r_0=0$），取其最大值即可，那么很容易得到如下状态转移方程：</p>
-<script type="math/tex; mode=display">
-r_n=\mathop{max} \limits_{1\leq i \leq n} (p_i+r_{n-i})</script><p>（这里有个思维怪圈，你可能会问第一个公式怎么转换地第二个公式。两个公式的思维出发点不同但等价，第二个公式的思维是“先切一段”，因为你不论如何都会要切一段（不切视作特殊情况），左边随便切，自然不做处理，加上右边最优切割方案，加以比较即可）</p>
-<p>伪码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">CUT-ROD(p,n)</span><br><span class="line">if n&#x3D;0 then</span><br><span class="line">	return 0;</span><br><span class="line">q ← -∞</span><br><span class="line">for i ← 1 to n do</span><br><span class="line">	q ← max(q,p[i]+CUT-ROD(p,n-1))</span><br><span class="line">return q</span><br></pre></td></tr></table></figure>
-<p>翻译成C++为：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">rodCut</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp; p,<span class="keyword">unsigned</span> n)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(n==<span class="number">0</span>)</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> q=INT_MIN;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=n;++i)</span><br><span class="line">        q=max(q,rodCut(p,n-i));</span><br><span class="line">    <span class="keyword">return</span> q;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>但是这个算法并不能称得上良好，因为它的时间复杂度为$O(2^n)$:</p>
-<p>因为调用rodCut需要$O(1)$，加上调用子问题的开销可以得到以下递推公式：</p>
-<script type="math/tex; mode=display">
-T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归纳法证明$T(n)=2^n$：</p>
-<p>1.当n=1时，$T(n)=T(1)=1+T(0)=2^1$，命题成立</p>
-<p>2.假设当n=m时，$T(n)=2^m$成立</p>
-<p>3.当n=m+1时，$T(m+1)=1+\sum ^{m}_{j=0}T(j)=1+2^0+2^1+…+2^m=2^{m+1}$，命题得证        $\blacksquare$</p>
-<p>还有一种思路就是画出<strong>递归树（recursion tree）</strong>：</p>
-<p><img src="https://i.loli.net/2021/01/21/yYjiPJNhpM9Wqe3.png" alt="image-20210120201441216.png"></p>
-<p>除了最上面这个根节点，其他根节点为子问题，那么总结点数与时间复杂度同阶</p>
-<p>通过乘法原理，将切与不切看做bit，所有子问题组成bit vector，假设长度为m，那么总数目就是$2^m$，即总结点数</p>
-<p>还有一种想法就是用牛顿二项式定理，不再赘述</p>
-<p>由递归树可以看出该问题具备动态规划适用的第二个特征：<strong>重叠子问题（overlapping subproblem）</strong>，动态规划实际优化的就是将重叠的子问题消去，只执行一次。</p>
-<h1 id="优化方法"><a href="#优化方法" class="headerlink" title="优化方法"></a>优化方法</h1><h2 id="top-down-with-memoization"><a href="#top-down-with-memoization" class="headerlink" title="top-down with memoization"></a>top-down with memoization</h2><p>上面其实用的就是自定而下的方法，这里我们通过维护一个数组来保存已经求解的结果，以便查表避免重复的执行，从而优化算法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">CUT-ROD(p,n)</span><br><span class="line">let r[1...n] be a new array</span><br><span class="line">for i ← 1 to n do</span><br><span class="line">	r[i] ← -∞</span><br><span class="line">return CUT-ROD-AUX(p,n,r)</span><br><span class="line"></span><br><span class="line">CUT-ROD-AUX(p,n,r)</span><br><span class="line">if r[n] &gt;&#x3D;0</span><br><span class="line">	return r[n]</span><br><span class="line"></span><br><span class="line">if n&#x3D;0</span><br><span class="line">	q ← 0</span><br><span class="line">else then</span><br><span class="line">	q ← -∞</span><br><span class="line">	for i ← 1 to n do</span><br><span class="line">		q ← max(q,CUT-ROD-AUX(p,n-i,r))</span><br><span class="line"></span><br><span class="line">r[n]&#x3D;q</span><br><span class="line">return q</span><br></pre></td></tr></table></figure>
-<p>因为每个不同子问题只需要执行一次，共有n个不同子问题，而每个子问题都包含一个for循环，循环n次，故</p>
-<p>$T(n)=0+1+2 +…+n =\frac {n(n+1)}{2} $~$O(n^2)$</p>
-<p>还有一种方法，这种方法更为简单，可以说是血统最为纯正的DP</p>
-<h2 id="bottom-up"><a href="#bottom-up" class="headerlink" title="bottom-up"></a>bottom-up</h2><p>我们可以通过自底向上的方法优化。</p>
-<p>子问题之间通过一个“size”进行排序，先解决”更小“的子问题，最后再来解决一个原问题，这样在解决该问题前就已经具备了解决该问题所需要的的所有先决条件。</p>
-<p>这样我们自然不会重复计算原来的子问题，只是直接访问已解决问题的结果再来解决原问题罢了</p>
-<p>我们用一个数组保存已解决问题的结果，以便查表</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">BOTTOM_UP_CUT_ROD(p,n)</span><br><span class="line"></span><br><span class="line">let r[0...n] be a new array</span><br><span class="line">r[0] ← 0</span><br><span class="line"></span><br><span class="line">for i ← 1 to n do</span><br><span class="line">	q ← -∞</span><br><span class="line">	for j ← 1 to i do</span><br><span class="line">		q ← max(q,p[j]+r[i-j])</span><br><span class="line">	r[i]&#x3D;q</span><br><span class="line"></span><br><span class="line">return r[n]</span><br></pre></td></tr></table></figure>
-<p>这样时间复杂度取决于嵌套for循环的次数：</p>
-<p>$T(n)=1+2+..+n= \frac {n(n+1)}{2}$~$O(n^2)$</p>
-<p>这个方法没有用到递归而是单纯的循环，因此不需要压栈</p>
-<p><img src="https://i.loli.net/2021/01/21/uY8wyKsk3vWeoqz.png" alt="image-20210120215456969.png"></p>
-<p>这样的图我们称之为<strong>子问题图（subproblems graph）</strong>，我们注意到外层循环其实就是顶点数，而内层循环是边数。</p>
-<p>带备忘的自顶向下法类似于DFS，而自底向上法类似于逆序拓扑排序</p>
-<p>动态规划问题具有两个性质：</p>
+<p>令<code>dp[i][j]</code>为前i个物品，载重为j的最大价值，那么最大价值取决于第i个物品拿不拿</p>
 <ul>
-<li>最优子结构：钢条切成两段，所有两段的最优切割方案中选其最大收益者即为原问题最优切割方案</li>
-<li>重叠子问题：递归树有多余的“枝叶”，可以通过“修剪”得到优化</li>
+<li>不拿：<code>dp[i-1][j]</code></li>
+<li>拿：<code>dp[i-1][j-w[i]]+v[i]</code></li>
 </ul>
-<p>优化方案：</p>
-<ul>
-<li>带备忘的自顶向下法：通过维护一个备忘录来达到记忆的功能避免多余的计算</li>
-<li>自底向上法：从更小的子问题开始解决，待解决原问题时，已具备所有子问题最优解</li>
-</ul>
+<p>然后选择较大者即可</p>
+<script type="math/tex; mode=display">
+dp[i][j]=max\{dp[i-1][j],dp[i-1][j-w[i]]+v[i]\}</script><p>但是你发现第一维是可以优化掉的：前i个物品只和前i-1个物品有关</p>
+<script type="math/tex; mode=display">
+dp[j]=max\{dp[j],dp[j-w[i]]+v[i]\}</script><p>但是注意数组滚动的方向是j由大到小，以防前面的被覆盖了，因为<code>dp[j]</code>依赖的是前i-1个物品的结论，覆盖了的话就成了前i个物品了</p>
+<p>（但是二维形式不需要刻意逆向，因为不会遭遇覆盖的问题，无脑正向）</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">backPackII</span><span class="params">(<span class="keyword">int</span> m, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;A, <span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;V)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> items=A.size();</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dp</span><span class="params">(m+<span class="number">1</span>)</span></span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;items;++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=m;j&gt;=A[i];--j)&#123;</span><br><span class="line">            dp[j]=<span class="built_in">std</span>::max(dp[j],dp[j-A[i]]+V[i]);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[m];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="完全背包"><a href="#完全背包" class="headerlink" title="完全背包"></a>完全背包</h2><p>完全背包是在0-1背包的基础上，令一件物品可以有无限个，但其问题实际上还是0-1背包，但是必须多考虑一个表示个数的变量：</p>
+<script type="math/tex; mode=display">
+dp[i][j]=max\{dp[i-1][j],dp[i-1][j-kw[i]]+kv[i]\}</script><p>这样使得子问题增多了，我们消掉<code>k</code>从而优化子问题空间：</p>
+<script type="math/tex; mode=display">
+dp[i][j]=max\{dp[i-1][j],dp[i-1][j-w[i]+v[i],dp[i-1][j-2w[i]+2v[i],...,dp[i-1][j-kw[i]+kv[i]\} \\</script><p>我们有：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+max\{dp[i-1][j-w[i]]+v[i],dp[i-1][j-2w[i]]+2v[i],...\}
+&=max\{dp[i-1][j-w[i]],dp[i-1][j-2w[i]]+v[i],...\}+v[i] 
+\\&=dp[i][j-w[i]]+v[i]
+\end{align}</script><p>于是，我们最终得到消掉<code>k</code>的状态转移方程</p>
+<script type="math/tex; mode=display">
+dp[i][j]=max\{dp[i-1][j],dp[i][j-w[i]]+v[i]\}</script><p>用滚动数组优化第一维：</p>
+<script type="math/tex; mode=display">
+dp[j]=max\{dp[j],dp[j-w[i]+v[i]]\}</script><p>完了，你发现这个和0-1背包的一维形式完全一样，但是注意它们的二维形式不同，而这决定了滚动方向：完全背包的滚动方向是由小到大</p>
+<p>因为它不像0-1背包完全建立于前i-1个物品的基础上，它也建立于前i个物品的基础上，因此从小开始滚动</p>
+<h2 id="分数背包"><a href="#分数背包" class="headerlink" title="分数背包"></a>分数背包</h2><h2 id="背包方案数"><a href="#背包方案数" class="headerlink" title="背包方案数"></a>背包方案数</h2><blockquote>
+<p>给出 n 个物品, 以及一个数组, <code>nums[i]</code>代表第i个物品的大小, 保证大小均为正数并且没有重复, 正整数 <code>target</code> 表示背包的大小, 找到能填满背包的方案数。<br><code>每一个物品可以使用无数次</code></p>
+</blockquote>
+<p>由”每个物品有无限个”可以看出这是完全背包问题的变种</p>
+<p>定义<code>dp[i][j]</code>表示前<code>i</code>个物品容纳<code>j</code>大小的方案数，将第<code>i</code>个物品不取走或取<code>k</code>次，方案数与减去该物品大小的<code>k</code>倍是相等的，那么<code>dp[i][j]</code>等于<code>dp[i-1][j-knums[i]]</code>的总和,因此状态转移方程为：</p>
+<script type="math/tex; mode=display">
+dp[i][j]=
+\begin{cases}
+&0    & i=0 \\
+&1  & j=0 \\ 
+&\sum\limits_{k=0}  dp[i-1][j-k \ nums[i]] 
+\end{cases}</script><p>滚动数组压缩空间：<code>dp[j]</code>表示容纳<code>j</code>大小的方案数，该方案数只和之前的方案数相关，即<code>dp[j-nums[i]]</code></p>
+<script type="math/tex; mode=display">
+dp[j]=d[j]+dp[j-nums[i]]</script><p>因为每个物品有无限个，因此正向滚动</p>
+<p>纯公式推导：</p>
+<p>令<code>w=j-nums[i]</code>，我们有</p>
+<script type="math/tex; mode=display">
+dp[i][w]=dp[i-1][w]+dp[i-1][w-nums[i]]+...+dp[i-1][w-(k-1)nums[i]]</script><p>进而：</p>
+<script type="math/tex; mode=display">
+\begin{align}
+dp[i][j]
+&=dp[i-1][j]+dp[i-1][j-nums[i]]+dp[i-1][j-2nums[i]]+...+dp[i-1][j-knums[i]]\\
+&=dp[i-1][j]+dp[i-1][w]+dp[i-1][w-nums[i]]+...+dp[i-1][w-(k-1)nums[i]]\\
+&=dp[i-1][j]+dp[i][w]=dp[i-1][j]+dp[i][j-nums[i]]
+\end{align}</script><p>消去第一维：</p>
+<script type="math/tex; mode=display">
+dp[j]=dp[j]+dp[j-nums[i]]</script><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">backPackIV</span><span class="params">(<span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; &amp;nums, <span class="keyword">int</span> target)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> items=nums.size();</span><br><span class="line">    <span class="function"><span class="built_in">vector</span>&lt;<span class="keyword">int</span>&gt; <span class="title">dp</span><span class="params">(target+<span class="number">1</span>)</span></span>;</span><br><span class="line">    dp[<span class="number">0</span>]=<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">1</span>;i&lt;=items;++i)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> j=nums[i<span class="number">-1</span>];j &lt;= target;++j)</span><br><span class="line">            dp[j]+=dp[j-nums[i<span class="number">-1</span>]];</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> dp[target];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -455,7 +421,7 @@ T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归�
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/20/CLRS/Rod%20Cutting/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/02/04/CLRS/Dynamic-Programming/knapsack/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -469,18 +435,18 @@ T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归�
   
 <nav id="article-nav">
   
-    <a href="/2021/01/21/Cppt/Directory/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/03/07/CLRS/Dynamic-Programming/Matrix-chain-multiplication/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          C++ Templates reading note
+          Martix-chain multiplication
         
       </div>
     </a>
   
   
-    <a href="/2020/10/29/Effective%20Cpp/Item%205/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">item 5:Know what functions C++ silently writes and calls</div>
+    <a href="/2021/02/03/CLRS/Dynamic-Programming/DP&Greedy/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">DP&amp;greedy</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -511,7 +477,7 @@ T(n)=1+\sum ^{n-1} _{j=0} T(j) \ and \ T(0)=1</script><p>下面通过数学归�
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#钢条切割问题"><span class="toc-number">1.</span> <span class="toc-text">钢条切割问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#优化方法"><span class="toc-number">2.</span> <span class="toc-text">优化方法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#top-down-with-memoization"><span class="toc-number">2.1.</span> <span class="toc-text">top-down with memoization</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#bottom-up"><span class="toc-number">2.2.</span> <span class="toc-text">bottom-up</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背包问题"><span class="toc-number">1.</span> <span class="toc-text">背包问题</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#0-1背包"><span class="toc-number">1.1.</span> <span class="toc-text">0-1背包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#完全背包"><span class="toc-number">1.2.</span> <span class="toc-text">完全背包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#分数背包"><span class="toc-number">1.3.</span> <span class="toc-text">分数背包</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#背包方案数"><span class="toc-number">1.4.</span> <span class="toc-text">背包方案数</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -545,7 +511,7 @@ if(true){
     repo: 'Conzxy.github.io',
     owner: 'Conzxy',
     admin: ['Conzxy'],
-    id: 'Wed Jan 20 2021 22:34:03 GMT+0800',
+    id: 'Thu Feb 04 2021 12:58:52 GMT+0800',
     distractionFreeMode: 'true'
 })
 gitalk.render('gitalk-container')
@@ -789,6 +755,22 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
               </li>
             
             <div class="clearfix"></div>

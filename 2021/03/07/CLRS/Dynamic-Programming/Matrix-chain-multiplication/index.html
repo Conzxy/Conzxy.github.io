@@ -6,27 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>BinarySearchTree | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Martix-chain multiplication | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="搜索二叉树这里不对搜索二叉树做出定义，仅讲解主要操作 DATATYPE结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值 树仅保存$root$，表示整个树的根节点 $NIL$表示该位置为空（一般用空指针表示）">
+  <meta name="description" content="矩阵链乘法优化">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BinarySearchTree">
-<meta property="og:url" content="http://yoursite.com/2021/01/25/CLRS/BinarySearchTree/index.html">
+<meta property="og:title" content="Martix-chain multiplication">
+<meta property="og:url" content="http://yoursite.com/2021/03/07/CLRS/Dynamic-Programming/Matrix-chain-multiplication/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="搜索二叉树这里不对搜索二叉树做出定义，仅讲解主要操作 DATATYPE结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值 树仅保存$root$，表示整个树的根节点 $NIL$表示该位置为空（一般用空指针表示）">
+<meta property="og:description" content="矩阵链乘法优化">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/02/01/VAe9IClE3PHnGkD.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/BUOjdQNGqk5l9Vn.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/1eRKDlVaTJ3MAz8.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/8aW1eQxriOjTA5p.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png">
-<meta property="article:published_time" content="2021-01-24T16:25:19.699Z">
-<meta property="article:modified_time" content="2021-02-01T14:35:00.278Z">
+<meta property="article:published_time" content="2021-03-07T13:45:50.205Z">
+<meta property="article:modified_time" content="2021-04-11T05:47:23.541Z">
 <meta property="article:author" content="Conzxy">
-<meta property="article:tag" content="Search binary Tree">
+<meta property="article:tag" content="dynamic programming">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/02/01/VAe9IClE3PHnGkD.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -243,20 +236,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-CLRS/BinarySearchTree" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-CLRS/Dynamic-Programming/Matrix-chain-multiplication" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      BinarySearchTree
+      Martix-chain multiplication
     </h1>
   
 
         
-        <a href="/2021/01/25/CLRS/BinarySearchTree/" class="archive-article-date">
-  	<time datetime="2021-01-24T16:25:19.699Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-25</time>
+        <a href="/2021/03/07/CLRS/Dynamic-Programming/Matrix-chain-multiplication/" class="archive-article-date">
+  	<time datetime="2021-03-07T13:45:50.205Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-07</time>
 </a>
         
         
@@ -264,107 +257,45 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="搜索二叉树"><a href="#搜索二叉树" class="headerlink" title="搜索二叉树"></a>搜索二叉树</h1><p>这里不对搜索二叉树做出定义，仅讲解主要操作</p>
-<h2 id="DATATYPE"><a href="#DATATYPE" class="headerlink" title="DATATYPE"></a>DATATYPE</h2><p>结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值</p>
-<p>树仅保存$root$，表示整个树的根节点</p>
-<p>$NIL$表示该位置为空（一般用空指针表示）</p>
-<a id="more"></a>
-<h2 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h2><p>我们用$y$来表示<strong>trailing pointer</strong>,$z$表示欲插入的结点，$y$跟踪$z$，指向其父节点，即$z.p$。</p>
-<p>为了维护BST的性质，我们需要与当前根节点进行比较，找到合适的空地插入，也正因此需要$y$来告诉我空地位置在哪，以便更新其父节点</p>
-<p>伪码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">TREE-INSERT(T,z)</span><br><span class="line">x ← T.root</span><br><span class="line">y ← NIL</span><br><span class="line"></span><br><span class="line">while x ≠ NIL</span><br><span class="line"> do y ← x</span><br><span class="line">    if z.key&lt;x.key</span><br><span class="line">     then x ← x.left</span><br><span class="line">     else </span><br><span class="line">      then x ← x.right</span><br><span class="line"></span><br><span class="line">z.p ← y</span><br><span class="line">if y&#x3D;NIL</span><br><span class="line"> then T.root ← z</span><br><span class="line"> elseif z.key&lt;y.key</span><br><span class="line">  then y.left ← z</span><br><span class="line">  else </span><br><span class="line">   then y.right ← z</span><br></pre></td></tr></table></figure>
-<h2 id="SEARCH"><a href="#SEARCH" class="headerlink" title="SEARCH"></a>SEARCH</h2><p>和插入思路差不多，利用BST的性质进行搜索，因为二分，所以时间复杂度为$O(h)$</p>
-<p>递归版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">TREE-SEARCH-RECURSION(x,k)</span><br><span class="line">if(x &#x3D; NIL or k &#x3D; x.key)</span><br><span class="line">	return x</span><br><span class="line">if k&lt;x.key</span><br><span class="line"> then TREE-SEARCH-INCURSION(x.left,k)</span><br><span class="line"> else </span><br><span class="line">  then TREE-SEARCH-INCURSION(x.right,k)</span><br></pre></td></tr></table></figure>
-<p>迭代版本</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">TREE-SEARCH-INTERATIVE(x,k)</span><br><span class="line">while x ≠ NIL and k ≠ x.key</span><br><span class="line"> do if k&lt;x.key</span><br><span class="line"> 	 then x ← x.left</span><br><span class="line"> 	 else</span><br><span class="line"> 	  then x ← x.right</span><br><span class="line"> 	  </span><br><span class="line">return x</span><br></pre></td></tr></table></figure>
-<h2 id="MAXIMUM-amp-MINIMUM"><a href="#MAXIMUM-amp-MINIMUM" class="headerlink" title="MAXIMUM&amp;MINIMUM"></a>MAXIMUM&amp;MINIMUM</h2><p>这个十分简单，直接给出伪码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TREE-MAXIMUM(x)</span><br><span class="line">if x.right ≠ NIL</span><br><span class="line"> then x ← x.right</span><br><span class="line"> </span><br><span class="line">return x</span><br><span class="line"></span><br><span class="line">TREE-MIMIMUM(x)</span><br><span class="line">if x.left ≠ NIL</span><br><span class="line"> then x ← x.left</span><br><span class="line"> </span><br><span class="line">return x</span><br></pre></td></tr></table></figure>
-<p>这里顺便给出习题12.2-2的答案：写出$TREE-MAXIMUM$和$TREE-MIMIMUM$的递归版本</p>
-<p>尾递归改成迭代十分简单，反之亦然：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TREE-MAXIMUM-RECURSION(x)</span><br><span class="line">if x.right &#x3D; NIL</span><br><span class="line"> then return x</span><br><span class="line"> </span><br><span class="line">TREE-MAXIMUM-RECURSION(x.right)</span><br><span class="line"></span><br><span class="line">TREE-MINIMUM-RECURSION(x)</span><br><span class="line">if x.left &#x3D; NIL</span><br><span class="line"> then return x</span><br><span class="line"> </span><br><span class="line">TREE-MINIMUM-RECURSION(x.left)</span><br></pre></td></tr></table></figure>
-<h2 id="SUCCESSOR"><a href="#SUCCESSOR" class="headerlink" title="SUCCESSOR"></a>SUCCESSOR</h2><p>SUCCESSOR可译作“后继”，表示大于该节点的最小节点</p>
-<ul>
-<li><p>当右子树不为空时，直接用$TREE-MIMIMUM(x.right)$得到右子树最小值即可</p>
-</li>
-<li><p>当右子树为空时</p>
-</li>
-</ul>
-<p>这里引入一个定理：</p>
-<blockquote>
-<p>Problem 12.2-6</p>
-<p>Suppose a binary search tree $T$ whose keyss are distinct.Show that if the right subtree of a node $x$ in $T$ is empty and $x$ has a successor $y$,then $y$ is the lowest ancestor of $x$ whose left child is also an ansestor of $x$.</p>
-</blockquote>
-<p>这个定理实际上就是习题12.2-6的题干,我们将证明这是正确的</p>
-<p><strong>祖先</strong>是指根节点到该节点的路径上的所有节点，包括该节点本身，<strong>真祖先</strong>才不包括本身</p>
-<p>$Proof:$</p>
-<p>因为右子树是空的，假设后继在左子树中，则根据BST性质得到：$y&lt;x$，与$y$是$x$的后继矛盾</p>
-<p>因此$y$一定是$x$的祖先。</p>
-<p>假设$y$的右孩子是$x$的祖先，那么$x$出现在$y$的右子树中，意味着$x&gt;y$，与$y$是$x$的后继矛盾</p>
-<p>因此$y$的左孩子一定是$x$的祖先。</p>
-<p>假设$y$不是最近的祖先，则$\exists  y \ne y’$是具有“左孩子为$x$祖先”性质的最近祖先</p>
-<p>假设$y’.left=z$，$z$是$x$的祖先，则必然有$x \le z &lt;y’$，因为$y$不是最近祖先且左孩子也为$x$祖先，因此$y’&lt;y$，</p>
-<p>即有 $x &lt; y’ &lt;y$，与$y$是$x$的后继矛盾，故不存在这样的$y’$使得$y$是$x$的后继，</p>
-<p>i.e.$y$是$x$的最近祖先且其左孩子为其祖先$\blacksquare$</p>
-<p>另外，</p>
-<ul>
-<li>当$y.left \ne x$，那么$x$不可能在$y.left$的左子树中，否则$y.left$会成为具有”左孩子为$x$祖先”性质的最近祖先，与$y$矛盾</li>
-</ul>
-<p>因此$x$必然在$z$的右子树中，且必然是斜树，否则又会出现新的具有”左孩子为$x$祖先”的最近祖先</p>
-<p>这样我们可以得到右子树为空的节点后继的树模型（蓝色椭圆表示右子斜树）：</p>
-<p><img src="https://i.loli.net/2021/02/01/VAe9IClE3PHnGkD.png" alt="image.png"></p>
-<ul>
-<li>当$y.left =x$时，因为$x$可以是$x$的祖先，亦然满足条件</li>
-</ul>
-<p><img src="https://i.loli.net/2021/01/26/BUOjdQNGqk5l9Vn.png" alt="image.png"></p>
-<p>前继与后继是对称的，不难得知：</p>
-<p>前继一定是最近祖先且其右孩子为其祖先</p>
-<ul>
-<li>还有一点，当右子树不为空时，需不需要考虑比给定结点大的祖先？不需要</li>
-</ul>
-<p>用$x$表示给定节点，$z$表示祖先，假设$x$在$z$的左子树中，$y=TREE-MINIMUM(x.right)$，那么$x&lt;y&lt;z$，因此$y$是$x$的后继</p>
-<p>又假设$x$在$z$的右子树中，则$z&lt;x&lt;y$，$y$依然是$x$的后继，因此当右子树不为空时，不需要考虑比$x$还大的祖先</p>
-<p>根据以上信息，用伪码表示：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TREE-SUCCESSOR(x)</span><br><span class="line">if x.right ≠ NIL</span><br><span class="line"> then return TREE-MINIMUM(x.right)</span><br><span class="line"> </span><br><span class="line">y&#x3D;x.p</span><br><span class="line">while y ≠ NIL and y.right &#x3D; x</span><br><span class="line"> do x ← y</span><br><span class="line">  	y ← y.p</span><br><span class="line"></span><br><span class="line">return y</span><br></pre></td></tr></table></figure>
-<p>12.2-3习题是给出TREE-PREDECESSOR的伪码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">TREE-PREDECESSOR(x)</span><br><span class="line">if x.left ≠ NIL</span><br><span class="line"> then return TREE-MAXIMUM(x.left)</span><br><span class="line"></span><br><span class="line">y&#x3D;x.p</span><br><span class="line">while y ≠ NIL and y.left &#x3D; x</span><br><span class="line"> do x ← y</span><br><span class="line"> 	y ← y.p</span><br><span class="line"></span><br><span class="line">return y</span><br></pre></td></tr></table></figure>
-<h2 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h2><p>删除操作我们要分类讨论，分为3类</p>
-<ul>
-<li><strong>CASE1：</strong>没有孩子。直接删除，不需要处理链接方式</li>
-<li><strong>CASE2：</strong>有一个孩子。让该孩子顶替它即可</li>
-<li><strong>CASE3：</strong>有两个孩子。我们用该节点的后继来顶替它，并把该节点的左子树转交给后继。</li>
-</ul>
-<p>PS：你可能会说直接CASE3为什么不用右孩子或左孩子直接顶替？那是因为孩子与该节点不一定很接近，e.g.右孩子比该节点大很多，左子树不为空，又需要接手原节点的左子树，可能会使树变高（而且很麻烦），而后继的左子树为空，没有这个顾虑，所以我们用最接近的后继顶替。而CASE2不需要考虑后继（前继），是因为不需要转交左子树（右子树），树并没有变高的问题</p>
-<p>补充：</p>
-<blockquote>
-<p>Problem 12.2-5</p>
-<p>Show that if a node in a binary search tree has two children,then its successor has no left child and its predecessor has no right child</p>
-</blockquote>
-<p>这是习题12.2-5的题干。</p>
-<p>证明十分简单，由定义即可得：因为右子树所有节点大于根节点，因此后继作为最小节点必然是最左的，即无左子树</p>
-<p>实际上，因为后继和前继对称，CASE3换成前继也可以，只不过得转交右子树。</p>
-<hr>
-<h3 id="TREE-TRANSPLANT"><a href="#TREE-TRANSPLANT" class="headerlink" title="TREE-TRANSPLANT"></a>TREE-TRANSPLANT</h3><p>因为删除操作涉及顶替，我们需要准备一个顶替操作，称为$TARANSPLANT$，</p>
-<p>设$v$为原节点，欲顶替节点为$u$，处理的树为$T$，先判断$v$是否为根节点，如果是根节点，直接更新$T.root$，否则将$v.p’s$的孩子重定向为$u$，然后根据$u$是不是$NIL$，决定是否重定向$u.p$，移植操作并不处理链接方式，链接方式由$TREE-DELETE$设置</p>
-<p>PS：实际上，你可能会想重定向孩子可以直接$v=u$，为什么要通过$v.p$？因$v=u$使得顶替节点占据了原节点位置，这样在$TREE-DELETE$中会删除$u$，而不是$v$，因此通过$v.p$重定向，这样不会弄混节点的绝对位置</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">TREE-TRANSPLANT(T,v,u)</span><br><span class="line">if v.p &#x3D; NIL</span><br><span class="line"> then T.root ← u</span><br><span class="line"> elseif v.p.right&#x3D;v</span><br><span class="line">  then v.p.right ← u</span><br><span class="line">  else v.p.left ← u</span><br><span class="line"></span><br><span class="line">if u ≠ NIL</span><br><span class="line"> then u.p ← v.p</span><br></pre></td></tr></table></figure>
-<hr>
-<h3 id="CASE-1，2："><a href="#CASE-1，2：" class="headerlink" title="CASE 1，2："></a>CASE 1，2：</h3><p><img src="https://i.loli.net/2021/01/26/1eRKDlVaTJ3MAz8.png" alt="image.png"></p>
-<p><img src="https://i.loli.net/2021/01/26/8aW1eQxriOjTA5p.png" alt="image.png"></p>
-<p>实际上，CASE 1并入到了CASE 2中，当左（右）子树为NIL时直接将NIL顶替原节点，再删除即可</p>
-<h3 id="CASE-3"><a href="#CASE-3" class="headerlink" title="CASE 3"></a>CASE 3</h3><p><img src="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png" alt="image.png"></p>
-<p>当右孩子正好是后继时，我们可以直接将$y$顶替上去，再讲$l(z.left)$重定向即可</p>
-<p><img src="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png" alt="image.png"></p>
-<p>如果右孩子不是后继，则后继在右子树的最左，我可以把$x(y.right)$转交给$y.p$，而$y$与$r(z.right)$重构链接关系，实际上$z$和$y$的链接属性并不重要，因为$TRANSPLANT$并不关注链接属性，然后接手$l(z.left)$即可</p>
-<p>根据这些信息，我们可以写出如下伪码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TREE-DELETE(T,z)</span><br><span class="line">if z.right &#x3D; NIL</span><br><span class="line"> then TREE-TRANSPLANT(T,z,z.left)</span><br><span class="line"> elseif z.left &#x3D; NIL</span><br><span class="line">  then TREE-TRANSPLANT(T,z,z.right)</span><br><span class="line">  else</span><br><span class="line">   then y ← TREE-MINIMUM(z.right)</span><br><span class="line">    	if y ≠ z.right</span><br><span class="line">    	 then TREE-TRANSPLANT(T,y,y.right)</span><br><span class="line">    	 	  y.right ← z.right</span><br><span class="line">    	 	  y.right.p ← y</span><br><span class="line">    	TRANSPLANT(T,z,y)</span><br><span class="line">    	y.left ← z.left</span><br><span class="line">    	y.left.p ← y</span><br></pre></td></tr></table></figure>
-<h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>以上所有操作除$TREE-TRANSPLANT$为$O(1)$，其他的均为$O(h)$</p>
-<p>如果我是以有序序列构造该二叉树的话，那么会成为左（右）斜树，即链状，那么时间复杂度就为$O(n)$。</p>
-<p>因此一般的BST不能保证高度保证在一定范围，使得效率得不到保证。</p>
-<p>下一次我们通过红黑树的构建，可以得到一个$O(lgn)$的BST</p>
-<h1 id="C-implementation"><a href="#C-implementation" class="headerlink" title="C++ implementation"></a>C++ implementation</h1><p>别问我为什么不用class组织，我就是想用最土味的C写一下（好吧模板是C++的，不过只是最基础的运用罢了）</p>
-<p>其实还可以提供clone进行拷贝（至于移动就只要移动$T.root$就行了），makeEmpty清空树（析构的辅助函数）等其他操作</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br><span class="line">141</span><br><span class="line">142</span><br><span class="line">143</span><br><span class="line">144</span><br><span class="line">145</span><br><span class="line">146</span><br><span class="line">147</span><br><span class="line">148</span><br><span class="line">149</span><br><span class="line">150</span><br><span class="line">151</span><br><span class="line">152</span><br><span class="line">153</span><br><span class="line">154</span><br><span class="line">155</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> NIL nullptr</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BNode</span>&#123;</span></span><br><span class="line">    T key;</span><br><span class="line">    BNode* left=NIL;</span><br><span class="line">    BNode* right=NIL;</span><br><span class="line">    BNode* p=NIL;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BinarySearchTree</span>&#123;</span></span><br><span class="line">    BNode&lt;T&gt;* root=NIL;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">treeInsert</span><span class="params">(BinarySearchTree&lt;T&gt; &amp; tree,T <span class="keyword">const</span>&amp; item)</span></span>&#123;</span><br><span class="line">    BNode&lt;T&gt;* y=NIL;</span><br><span class="line">    <span class="keyword">auto</span> x=tree.root;</span><br><span class="line">    <span class="keyword">auto</span> z=<span class="keyword">new</span> BNode&lt;T&gt;&#123;item&#125;;</span><br><span class="line">    <span class="keyword">while</span>(x!=NIL)&#123;</span><br><span class="line">        y=x;</span><br><span class="line">        <span class="keyword">if</span>(item&lt;x-&gt;key) x=x-&gt;left;</span><br><span class="line">        <span class="keyword">else</span> x=x-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    z-&gt;p=y;</span><br><span class="line">    <span class="keyword">if</span>(y==NIL) tree.root=z;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(item&lt;y-&gt;key) y-&gt;left=z;</span><br><span class="line">    <span class="keyword">else</span> y-&gt;right=z;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inorderWalk</span><span class="params">(BinarySearchTree&lt;T&gt; <span class="keyword">const</span>&amp; tree)</span></span>&#123;</span><br><span class="line">    inorderWalk_AUX(tree.root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">inorderWalk_AUX</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root!=NIL)&#123;</span><br><span class="line">        inorderWalk_AUX(root-&gt;left);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;root-&gt;key&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">        inorderWalk_AUX(root-&gt;right);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">BNode&lt;T&gt; <span class="keyword">const</span>* <span class="title">treeSearch</span><span class="params">(BinarySearchTree&lt;T&gt; <span class="keyword">const</span>&amp; tree,T <span class="keyword">const</span>&amp; item)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> treeSearch_Iterative(tree.root,item);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">treeSearch_Recursion</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root,T <span class="keyword">const</span>&amp; item)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root!=NIL &amp;&amp; root-&gt;key!=item)&#123;</span><br><span class="line">        <span class="keyword">if</span>(item&lt;root-&gt;key)</span><br><span class="line">            treeSearch_Recursion(root-&gt;left,item);</span><br><span class="line">        <span class="keyword">else</span> treeSearch_Recursion(root-&gt;right,item);</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">treeSearch_Iterative</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root,T <span class="keyword">const</span>&amp; item)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(root!=NIL &amp;&amp; root-&gt;key!=item)&#123;</span><br><span class="line">        <span class="keyword">if</span>(item&lt;root-&gt;key)</span><br><span class="line">            root=root-&gt;left;</span><br><span class="line">        <span class="keyword">else</span> root=root-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">treeMaximum</span><span class="params">(BinarySearchTree&lt;T&gt; <span class="keyword">const</span>&amp; tree)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> treeMaximum_AUX(tree.root);</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">treeMaximum_AUX</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(root-&gt;right!=NIL)&#123;</span><br><span class="line">        root=root-&gt;right;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">treeMinimum</span><span class="params">(BinarySearchTree&lt;T&gt; <span class="keyword">const</span>&amp; tree)</span></span>&#123;</span><br><span class="line">    <span class="keyword">return</span> treeMinimum_AUX(tree.root);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">treeMinimum_AUX</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root)</span></span>&#123;</span><br><span class="line">    <span class="keyword">while</span>(root-&gt;left!=NIL)&#123;</span><br><span class="line">        root=root-&gt;left;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> root;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">BNode&lt;T&gt; <span class="keyword">const</span>* <span class="title">treeSuccessor</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root-&gt;right!=NIL)</span><br><span class="line">        <span class="keyword">return</span> treeMinimum_AUX(root-&gt;right);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> y=root-&gt;p;</span><br><span class="line">    <span class="keyword">while</span>(y!=NIL &amp;&amp; root==y-&gt;right)&#123;</span><br><span class="line">        root=y;</span><br><span class="line">        y=y-&gt;p;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function">BNode&lt;T&gt; <span class="keyword">const</span>* <span class="title">treePredecessor</span><span class="params">(BNode&lt;T&gt; <span class="keyword">const</span>* root)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(root-&gt;left!=NIL)</span><br><span class="line">        <span class="keyword">return</span> treeMaximum_AUX(root-&gt;left);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> y=root-&gt;p;</span><br><span class="line">    <span class="keyword">while</span>(y!=NIL &amp;&amp; y-&gt;left == root)&#123;</span><br><span class="line">        root=y;</span><br><span class="line">        y=y-&gt;p;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> y;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">treeTransplant</span><span class="params">(BinarySearchTree&lt;T&gt; &amp; tree,BNode&lt;T&gt; *oldSub,BNode&lt;T&gt; *newSub)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(oldSub-&gt;p==NIL)</span><br><span class="line">        tree.root=newSub;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">if</span>(oldSub==oldSub-&gt;p-&gt;right)</span><br><span class="line">            oldSub-&gt;p-&gt;right=newSub;</span><br><span class="line">        <span class="keyword">else</span> oldSub-&gt;p-&gt;left=newSub;</span><br><span class="line">    &#125;</span><br><span class="line">     <span class="keyword">if</span>(newSub!=NIL)</span><br><span class="line">            newSub-&gt;p=oldSub-&gt;p;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">treeDelete</span><span class="params">(BinarySearchTree&lt;T&gt; &amp; tree,T <span class="keyword">const</span>&amp; item)</span></span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> z=<span class="keyword">const_cast</span>&lt;BNode&lt;T&gt;*&gt;(treeSearch(tree,item));</span><br><span class="line">    <span class="keyword">if</span>(z==NIL)</span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(z-&gt;left==NIL)</span><br><span class="line">        treeTransplant(tree,z,z-&gt;right);</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span>(z-&gt;right==NIL)</span><br><span class="line">        treeTransplant(tree,z,z-&gt;left);</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">auto</span> y=<span class="keyword">const_cast</span>&lt;BNode&lt;T&gt;*&gt;(treeMinimum_AUX(z-&gt;right));</span><br><span class="line">        <span class="keyword">if</span>(y-&gt;p!=z)&#123;</span><br><span class="line">            treeTransplant(tree,y,y-&gt;right);</span><br><span class="line">            y-&gt;right=z-&gt;right;</span><br><span class="line">            y-&gt;right-&gt;p=y;</span><br><span class="line">        &#125;</span><br><span class="line">        treeTransplant(tree,z,y);</span><br><span class="line">        y-&gt;left=z-&gt;left;</span><br><span class="line">        y-&gt;left-&gt;p=y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">delete</span> z;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+        <h1 id="矩阵链乘法优化"><a href="#矩阵链乘法优化" class="headerlink" title="矩阵链乘法优化"></a>矩阵链乘法优化</h1><a id="more"></a>
+<p>我们定义矩阵链为：$A_1A_2A_3···A_n$</p>
+<p>我们可以用一对封闭的小括号表示矩阵链的乘积</p>
+<p>e.g.:$A_1A_2A_3A_4$的矩阵链结合方式共有5种</p>
+<script type="math/tex; mode=display">
+(((A_1A_2)A_3)A_4) \\
+((A_1A_2)(A_3A_4)) \\
+((A_1(A_2A_3))A_4) \\
+(A_1((A_2A_3)A_4)) \\
+(A_1(A_2(A_3A_4)))</script><h2 id="矩阵乘法"><a href="#矩阵乘法" class="headerlink" title="矩阵乘法"></a>矩阵乘法</h2><p>在处理矩阵链之前我们必须了解两个矩阵相乘需要执行多少次运算</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">MATRIX-MULTIPLICATION(A,B)</span><br><span class="line">if A.cols ≠ B.rows</span><br><span class="line"> then error &quot;incompatible dimension&quot;</span><br><span class="line"> else let C be a new A.rows×B.cols matrix</span><br><span class="line">  for i ← 1 to A.rows</span><br><span class="line">   for j ← 1 to B.cols</span><br><span class="line">    C[i,j] ← 0</span><br><span class="line">    for k ← 1 to A.cols</span><br><span class="line">     C[i,j] ← C[i,j]+A[i,k]*B[j,k]</span><br><span class="line">  </span><br><span class="line">  return C</span><br></pre></td></tr></table></figure>
+<p>假如A为p×q，B为q×r，那么算法复杂度为O(pqr)</p>
+<p>如果$&lt; A_1,A_2,A_3&gt;=\{(10 \times 100),(100 \times5),(5 \times 50)\}$</p>
+<p>$((A_1A_2)A_3)=7500$而$(A_1(A_2A_3))=75000$</p>
+<p>后者是前者的10倍！因此结合的方式决定了矩阵链乘法的复杂度</p>
+<p>那么我们必须知道结合方式的数量怎么算，思想很简单，因为不管多么长的矩阵链最后终究是两个子积相乘，这两个子积之间必然有一个小括号:<code>&quot;(&quot;</code>或<code>&quot;)&quot;</code>作为分隔符(split)，设该位置为$k(k \in (0,n))$，P(n）是长为n的矩阵链的结合方式数量。以该位置分隔，左边k个矩阵的结合方式为P(k)，右边n-k个矩阵的结合方式为P(n-k)，将它们加起来就是所有分隔的结合方式即总结合方式：</p>
+<script type="math/tex; mode=display">
+P(n)=
+\begin{cases}
+1 &n=1 \\
+\sum \limits_{k=1}^{n-1} P(k)P(n-k) & n \ge 2\\
+\end{cases}</script><p>上面的$P(4)=P(1)P(3)+P(2)P(2)+P(3)P(1)=2+1+2=5$</p>
+<p>利用这个思想对问题进行分隔，会产生n-1个子问题</p>
+<h2 id="最优子结构"><a href="#最优子结构" class="headerlink" title="最优子结构"></a>最优子结构</h2><p>设$A_i=p_{i-1} \times p_i$，$A_{i…j}$表示$A_i…A_j$的积</p>
+<p>假设$i \ne j$，我们用括号包住$A_i$和$A_j$，表示是一个乘积，然后我们必须在k位置切割得到两个子积：$A_{i…k}$和$A_{k+1…j}$，$k \in [i,j)$，这两个子积分别的执行次数加上子积运算的执行次数就是$A_{i…j}$的执行次数，这是其中一个切割方案，比较所有方案取其最小值就是欲求结果</p>
+<p>而$A_{i…k}$和$A_{k+1…j}$的乘积执行的运算次数为$p_{i-1}p_kp_j$ </p>
+<p>令$DP[i,j]$表示$A_i···A_j$的矩阵链的总乘积次数</p>
+<p>那么</p>
+<script type="math/tex; mode=display">
+DP[i,j]=
+\begin{cases}
+0 &i=j \\
+\min\limits_{i \le k < j} \{DP[i,k]+DP[k+1,j]+p_{i-1}p_kp_j\} &i < j
+\end{cases}</script><p>然后动态规划优化重叠子问题即可</p>
+<p>我们还要准备一个table记录k的位置，通过回溯法构造最优解（括号分布的最优方案）</p>
+<p>对于一个乘积我们需要用括号包起来表示，因此构造最优解十分简单</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">MATRIX-CHAIN-MULTIPLICATION(p)</span><br><span class="line">n ← p.length-1</span><br><span class="line">let t[1...n,1...n],s[1...n-1,2...n] be new tables</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;初始化</span><br><span class="line">for i ← 1 to n</span><br><span class="line"> t[i,i] ← 0</span><br><span class="line"></span><br><span class="line">for l ← 2 to n &#x2F;&#x2F;l 表示矩阵链的长度</span><br><span class="line"> for i ← 0 to n-l+1</span><br><span class="line">  j ← l+i-1</span><br><span class="line">  t[i,j] ← ∞</span><br><span class="line">  for k ← i to j-1</span><br><span class="line">   q ← t[i,k]+t[k+1,j]+p[i-1]p[k][j]</span><br><span class="line">   if q &lt; t[i,j]</span><br><span class="line">    then t[i,j] ← q</span><br><span class="line">    	 s[i,j] ← k</span><br><span class="line">    	 </span><br><span class="line">return t and s</span><br><span class="line"></span><br><span class="line">PRINT-OPTIMAL-PARENTS(s,i,j)</span><br><span class="line">if i &#x3D; j</span><br><span class="line"> then print &quot;Ai&quot;</span><br><span class="line"> else print &quot;(&quot;</span><br><span class="line">      PRINT-OPTIMAL-PARENTS(s,i,s[i,j])</span><br><span class="line">      PRINT-OPTIMAL-PARENTS(s,s[i.j]+1,j)</span><br><span class="line">      print &quot;)&quot;</span><br></pre></td></tr></table></figure>
+<p>显然，时间复杂度为$O(n^3)$</p>
+<h2 id="C-Code"><a href="#C-Code" class="headerlink" title="C++ Code"></a>C++ Code</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_matrix_chain</span><span class="params">(<span class="keyword">int</span> s[N][N], <span class="keyword">int</span> i, <span class="keyword">int</span> j)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (i == j)</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"A"</span> &lt;&lt; i;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">"("</span>;</span><br><span class="line">        print_matrix_chain(s, i, s[i][j]);</span><br><span class="line">        print_matrix_chain(s, s[i][j] + <span class="number">1</span>, j);</span><br><span class="line">        <span class="built_in">cout</span> &lt;&lt; <span class="string">")"</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">size_t</span> N&gt;</span><br><span class="line"><span class="function"><span class="keyword">long</span> <span class="title">matrix_chain</span><span class="params">(<span class="keyword">int</span>(&amp;p)[N])</span> </span>&#123;</span><br><span class="line">    <span class="keyword">constexpr</span> <span class="keyword">int</span> n = N - <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">int</span> m[n + <span class="number">1</span>][n + <span class="number">1</span>];</span><br><span class="line">    <span class="keyword">int</span> s[n][n];</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n; ++i)</span><br><span class="line">        m[i][i] = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> l = <span class="number">2</span>; l &lt;= n; ++l)</span><br><span class="line">        <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">1</span>; i &lt;= n - l + <span class="number">1</span>; ++i) &#123;</span><br><span class="line">            <span class="keyword">int</span> q = <span class="number">0</span>;</span><br><span class="line">            <span class="keyword">int</span> j = l + i - <span class="number">1</span>;</span><br><span class="line">            m[i][j] = INT_MAX;</span><br><span class="line">            <span class="keyword">for</span> (<span class="keyword">int</span> k = i; k &lt; j; ++k) &#123;</span><br><span class="line">                q = m[i][k] + m[k + <span class="number">1</span>][j] + p[i - <span class="number">1</span>] * p[k] * p[j];</span><br><span class="line">                <span class="keyword">if</span> (q &lt; m[i][j]) &#123;</span><br><span class="line">                    m[i][j] = q;</span><br><span class="line">                    s[i][j] = k;</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">    print_matrix_chain(s, <span class="number">1</span>, n);</span><br><span class="line">    <span class="keyword">return</span> m[<span class="number">1</span>][n];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
       
 
@@ -399,7 +330,7 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Search binary Tree</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">dynamic programming</a>
         		</li>
       		
 		</ul>
@@ -411,11 +342,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Search-binary-Tree//" class="article-tag-list-link color4">Search binary Tree</a>
+        			<a href="/categories/Algorithm//" class="article-tag-list-link color5">Algorithm</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Search-binary-Tree/plain//" class="article-tag-list-link color1">plain</a>
+        			<a href="/categories/Algorithm/DP//" class="article-tag-list-link color3">DP</a>
         		</li>
       		
 		</ul>
@@ -470,7 +401,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/25/CLRS/BinarySearchTree/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/03/07/CLRS/Dynamic-Programming/Matrix-chain-multiplication/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -484,18 +415,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/01/26/CLRS/BlackRedTree/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/03/08/CLRS/Sort/QuickSort/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          Red-Black tree
+          Quick Sort
         
       </div>
     </a>
   
   
-    <a href="/2021/01/21/CLRS/Activity-Selection/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">CLRS/Activity-Selection</div>
+    <a href="/2021/02/04/CLRS/Dynamic-Programming/knapsack/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Knapsack problem</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -526,7 +457,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#搜索二叉树"><span class="toc-number">1.</span> <span class="toc-text">搜索二叉树</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#DATATYPE"><span class="toc-number">1.1.</span> <span class="toc-text">DATATYPE</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#INSERT"><span class="toc-number">1.2.</span> <span class="toc-text">INSERT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SEARCH"><span class="toc-number">1.3.</span> <span class="toc-text">SEARCH</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#MAXIMUM-amp-MINIMUM"><span class="toc-number">1.4.</span> <span class="toc-text">MAXIMUM&amp;MINIMUM</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#SUCCESSOR"><span class="toc-number">1.5.</span> <span class="toc-text">SUCCESSOR</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#DELETE"><span class="toc-number">1.6.</span> <span class="toc-text">DELETE</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#TREE-TRANSPLANT"><span class="toc-number">1.6.1.</span> <span class="toc-text">TREE-TRANSPLANT</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-1，2："><span class="toc-number">1.6.2.</span> <span class="toc-text">CASE 1，2：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-3"><span class="toc-number">1.6.3.</span> <span class="toc-text">CASE 3</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间复杂度"><span class="toc-number">1.7.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#C-implementation"><span class="toc-number">2.</span> <span class="toc-text">C++ implementation</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#矩阵链乘法优化"><span class="toc-number">1.</span> <span class="toc-text">矩阵链乘法优化</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#矩阵乘法"><span class="toc-number">1.1.</span> <span class="toc-text">矩阵乘法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#最优子结构"><span class="toc-number">1.2.</span> <span class="toc-text">最优子结构</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#C-Code"><span class="toc-number">1.3.</span> <span class="toc-text">C++ Code</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
@@ -560,7 +491,7 @@ if(true){
     repo: 'Conzxy.github.io',
     owner: 'Conzxy',
     admin: ['Conzxy'],
-    id: 'Mon Jan 25 2021 00:25:19 GMT+0800',
+    id: 'Sun Mar 07 2021 21:45:50 GMT+0800',
     distractionFreeMode: 'true'
 })
 gitalk.render('gitalk-container')
@@ -804,6 +735,22 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
               </li>
             
             <div class="clearfix"></div>

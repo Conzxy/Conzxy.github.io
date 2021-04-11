@@ -6,22 +6,37 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>CLRS/Activity-Selection | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Red-Black tree | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="活动选择问题 Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S&#x3D;\{a">
+  <meta name="description" content="红黑树红黑树保证两颗子树之间高度不会相差两倍以上，因此是（红黑）“近似平衡”（黑节点是完美平衡）的 红黑树满足以下性质（约定称为RB性质）：  Every node either red or black The root and leaves(NIL ‘s)are black If a node is red,then its parent is black All simple paths f">
 <meta property="og:type" content="article">
-<meta property="og:title" content="CLRS&#x2F;Activity-Selection">
-<meta property="og:url" content="http://yoursite.com/2021/01/21/CLRS/Activity-Selection/index.html">
+<meta property="og:title" content="Red-Black tree">
+<meta property="og:url" content="http://yoursite.com/2021/01/26/CLRS/Search-Tree/BlackRedTree/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="活动选择问题 Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S&#x3D;\{a">
+<meta property="og:description" content="红黑树红黑树保证两颗子树之间高度不会相差两倍以上，因此是（红黑）“近似平衡”（黑节点是完美平衡）的 红黑树满足以下性质（约定称为RB性质）：  Every node either red or black The root and leaves(NIL ‘s)are black If a node is red,then its parent is black All simple paths f">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png">
-<meta property="article:published_time" content="2021-01-21T13:37:18.121Z">
-<meta property="article:modified_time" content="2021-02-04T08:10:59.726Z">
+<meta property="og:image" content="https://i.loli.net/2021/01/29/NT8bKqtfuEzUV3m.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/26/CSnR3xZTMibtHKr.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/28/WMtSbYBQGAJDoqN.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/yisjQBV1gND6CYW.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/8oCfRzYAUgnHW3D.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/29/uixIdDj8WCZ1YsR.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/DkyHbS7T3rf5J4j.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/t8ZAnVNBxzovk6F.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/yOHDBezVAPgUfKo.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/PchS9e8GYfgw26J.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/27/HbKLY25fxBI9MUo.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/28/mnhj6sz8AkuSXfp.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/28/Odn5qoa4eIbkB3c.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png">
+<meta property="og:image" content="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png">
+<meta property="article:published_time" content="2021-01-26T11:59:53.132Z">
+<meta property="article:modified_time" content="2021-03-01T13:18:35.672Z">
 <meta property="article:author" content="Conzxy">
-<meta property="article:tag" content="greedy algorithm">
+<meta property="article:tag" content="Balanced Search tree">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png">
+<meta name="twitter:image" content="https://i.loli.net/2021/01/29/NT8bKqtfuEzUV3m.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -238,20 +253,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-CLRS/Activity-Selection" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-CLRS/Search-Tree/BlackRedTree" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      CLRS/Activity-Selection
+      Red-Black tree
     </h1>
   
 
         
-        <a href="/2021/01/21/CLRS/Activity-Selection/" class="archive-article-date">
-  	<time datetime="2021-01-21T13:37:18.121Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-21</time>
+        <a href="/2021/01/26/CLRS/Search-Tree/BlackRedTree/" class="archive-article-date">
+  	<time datetime="2021-01-26T11:59:53.132Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
 </a>
         
         
@@ -259,123 +274,256 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="活动选择问题"><a href="#活动选择问题" class="headerlink" title="活动选择问题"></a>活动选择问题</h1><blockquote>
-<p>Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S=\{a_1,a_2,…,a_n\}$ of n proposed <strong>activities</strong> that wish to use a resource,such as a lecture,which can serve only one activity at a time.Each activity $a_i$ has a <strong>start time</strong> $s_i$ and a <strong>finish time</strong> $f_i$,where $0 \leq s_i &lt; f_i &lt; \infty$.If selected,activity $a_i$ takes place during the half-open time interval $[s_i,f_i)$.Activities $a_i$ and $a_j$ are <strong>compatible</strong> if the intervals $[s_i,f_i)$ and $[s_j,f_j)$ do not overlap.i.e.,$a_i$ and $a_j$ are compatible if $f_i \le s_j$ or $f_j \le s_i $.</p>
-</blockquote>
+        <h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><p>红黑树保证两颗子树之间高度不会相差两倍以上，因此是（红黑）<strong>“近似平衡”</strong>（黑节点是<strong>完美平衡</strong>）的</p>
+<p>红黑树满足以下性质（约定称为<strong>RB性质</strong>）：</p>
+<ul>
+<li>Every node either red or black</li>
+<li>The root and leaves(NIL ‘s)are black</li>
+<li>If a node is red,then its parent is black</li>
+<li>All simple paths from any node $x$ to a descendant leaf have the same number of black nodes =<strong>black-height($x$)</strong> or <strong>bh($x$)</strong>  </li>
+</ul>
+<p>（注意$bh(x)$不包含$x$本身，即本身是黑节点不记数，否则黑高和等价2-3-4树的高度不等）</p>
 <a id="more"></a>
-<p>为了操作方便，我们做出如下假设：</p>
-<script type="math/tex; mode=display">
-f_1 \le f_2 \le f_3 \le ···\le f_{n-1} \le f_{n}.</script><p>活动时间表如下：</p>
-<div class="table-container">
-<table>
-<thead>
-<tr>
-<th>i</th>
-<th>1</th>
-<th>2</th>
-<th>3</th>
-<th>4</th>
-<th>5</th>
-<th>6</th>
-<th>7</th>
-<th>8</th>
-<th>9</th>
-<th>10</th>
-<th>11</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>$s_i$</td>
-<td>1</td>
-<td>3</td>
-<td>0</td>
-<td>5</td>
-<td>3</td>
-<td>5</td>
-<td>6</td>
-<td>8</td>
-<td>8</td>
-<td>2</td>
-<td>12</td>
-</tr>
-<tr>
-<td>$f_i$</td>
-<td>4</td>
-<td>5</td>
-<td>6</td>
-<td>7</td>
-<td>9</td>
-<td>9</td>
-<td>10</td>
-<td>11</td>
-<td>12</td>
-<td>14</td>
-<td>16</td>
-</tr>
-</tbody>
-</table>
-</div>
-<h1 id="DP"><a href="#DP" class="headerlink" title="DP"></a>DP</h1><p>我们先用动态规划的方法解决，那么得先找到最优子结构。</p>
-<p>我们令$S_{ij}=\{a_k \in S :s_k \ge f_i \ and \ f_k \le s_j \}$,并令$A_{ij}$为其最大兼容子集，且$a_k \in A_{ij}$，因为$a_k$包含在最优解中，我们可以将原问题分解成两个子问题：$S_{ik}$和$S_{kj}$,自然地，令（这里并没有说$A_{ik}$和$A_{kj}$就是最大兼容子集）</p>
-<script type="math/tex; mode=display">
-A_{ik}=A_{ij} \cap S_{ik} \\
-A_{kj}=A_{ij} \cap S_{kj}</script><p>很明显，$A_{ik}$和$A_{kj}$都没有包含$a_k$，因此$A_{ij}=A_{ik} \cup A_{kj} \cup \{ a_k \}$,故</p>
-<script type="math/tex; mode=display">
-|A_{ij}|=|A_{ik}|+|A_{kj}|+1</script><p>我们可以通过<strong>cut-and-paste</strong>方法证明：$A_{ij}$一定包含$S_{ik}$和$S_{kj}$的最优解，即证明$A_{ik}$和$A_{kj}$是子问题的最大兼容子集</p>
-<p>$Proof$</p>
-<p>假设$A’_{ik}$是$S_{ik}$的最优解，$|A’_{ik}| &gt; |A_{ik}|$.</p>
-<p>则$|A’_{ik}|+|A_{kj}|+1&gt;|A_{ik}|+|A_{kj}|+1$与$A_{ij}$为最优解矛盾</p>
-<p>$A_{ik}$是$S_{ik}$的最优解</p>
-<p>对于$A_{kj}$也是一样        $\blacksquare$</p>
-<p>我们用$c[i,j]$表示$S_{ij}$的最优解，则</p>
-<script type="math/tex; mode=display">
-c[i,j]=
-\begin{cases}
-0 & if \ S_{ij} \ = \emptyset \\
-\max \limits_{a_k \in S_{ij}} \ \{c[i,k]+c[k,j]+1 \} \ & if \ S_{ij} \ \ne \emptyset
-\end{cases}</script><p>(你可能会对$a_k \in S_{ij}$感到疑问，但是注意max，我们并不知道$a_k$在哪个最大兼容子集中，因此选其最大者就是$A_{ij}$)</p>
-<p>首先明确什么时候$S_{ij}=\emptyset$，由其定义可知：</p>
-<script type="math/tex; mode=display">
-f_i \le s_k < f_k \le s_j <f_j
-\\ \to i<k<j
-\\ \to j-i \ge 2</script><p>换言之，当$j-i&lt;2$时，$S_{ij}= \emptyset$</p>
-<p>我们还需要准备两个虚拟事件$a_0$和$a_{n+1}$，因为$S_{ij}$并不包含$a_i$和$a_j$</p>
-<p>我们用一个变量$l$表示距离，这样$l \in [2,n+1]$,子问题则通过$l$的大小排序，我们可以通过自底向上的方法解决子问题。</p>
-<p>设左边界为$i$，则右边界为$j=i+l$，当$l$最大时，$i_{max}=0=\underbrace{n+1}_{j_{max}}-l_{max}$，当$l$最小时，$i_{max}=n-1=n+1-l_{min}$</p>
-<p>左边界大小受$l$约束，关系为$i_{max}=n+1-l$，这个并不难理解，我们将右边界放在最右边，此时左边达到最大值，距离为$l$。</p>
-<p>综上，$i \in [0,n+1-l]$。</p>
-<p>伪代码如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">DYNAMIC-ACTIVITY-SELECTOR(s,f,n)</span><br><span class="line">let c[0...n+1,0...n+1] and act[0...n+1,0...n+1] to be new table</span><br><span class="line">for i ← 0 to n do</span><br><span class="line">	c[i,i] ← 0</span><br><span class="line">	c[i,i+1] ← 0</span><br><span class="line"></span><br><span class="line">c[n+1,n+1] ← 0</span><br><span class="line"></span><br><span class="line">for l ← 2 to n+1 do</span><br><span class="line">	for i ← 0 to n+1-l do</span><br><span class="line">		j&#x3D;i+l</span><br><span class="line">		c[i,j]&#x3D;0</span><br><span class="line">		k ← j-1</span><br><span class="line">		while k&gt;i do</span><br><span class="line">			if f[i] &lt;&#x3D; s[k]  and f[k] &lt;&#x3D; s[j] and c[i,j]&lt;c[i,k]+c[k,j]+1 then</span><br><span class="line">				c[i,j] ← c[i,k]+c[k,j]+1</span><br><span class="line">				act[i,j] ← k</span><br><span class="line">			k ← k-1</span><br><span class="line">print c[0][n+1]</span><br><span class="line">PRINT-ACT(c,act,i,j)</span><br><span class="line"></span><br><span class="line">PRINT-ACT(c,act,i,j)</span><br><span class="line">if c[i][j]&gt;0</span><br><span class="line">	PRINT-ACT(act,i,k)</span><br><span class="line">	PRINT-ACT(act,k,j)</span><br><span class="line">	print &#39;a&#39;</span><br><span class="line">	print k</span><br></pre></td></tr></table></figure>
-<p>C++代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Activity_Selection</span><span class="params">(<span class="keyword">int</span>* s, <span class="keyword">int</span>* f, <span class="keyword">int</span> n)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">auto</span> c=newArray2&lt;<span class="keyword">int</span>&gt;(n+<span class="number">2</span>,n+<span class="number">2</span>);</span><br><span class="line">    <span class="keyword">auto</span> act=newArray2&lt;<span class="keyword">int</span>&gt;(n+<span class="number">2</span>,n+<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n;++i)&#123;</span><br><span class="line">        c[i][i]=<span class="number">0</span>;</span><br><span class="line">        c[i][i+<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    c[n+<span class="number">1</span>][n+<span class="number">1</span>]=<span class="number">0</span>;</span><br><span class="line">    <span class="keyword">int</span> j,k;</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> l=<span class="number">2</span>;l&lt;=n+<span class="number">1</span>;++l)&#123;</span><br><span class="line">        <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;=n+<span class="number">1</span>-l;++i)&#123;</span><br><span class="line">            j=i+l;</span><br><span class="line">            c[i][j]=<span class="number">0</span>;</span><br><span class="line">            k=j<span class="number">-1</span>;</span><br><span class="line">            <span class="keyword">for</span>(k=j<span class="number">-1</span>;k&gt;i;--k)&#123;</span><br><span class="line">                <span class="keyword">if</span>(f[i]&lt;=s[k] &amp;&amp; f[k]&lt;=s[j] &amp;&amp; c[i][j]&lt;c[i][k]+c[k][j]+<span class="number">1</span>)&#123;</span><br><span class="line">                        c[i][j]=c[i][k]+c[k][j]+<span class="number">1</span>;</span><br><span class="line">                        act[i][j]=k;</span><br><span class="line">                &#125;	<span class="comment">//if</span></span><br><span class="line">            &#125;	<span class="comment">//for of k</span></span><br><span class="line">        &#125;	<span class="comment">// for of i</span></span><br><span class="line">    &#125;	<span class="comment">//for of l</span></span><br><span class="line"></span><br><span class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;c[<span class="number">0</span>][n+<span class="number">1</span>];</span><br><span class="line">    print_act(c,act,<span class="number">0</span>,n+<span class="number">1</span>);</span><br><span class="line"></span><br><span class="line">    deleteArray2(c,n+<span class="number">2</span>);</span><br><span class="line">    deleteArray2(act,n+<span class="number">2</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">print_act</span><span class="params">(<span class="keyword">int</span>** c,<span class="keyword">int</span>** act,<span class="keyword">int</span> i,<span class="keyword">int</span> j)</span></span>&#123;</span><br><span class="line">    <span class="keyword">if</span>(c[i][j]&gt;<span class="number">0</span>)&#123;</span><br><span class="line">        <span class="keyword">int</span> k=act[i][j];</span><br><span class="line">        print_act(c,act,i,k);</span><br><span class="line">        print_act(c,act,k,j);</span><br><span class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span>&lt;&lt;<span class="string">"a"</span>&lt;&lt;k&lt;&lt;<span class="string">" "</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="built_in">vector</span>&lt;<span class="built_in">string</span>&gt; act;</span><br><span class="line"></span><br><span class="line">    <span class="built_in">vector</span>&lt;intPair&gt; time&#123;</span><br><span class="line">            &#123;<span class="number">0</span>,<span class="number">0</span>&#125;,</span><br><span class="line">            &#123;<span class="number">1</span>,<span class="number">4</span>&#125;,</span><br><span class="line">            &#123;<span class="number">3</span>,<span class="number">5</span>&#125;,</span><br><span class="line">            &#123;<span class="number">0</span>,<span class="number">6</span>&#125;,</span><br><span class="line">            &#123;<span class="number">12</span>,<span class="number">16</span>&#125;,</span><br><span class="line">            &#123;<span class="number">2</span>,<span class="number">14</span>&#125;,</span><br><span class="line">            &#123;<span class="number">5</span>,<span class="number">7</span>&#125;,</span><br><span class="line">            &#123;<span class="number">5</span>,<span class="number">9</span>&#125;,</span><br><span class="line">            &#123;<span class="number">3</span>,<span class="number">9</span>&#125;,</span><br><span class="line">            &#123;<span class="number">6</span>,<span class="number">10</span>&#125;,</span><br><span class="line">            &#123;<span class="number">8</span>,<span class="number">12</span>&#125;,</span><br><span class="line">            &#123;<span class="number">8</span>,<span class="number">11</span>&#125;,</span><br><span class="line">            &#123;INT_MAX,INT_MAX&#125;</span><br><span class="line">    &#125;;</span><br><span class="line">    sort(time.begin(), time.end(), iP_comp());</span><br><span class="line">    <span class="keyword">int</span> s[<span class="number">13</span>],f[<span class="number">13</span>];</span><br><span class="line">    <span class="keyword">auto</span> b=time.begin();</span><br><span class="line">    <span class="keyword">for</span>(<span class="keyword">int</span> i=<span class="number">0</span>;i&lt;time.size();++i)&#123;</span><br><span class="line">        s[i]=b-&gt;first;</span><br><span class="line">        f[i]=b-&gt;second;</span><br><span class="line">        ++b;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    Activity_Selection(s,f,<span class="number">11</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>由三重循环不难得知该算法时间复杂度为$O(n^3)$</p>
-<p>接下来考虑用贪心算法优化该问题</p>
-<h1 id="Greedy-Choice"><a href="#Greedy-Choice" class="headerlink" title="Greedy Choice"></a>Greedy Choice</h1><p>根据直觉，我们要选择集合S中最先完成的活动，因为这样就可以尽可能的留下其他（兼容）活动去选择。而根据前面的假设，完成时间$f_i$是单调递增的，因此我们做出第一个贪心选择：$a_1$</p>
-<p>现在的子问题是：在$a_1$完成后开始的活动中选择第一个完成的活动。我们并不需要考虑在$a_1$开始前完成的活动，因为满足该条件的活动必然不兼容：$a_1 &lt; f_1 \ but \ f_j(j&gt;1) &gt;f_1 \ $ 所以 $\ f_j&gt;a_1$。</p>
-<p>令$S_k=\{a_i \in S :s_i \ge f_k\}$，$S_k$既是个活动集合，也是个子问题。原问题是在S中找到最大兼容子集，这里为了编码方便，令$S_0=S,f_0=0$。由最优子结构可知，原问题的最优解包含$a_1$和相关子问题最优解中的所有活动。</p>
-<p>接下来，验证该直觉是否正确:</p>
+<p>我们称<strong>leaf</strong>为<strong>external node</strong>，而其他保存键值的为<strong>internal node</strong></p>
+<p>这里的$NIL$并不是用空指针表示，而是用一个实际的节点$T.nil$表示，颜色为BLACK，其他随意。用作哨兵处理边界条件：空指针没有颜色，而$T.nil$有（比如下面插入时，假如uncle是叶子的话<e.g.左孩子叶子，右两红>，那么就必须要考察其颜色）。不设成RED是因为出现两个连续红节点的情况会增多（或概率增大），而这违反了性质3。同时为了节省空间，叶节点和根节点的父节点都用NIL表示。</e.g.左孩子叶子，右两红></p>
+<p>红黑树示意图（实际上根节点的父节点也是NIL，省去了）：</p>
+<p><img src="https://i.loli.net/2021/01/29/NT8bKqtfuEzUV3m.png" alt="image.png"></p>
+<p>为了说明红黑树的优越性引入一条定理：</p>
 <blockquote>
 <p>Theorem</p>
-<p>Consider $\forall S_k \ne \emptyset$，and let $a_m \in S_k$ with the earlist finish time.Let $A_k$ be a maximum-size subset of mutually compatible activites of $S_k$,then $a_m$ is included in some $A_k$.</p>
+<p>A red-black tree with n keys has height</p>
+<p>​        $h \le 2 lg(n+1)$</p>
 </blockquote>
-<p>$Proof:$</p>
-<p>设$A_k$中最先完成活动为$a_j$,</p>
-<p>if $a_m = a_j$，显然，$a_m \in A_k$</p>
-<p>else，令$A’_k=A_k- \{ a_j \}  \cup \{a_m\}$，因为$A_k$即使将$a_j$剔除也相互兼容，而$a_m$是$S_k$中最先完成的活动（比$a_j$先），因此加入到$A_k$中能保证相互兼容。因为$|A_k|=|A’_k|$,所以$A’_k$也是一个最大兼容子集，$a_m \in A’_k$满足条件</p>
-<p>命题得证。</p>
-<p>这个定理告诉我们：子问题（原问题）的最先完成活动必然是其最大兼容子集的元素。</p>
-<p>依次考虑每个活动，其中兼容的活动加入到$S$的最大兼容集合中，不是每个子问题的最先完成活动都是$A_0$的元素，但是$A_0$的元素一定在子问题中，我们只要取舍就行了。</p>
-<p>依次做出贪心选择：与$A_0$中（最后一个）元素兼容且最先完成的活动，选择最合适的路径，得到更为直接的最优子结构（对比DP）。</p>
-<p>由于完成时间是单调递增的，因此每个活动只需要考虑一次，也正因此，时间复杂度为$O(n)$。</p>
-<h2 id="递归版本"><a href="#递归版本" class="headerlink" title="递归版本"></a>递归版本</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">RECURSIVE-ACTIVITY-SELECTOR(s,f,k,n)</span><br><span class="line">m ← k+1</span><br><span class="line">while m &lt;&#x3D; n and s[m]&lt;f[k] do</span><br><span class="line">	m ← m+1</span><br><span class="line">if  m &lt;&#x3D; n then</span><br><span class="line">	return &#123;a_m&#125; ∪  RECURSIVE-ACTIVITY-SELECTOR(s,f,m,n)</span><br><span class="line">else return ∅</span><br></pre></td></tr></table></figure>
-<p>翻译成C++如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Activities_Choice</span><span class="params">(<span class="keyword">int</span>* s,<span class="keyword">int</span>* f,<span class="keyword">int</span> k,<span class="keyword">int</span> n,<span class="built_in">std</span>::<span class="built_in">vector</span>&lt;<span class="built_in">std</span>::<span class="built_in">string</span>&gt;&amp; act)</span></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> m=k+<span class="number">1</span>;</span><br><span class="line">    <span class="keyword">while</span>(m&lt;=n&amp;&amp;s[m]&lt;f[k])</span><br><span class="line">        ++m;</span><br><span class="line">    <span class="keyword">if</span>(m&lt;=n) &#123;</span><br><span class="line">        act.emplace_back(<span class="string">"a"</span> + <span class="built_in">std</span>::to_string(m));</span><br><span class="line">        Activities_Choice(s,f,m,n,act);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>示意图如下：</p>
-<p><img src="https://i.loli.net/2021/01/22/yMlgvGwObpeYrHs.png" alt="image.png"></p>
-<h2 id="迭代版本"><a href="#迭代版本" class="headerlink" title="迭代版本"></a>迭代版本</h2><p>实际上，由“尾递归”转换为迭代是十分容易的：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">ITERATIVE-ACTIVITY-SELECTIOR(s,f)</span><br><span class="line">n ← s.length</span><br><span class="line">A ← &#123;a_1&#125;</span><br><span class="line">k ← 1</span><br><span class="line">while m ← 2 to n do</span><br><span class="line">if s[m] &gt;&#x3D; f[k] then</span><br><span class="line">	A ← A ∪ &#123;a_m&#125;</span><br><span class="line">	k ← m</span><br><span class="line">return A</span><br></pre></td></tr></table></figure>
-<h1 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h1><p>贪心算法并不关注重叠子问题，而是做出贪心选择，然后继续执行对应的子问题从而达到最优解，因此它并不会像bottom-up那样遍历所有先决子问题最后来解决自己，而是选择一条路径来解决</p>
+<p>这里我们用2-3-4树来证明该定理（实际上，红黑树是2-3-4的等价实现只不过两叉+染色，因为2-3-4有些编程语言不好实现）</p>
+<p>(PS：也可用数学归纳法证明该定理，具体参考CLRS ch13.1 page 309)</p>
+<p>先简单介绍下2-3-4树的特点：</p>
+<p>2表示该节点存储一个key，有两个孩子，3和4类推</p>
+<p>我们将一个红节点与它的黑父节点结合(吸收)成为一个新节点，这样所有节点都成为黑节点了，从根节点到叶子的路径长度就是黑高，即该树的高度</p>
+<ul>
+<li>2节点——1黑</li>
+<li>3节点——1黑1红</li>
+<li>4节点——1黑2红</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/26/CSnR3xZTMibtHKr.png" alt="image.png"></p>
+<p>等价图：</p>
+<p><img src="https://i.loli.net/2021/01/28/WMtSbYBQGAJDoqN.png" alt="image-20210126215557507.png"></p>
+<p>实际上你会发现等价的2-3-4树是完美平衡，因为高度差为0（由性质4保证）。</p>
+<p>我们设红黑树高度为$h$，等价2-3-4树高度为$h’$，内部节点数$n$，外部节点数为$m$，叶子节点数为$leafs$,</p>
+<p>因为一个红黑树也是二叉树，一个节点分出两个孩子，因此$m=n+1$并不难理解(前提是所有节点都有两个孩子，而红黑树满足)</p>
+<p>我们用数学归纳法也可以证明：</p>
+<ul>
+<li>当$m=1$时，$n=2=m+1$，命题成立</li>
+<li>假设当$m=k&gt;1$时，$m=n+1$成立</li>
+<li>当$m=k+1$时，加一个内部节点需要增加一个外部节点，故$m=m_k+1=n_k+2=n+1$ $\blacksquare$</li>
+</ul>
+<p>而在2-3-4中，叶子节点数没变，接下来我们来决定叶子节点数和高度之间的关系</p>
+<ul>
+<li><p>如果都是二叉，那么叶子节点数=$2^{h’}$</p>
+</li>
+<li><p>如果都是四叉，那么叶子节点数=$4^{h’}$</p>
+</li>
+</ul>
+<p>因此得到不等式</p>
+<script type="math/tex; mode=display">
+2^{h'} \le leafs=n+1 \le 4^{h'}</script><p>取左边的部分不等式，得到$h’ \le lg(n+1)$</p>
+<p>由红黑树性质3可得知：红节点的父母必须是黑节点，而黑节点的父母不做限制，即不允许连续两个红节点出现，红节点总数至多为一半</p>
+<p>所以$h’=bh(T.root) \ge \frac{h}{2}$</p>
+<p>所以$h \le 2lg(n+1)$</p>
+<p>一个红黑树的高度最高为$O(lgn)$，保证了BST的所有操作为$O(h)=O(lgn)$</p>
+<p>同时，由这个定理的证明可以知晓RB4个性质的必要性：</p>
+<ul>
+<li>性质1是性质3的铺垫</li>
+<li><p>性质2减少了插入时连续红节点的出现概率</p>
+</li>
+<li><p>性质3保证了红色最多的时候是红黑相间，此时黑高最小为高的一半</p>
+</li>
+<li>性质4保证了黑高一致，即转换为等价2-3-4树时的高度</li>
+</ul>
+<p>接下来只讲解红黑树的两个操作：INSERT和DELETE，因为其他的BST已实现过</p>
+<h1 id="ROTATION"><a href="#ROTATION" class="headerlink" title="ROTATION"></a>ROTATION</h1><p>因为INSERT和DELETE都改变了树的结构，可能会违反RB性质，因此需要考虑再染色（recolor）和改变指针结构</p>
+<p>而改变指针结构就通过$RATATION$操作实现，一般译作“旋转”</p>
+<p>旋转的意义在于只改变一个节点和它的孩子的关系而不影响树的其他结构</p>
+<p>旋转实际上是绕一个“主轴”（pivot）成90°角度旋转，子树相对位置没变（很多博客对于旋转的描述简直没法看，简单的复杂化）</p>
+<p>而且你会发现右旋的话，主轴在左边，左旋反之</p>
+<p><img src="https://i.loli.net/2021/01/27/yisjQBV1gND6CYW.png" alt="image.png">旋转操作使得原来的孩子成为新的根节点，而原来的根节点变成孩子并接手原来孩子的一个子树。通过该操作，还可能减小子树间高度的相差，接近严格平衡（INSERT有体现）。</p>
+<p>根据以上信息，我们可以写出左旋的伪代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">LEFT-ROTATION(T,x)</span><br><span class="line">y ← x.right</span><br><span class="line">x.right ← y.left		&#x2F;&#x2F;转交子树</span><br><span class="line"></span><br><span class="line">if y.left ≠ NIL</span><br><span class="line"> then y.left.p ← x		&#x2F;&#x2F;重定向y.left’s parents</span><br><span class="line"></span><br><span class="line">y.p ← x.p				&#x2F;&#x2F;链接x.p和y</span><br><span class="line">if x.p &#x3D; NIL</span><br><span class="line"> then T.root ← y</span><br><span class="line"> elseif x.p.right &#x3D; x</span><br><span class="line">  then x.p.right ← y</span><br><span class="line">  else</span><br><span class="line">   x.p.left ← y</span><br><span class="line">  </span><br><span class="line">y.left ← x				&#x2F;&#x2F;链接x和y</span><br><span class="line">x.p ← y</span><br></pre></td></tr></table></figure>
+<p>右旋伪代码（习题13.2-1):</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">RIGHT-ROTATION(T,y)</span><br><span class="line">x ← y.left</span><br><span class="line">y.left ← x.right</span><br><span class="line"></span><br><span class="line">if x.right ≠ NIL</span><br><span class="line"> then x.right.p ← y</span><br><span class="line"> </span><br><span class="line">x.p ← y.p</span><br><span class="line">if y.p &#x3D; NIL</span><br><span class="line"> then T.root ← x</span><br><span class="line"> elseif y.p.right &#x3D; y</span><br><span class="line">  then y.p.right ← x</span><br><span class="line">  else</span><br><span class="line">   y.p.left ← x</span><br><span class="line">   </span><br><span class="line">x.right ← y</span><br><span class="line">y.p ← x</span><br></pre></td></tr></table></figure>
+<h1 id="INSERT"><a href="#INSERT" class="headerlink" title="INSERT"></a>INSERT</h1><blockquote>
+<p>IDEA:</p>
+<p>Insert $x$ in tree.Color x red.Only red-black property 3 might be violated.Move the violation up the tree by recloring until it can be fixed with rotations and recoloring</p>
+</blockquote>
+<p><img src="https://i.loli.net/2021/01/27/8oCfRzYAUgnHW3D.png" alt="image.png"></p>
+<h2 id="流程讲解"><a href="#流程讲解" class="headerlink" title="流程讲解"></a>流程讲解</h2><p>插入一个红节点，结果出现了连续红节点，违反了RB性质3，我们会将这个破坏上移两个层次给它的grandpa，直到可以通过旋转和染色终止循环。（PS：当出现两个红节点时，grandpa一定存在）</p>
+<p>（假设以下示意图中其他子树均满足RB性质，设插入点为$x$）</p>
+<h3 id="CASE-1-x-’s-uncle-is-red"><a href="#CASE-1-x-’s-uncle-is-red" class="headerlink" title="CASE 1:$x$’s uncle is red"></a>CASE 1:$x$’s uncle is red</h3><p>我们约定父亲的兄弟为<strong>uncle/aunt</strong>,如果uncle为红色，我们就重染色。那么染色方案如何选择？我们先想一下为什么要插入红节点？因为RB性质4必须保证黑高一致，而插入黑节点就破坏了性质4，也正因此，我们可以把uncle和parents都染黑，grandpa染红，这样这个节点就平衡了，性质4也得以维持，只不过grandpa可能也会违反，如此反复下去即可（因此只达成局部平衡）。这个情形我们称之为CASE1</p>
+<p><img src="https://i.loli.net/2021/01/29/uixIdDj8WCZ1YsR.png" alt="image.png"></p>
+<p>但是这个循环什么时候终止呢？</p>
+<ul>
+<li><p>一直上升。由于是以两个层次单位进行，若$new \ x$为$T.root$的孩子，因为根节点是黑的；若$new \ x$为$T.root$，则将两个孩子染黑，$new \ x$虽然染红了，但是特殊情况特殊处理，这种情况会再度染黑，这样，即使黑高增1，性质4也没有被破坏，而性质3也得以维护</p>
+</li>
+<li><p>uncle为黑。进入CASE2或CASE3</p>
+</li>
+</ul>
+<p>下图是插入15时的处理：</p>
+<p><img src="https://i.loli.net/2021/01/27/DkyHbS7T3rf5J4j.png" alt="image.png"></p>
+<h3 id="CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child"><a href="#CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child" class="headerlink" title="CASE 2:$x$’s uncle is black and $x$ is a right child"></a>CASE 2:$x$’s uncle is black and $x$ is a right child</h3><p><img src="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png" alt="image.png"></p>
+<p>这个是CASE2的图，我们要把它转成CASE3，你可能会想为什么要怎么做？</p>
+<p>我们先看下CASE3在哪里优于CASE2：</p>
+<h3 id="CASE-3：-x-’s-uncle-is-black-and-x-is-a-left-child"><a href="#CASE-3：-x-’s-uncle-is-black-and-x-is-a-left-child" class="headerlink" title="CASE 3：$x$’s uncle is black and $x$ is a left child"></a>CASE 3：$x$’s uncle is black and $x$ is a left child</h3><p><img src="https://i.loli.net/2021/01/27/t8ZAnVNBxzovk6F.png" alt="image.png"></p>
+<p>CASE3只要右旋就可以将该树调整成整体平衡，不再违反性质3（而且还减少了高度差）</p>
+<p>如果我CASE2就右旋：</p>
+<p><img src="https://i.loli.net/2021/01/27/yOHDBezVAPgUfKo.png" alt="image.png"></p>
+<p>乍一看好像不再违反性质3万事大吉，实际上违反了性质4，黑高不再等同了。而且重染色是没有用的，因为想要维护性质4，就必须把A染黑，B和C染红，而这又违反了性质3,因此这是条死路。</p>
+<p>所以前辈们先左旋parents，得到两个绝对平衡的子树（将子树看成一个复合黑节点），两个孩子为红，根节点为黑即可。这样既不违反性质3又不违反性质4。至此，循环结束，整棵树整体平衡。</p>
+<p>上面那个例子的话，过程就是</p>
+<ul>
+<li>RIGHT-ROTATION(18)，使黑-红-红在一条直线上</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/27/PchS9e8GYfgw26J.png" alt="image.png"></p>
+<ul>
+<li>LEFT-ROTATION(7)，重染色：原根节点染红，新根节点染黑</li>
+</ul>
+<p><img src="https://i.loli.net/2021/01/27/HbKLY25fxBI9MUo.png" alt="image.png"></p>
+<p>实际上根据uncle与插入节点的相对位置，可以分为两种位置，而一种位置有3种情形，上面提到的CASE1、CASE2、CASE3是grandpa的右孩子是uncle的情形，而grandpa的左孩子为uncle时，也有三种情形，和CASE 1~3 完全对称</p>
+<p>有了这些铺垫，伪码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">RB-INSERT(T,z)</span><br><span class="line">y ← T.nil</span><br><span class="line">x ← T.root</span><br><span class="line"></span><br><span class="line">while x ≠ T.nil</span><br><span class="line"> do y ← x </span><br><span class="line">  if z.key &lt; x.key</span><br><span class="line">   then x ← x.left</span><br><span class="line">   else</span><br><span class="line">    x ← x.right</span><br><span class="line"></span><br><span class="line">z.p ← y</span><br><span class="line">if y &#x3D; T.nil</span><br><span class="line"> then T.root ← z</span><br><span class="line"> elseif z.key &lt; y.key</span><br><span class="line">  then y.left ← z</span><br><span class="line">  else</span><br><span class="line">   y.right ← z</span><br><span class="line">   </span><br><span class="line">z.right ← T.nil</span><br><span class="line">z.left ← T.nil</span><br><span class="line">z.color ← RED</span><br><span class="line">RB-INSERT-FIXUP（T,z)</span><br><span class="line"></span><br><span class="line">RB-INSERT-FIXUP(T,z)</span><br><span class="line">while z.p.color &#x3D; RED</span><br><span class="line"> do if z.p.p.left &#x3D; z.p</span><br><span class="line">     then y ← z.p.p.right</span><br><span class="line">      if y.color &#x3D;  RED				&#x2F;&#x2F;&lt;CASE1&gt;</span><br><span class="line">       then</span><br><span class="line">        y.color ← BLACK</span><br><span class="line">        z.p.color ← BLACK</span><br><span class="line">        z.p.p.color ← RED</span><br><span class="line">        z ← z.p.p</span><br><span class="line">      else if z.p.right &#x3D; z			&#x2F;&#x2F;&lt;CASE2&gt;</span><br><span class="line">            then</span><br><span class="line">             z ← z.p</span><br><span class="line">             LEFT-ROTATION(T,z)</span><br><span class="line">           z.p.color ← BLACK		&#x2F;&#x2F;&lt;CASE3&gt;</span><br><span class="line">           z.p.p.color ← RED</span><br><span class="line">           RIGHT-ROTATION(T,z.p.p)</span><br><span class="line">    else</span><br><span class="line">     &lt;with &quot;left&quot; and &quot;right&quot; swapped&gt;</span><br><span class="line">T.root.color ← BLACK    &#x2F;&#x2F;RB property 2</span><br></pre></td></tr></table></figure>
+<h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>首先，我们像一般BST一样插入一个节点，时间复杂度为$O(h)=O(lgn)$</p>
+<p>只有CASE1才会循环，每次上升两个水平，而树高为$O(lgn)$，故$INSERT-FIXUP$时间复杂度为$O(lgn)$</p>
+<p>故整个插入操作时间复杂度为$O(lgn)$</p>
+<h1 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h1><h2 id="TARANSPLANT"><a href="#TARANSPLANT" class="headerlink" title="TARANSPLANT"></a>TARANSPLANT</h2><p>因为$T.nil$是一个确实的节点，而不是NIL，因此$\text{RB-TRANSPLANT}$稍微有一点不同：</p>
+<p>而且注意，链接parents不需要检测替代节点是否为$T.nil$，这个很关键，因为后面删除操作很可能$T.nil$上位，那么就必须要知道$T.nil$的parents，一般$T.nil$除了color是black外，其他的都是任意的</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">RB-TRANSPLANT(T,u,v)</span><br><span class="line">if u.p &#x3D; T.nil</span><br><span class="line"> then T.root ← v</span><br><span class="line"> elseif u.p.left &#x3D; u</span><br><span class="line">  then u.p.left ← v</span><br><span class="line">  else</span><br><span class="line">   u.p.right ← v</span><br><span class="line">   </span><br><span class="line">v.p ← u.p &#x2F;&#x2F;无条件链接parents</span><br></pre></td></tr></table></figure>
+<p>我们约定</p>
+<ul>
+<li>$y$表示要将移去的节点或是在树中移动的节点。<ul>
+<li>single or one child——将移去的节点</li>
+<li>two children——该节点的后继</li>
+</ul>
+</li>
+<li>因为$y$的移去可能导致破坏RB性质，因此需要用一个变量$y-original-color$存储$y$原来的颜色。</li>
+<li><p>因为$y.right$会占据$y$的原位置，我们用$x$来表示这个节点</p>
+<ul>
+<li>如果$y.p \ne z$，因为$y.p$不会被移去，因此$x.p=y.p$</li>
+<li>如果$y.p =z$，则直接$x.p=y$</li>
+</ul>
+</li>
+<li><p>如果$y-original-color=RED$，那么不需要维护红黑树，因为不会有任何性质被破坏</p>
+<ol>
+<li>既然是红节点，自然黑高不会改变，因此性质4维持</li>
+<li>根节点必然是黑的。因为如果$y$颜色为红色，它是不可能成为根节点的，性质2维持</li>
+<li>不可能出现连续两个红节点。因为红节点的父母必然是黑节点，其孩子也为黑节点，因此即使$y$移动，原来的位置被黑节点也不会出现任何问题。性质3维持</li>
+</ol>
+</li>
+</ul>
+<p>所以$y-original-color=BLACK$才是我们应该关注的问题。RB性质几乎都可能被破坏：</p>
+<ul>
+<li>性质2：如果$y$是根节点，右孩子为红节点，右孩子取代$y$，违反性质2</li>
+<li>性质3：$x$和$x.p$都是红的，违反性质3</li>
+<li>性质4：这个是最显然的，将黑节点一拿，黑高就减一了，那么该节点($y$)之前的祖先均违反性质4</li>
+</ul>
+<p>性质2好维护，只要调整的时候将根节点顺便染黑就行了（以下CASE2和CASE4处理了，自己尝试证明一下）</p>
+<p>性质3也好维护，直接把$x$染黑就行了，因为原来$y$在的时候，就没破坏任何性质，恢复原状罢了（同时，你会发现，当$y.p$的另一个孩子成为它的兄弟时，它是唯一的孩子且是红的），而且染黑也顺带把性质4也修复了，但是本来就是黑的（e.g.$T.nil$），性质4还是被破坏的</p>
+<p>那么（最难的）性质4，怎么维护呢？<strong>转化多出来的黑色！</strong></p>
+<p>因为$x$会占据$y$的原位置，我们可以给$x$添加一个“额外”的黑色（<strong>extra black</strong>），这样性质4就没破坏</p>
+<p>但是这个“额外”的黑色给$color$吗？这样就违反了性质1，$x$成为了黑/红节点以外的节点，但是我们可以给节点本身赋予黑色（可能有点抽象）</p>
+<p>我们约定如果$x$本身是红色，则加上“额外”的黑色称为<strong>红-黑点（red-and-black node)</strong>，本身是黑色，则称为<strong>双黑点（doubly black node）</strong></p>
+<p>但是实际上，这个“额外”的黑色并不存在，因此我们必须想办法去掉它</p>
+<p>我们会设计一个循环，其目的是将黑色节点上移（<strong>和插入的IDEA是一致的</strong>），直到</p>
+<ol>
+<li>$x$指向红-黑点，我们将它染成黑色以去除extra black（如果$x$到达根节点，则此时将兄弟染红）</li>
+<li>$x$的兄弟右孩子为红（或左红右黑），在这种情形，可以通过合适的旋转和再染色去除extra black</li>
+</ol>
+<p>在整个循环过程中，$x$是双黑点，我们维护一个节点$w$来表示$x$的兄弟。<strong>该兄弟不可能为$T.nil$</strong>，否则$x.p$到$x$的路径长度比$x.p$到$w$的长度要长</p>
+<p>所以不要担心兄弟会是外部节点（我就钻了进去结果没意识到兄弟根本不可能是叶子）</p>
+<blockquote>
+<p>KEY IDEA</p>
+<p>In each case,the transformation applied preserves the number of black nodes(including $x$’s extra black) from(and including) the root of the subtree shown to each of the subtrees $\alpha,\beta,…,\zeta$</p>
+</blockquote>
+<p>根据这个IDEA，我们用</p>
+<script type="math/tex; mode=display">
+c(color)=\begin{cases}
+0 \ if \ color=RED(including  \ red-black ) \ &\\
+1 \ if \ color=BLACK(including \ doubly \ black) \ &\\
+\end{cases}</script><p>作为子树根的计数，我们需要保证变换前后（包括）子树根到各子树的黑节点数是相等的</p>
+<p><strong>以下变换都是基于该思想</strong>（子树略掉了，反正从左到右顺序不会变）</p>
+<h2 id="情形分析"><a href="#情形分析" class="headerlink" title="情形分析"></a>情形分析</h2><h3 id="CASE-1-w-is-red"><a href="#CASE-1-w-is-red" class="headerlink" title="CASE 1:$w$ is red"></a>CASE 1:$w$ is red</h3><p><img src="https://i.loli.net/2021/01/28/mnhj6sz8AkuSXfp.png" alt="image.png"></p>
+<p>注意变换前后，根节点到子树的黑节点数不变，假设A的左孩子为$\alpha$，那么B到它的黑节点数为3，变换后依然为3（因为B染红了）</p>
+<p>我们可以把右边的子树情况对称变换成左边，$x$随着下移，这样兄弟就是黑节点了，而且因为对称，自然前后黑节点数不变。</p>
+<p>该情形只是用来过渡的：将红兄弟转变为黑兄弟，因为只有黑兄弟才能剥离extra black，</p>
+<ul>
+<li>CASE2是通过染红兄弟，将extra black给了parents</li>
+<li>CASE4是通过将黑色兄弟转变成自己的父母而去除了extra black</li>
+</ul>
+<p>根据黑兄弟的孩子区分得到CASE2，CASE3，CASE4</p>
+<h3 id="CASE-2-w-is-black-w-left-and-w-right-is-black"><a href="#CASE-2-w-is-black-w-left-and-w-right-is-black" class="headerlink" title="CASE 2:$w$ is black ,$w.left$ and $w.right$ is black"></a>CASE 2:$w$ is black ,$w.left$ and $w.right$ is black</h3><p><img src="https://i.loli.net/2021/01/28/Odn5qoa4eIbkB3c.png" alt="image.png"></p>
+<p>因为$x$和$w$都是黑色，我们可以同时去除它们的黑色给$x.p$，如果$x.p=RED$（比如CASE1$\rightarrow$CASE2)，就可以退出循环然后将其染黑达成去除extra black的目的，性质4得到了维持；如果$x.p=BLACK$，$new \ x$是双黑点，则继续循环（如上所述，我们这里是将extra black赋予给parents本身）</p>
+<p>你可能会说：如果这条路径全部都是黑节点咋办，遇不到红节点，而根节点是黑的，已经上不去了啊？</p>
+<p>注意这种极端情况，一般情况，我们是通过移除extra black给父节点，直到遇到红节点，将它染黑。</p>
+<p>但是根节点是$new \ x$的话，已经上不去了，<strong>但也没有上去的必要了</strong>，根节点是双黑点，但是extra black已经吐不出来了，因为它的parents是$T.nil$，那就不吐了，直接将兄弟染红，使得黑高减1但是黑高仍相等，并没有违反性质4，因此是合理的（当然遇到红节点最好，直接退出循环），你可以试着画一颗全黑树，就是可以一直上升最终把根节点的另一个孩子染红了（网上博客有人还评论全黑树怎么删，写算法都不考虑边界条件的吗）</p>
+<h3 id="CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black"><a href="#CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black" class="headerlink" title="CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black"></a>CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black</h3><p><img src="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png" alt="image.png"></p>
+<p>CASE3是CASE4的过渡态。主要是为了让红节点成为兄弟的右孩子，这个并不难，我们只需要把左孩子转换成右孩子</p>
+<ul>
+<li>重染色：$w.left.color=BLACK,w.color=RED$</li>
+<li>右旋改变链接：$RIGHT-ROTATION(w)$</li>
+<li>重定兄弟：$w=x.p.right$</li>
+</ul>
+<p>变换前后黑节点数并未变化，请自行验证</p>
+<p>为什么要这个过渡态？如果你想像CASE4那样对称变换的话，又会出现一个新的双黑点需要处理，请自行尝试找到这个新双黑点</p>
+<h3 id="CASE-4-w-is-black-and-w-right-color-is-red"><a href="#CASE-4-w-is-black-and-w-right-color-is-red" class="headerlink" title="CASE 4:$w$ is black and $w.right.color$ is red"></a>CASE 4:$w$ is black and $w.right.color$ is red</h3><p><img src="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png" alt="image.png"></p>
+<p>我们将D和E合成一个3节点，可以看出：</p>
+<ul>
+<li>到E的子树需要c+1个黑节点</li>
+<li>到C的子树需要c+1+c’个黑节点</li>
+<li>到A的子树需要c+2个黑节点</li>
+</ul>
+<p>由E和A可以看出来，它们是对称的，$x$是依赖自已的双黑，E是依赖父节点的黑色，那么我们反过来，$x$依赖自己的父节点，E依赖自己，这样就把$x$的extra black转移给了$x.p$，要让$x$依赖父节点，E依赖自己，则需要左旋并重染色。至于C，因为左旋会把C给$x.p$接手，而$x.p$染成黑色，黑节点数并不变化（实质上就是想让黑色兄弟转变成黑色父母，分摊extra black，因为是多了一个实际的节点，因此不需要循环）</p>
+<p>如此一来，红黑树性质得到了维护，然后令$x$为树根节点退出循环</p>
+<p>接下来，伪码就不难写出：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">RB-DELETE(T,z)</span><br><span class="line">y ← z</span><br><span class="line">y-original-color ← y.color</span><br><span class="line">if z.left &#x3D; T.nil</span><br><span class="line"> then x ← z.right </span><br><span class="line"> 	  RB-TRANSPLANT(T,z,z.right)</span><br><span class="line"> elseif z.right &#x3D; T.nil</span><br><span class="line">  then x ← z.left</span><br><span class="line">  	   RB-TRANSPLANT(T,z,z.left)</span><br><span class="line">   else y ← TREE-MAXIMUM(z.right)</span><br><span class="line">        y-original-color ← y.color</span><br><span class="line">        x ← y.right</span><br><span class="line">        if y.p &#x3D; z</span><br><span class="line">         then x.p &#x3D; y</span><br><span class="line">        else TREE-TRANSPLANT(T,y,y.right)</span><br><span class="line">             y.right ← z.right</span><br><span class="line">             y.right.p ← y</span><br><span class="line">        TREE-TRANSPLANT(T,z,y)</span><br><span class="line">        y.left ← z.left</span><br><span class="line">        y.left.p ← y</span><br><span class="line">        y.color ← z.color</span><br><span class="line">        </span><br><span class="line">if y-original-color &#x3D; BLACK</span><br><span class="line"> then RB-DELETE-FIXUP(T,x)</span><br><span class="line"> </span><br><span class="line">RB-DELETE-FIXUP(T,x)</span><br><span class="line">while x ≠ T.root and x.color &#x3D; BLACK</span><br><span class="line"> do if x.p.left &#x3D; x</span><br><span class="line"> 	 then w ← x.p.right</span><br><span class="line"> 	      if w.color &#x3D; RED   									&#x2F;&#x2F;&lt;CASE1&gt;</span><br><span class="line"> 	       then x.p.color ← RED</span><br><span class="line"> 	            w.color ← BLACK</span><br><span class="line"> 	            LEFT-ROTATION(T,x.p)</span><br><span class="line"> 	      if w.right.color &#x3D; BLACK and w.left.color &#x3D; BLACK		&#x2F;&#x2F;&lt;CASE2&gt;</span><br><span class="line"> 	       then w.color ← RED</span><br><span class="line"> 	            x ← x.p</span><br><span class="line"> 	       else if w.right.color &#x3D; BLACK						&#x2F;&#x2F;&lt;CASE3&gt;</span><br><span class="line"> 	       		 then w.color ← RED</span><br><span class="line"> 	       		      w.left.color ← BLACK</span><br><span class="line"> 	            	  RIGHT-ROTATION(T,w)</span><br><span class="line"> 	            	  w ← x.p.right</span><br><span class="line"> 	            w.color ← x.p.color								&#x2F;&#x2F;&lt;CASE4&gt;</span><br><span class="line"> 	            x.p.color ← BLACK</span><br><span class="line"> 	            w.right.color ← BALAK</span><br><span class="line"> 	            LEFT-RATATION(T,x.p)</span><br><span class="line"> 	            x ← T.root</span><br><span class="line">    else</span><br><span class="line">     &lt;with &quot;left&quot; and &quot;right&quot; swapped&gt;</span><br><span class="line">x.color ← BLACK</span><br></pre></td></tr></table></figure>
+<h2 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>分析和$RB-INSERT$差不多：</p>
+<p>首先一般的BST删除$\rightarrow O(lgn)$</p>
+<p>$RB-DELETE-FIXUP$</p>
+<p>设CASE $x$的时间为$T_x$</p>
+<p>$T_1=T_3=T_4=O(1),T_2=O(lgn)$</p>
+<p>综上，整个删除步骤时间复杂度为$O(lgn)$</p>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>红黑树的性质共有4条，切记！（忘说了，也可以是5条，有的说法把根节点和叶子节点为黑分成了两条，比如CLRS上就是5条）</p>
+<p>这4条性质也不需要你死记硬背，你只要搞懂了为什么需要这四条性质，自然记得（参考上面红黑树高度的证明）</p>
+<p>红黑树相比一般的BST要修改插入和删除，因为要维护红黑树的性质。</p>
+<p>插入需要考察uncle的颜色，在性质3被破坏时，grandpa是一定存在的，uncle为叶子也可（体现了作为哨兵的好处：拥有颜色）</p>
+<p>插入除一个过渡态CASE2，实际上只有两种情形：</p>
+<ul>
+<li>uncle是红（CASE1），将parents和uncle染黑，grandpa染红，从而将破坏部分上移，直到进入CASE2或CASE3</li>
+<li>uncle是黑，$x$，parents和grandpa在一条线上（CASE3）而不是”&lt;”形（CASE2）</li>
+</ul>
+<p>（吐槽：插入相比删除那真是弟弟）</p>
+<p>删除需要考察sibling及其孩子的颜色，sibling一定不是叶子，因此一定有孩子（叶子节点的话算黑孩子嘛）</p>
+<p>删除操作涉及两个过渡态，起调整作用的情况也只有两种情形，但是更为复杂，因为你破坏了3个性质，而不是插入那样只破坏一个（其实CASE2和CASE3也不一定会被破坏，而且它们都是维护性质4送的，维护起来很简单）</p>
+<ul>
+<li><p>sibling是红，过渡到sibling是黑（CASE1），进入CASE2，CASE3，CASE4（为什么要这么做，上面写了）</p>
+</li>
+<li><p>sibling是黑</p>
+<ul>
+<li><p>双黑（CASE2），将extra black和sibling的黑色给parents，parents作为新的$x$：</p>
+<ul>
+<li><p>若parents为红色，染黑就此打住；</p>
+</li>
+<li><p>若parents为黑色，即双黑点，继续循环（<strong>与插入CASE 1的IDEA一样，将破坏上移</strong>）</p>
+</li>
+</ul>
+</li>
+<li><p>左红右黑（CASE3），过渡态。将左红转化为右红（CASE4）</p>
+</li>
+<li>右红（左任意，CASE4）。转变黑色兄弟为parents，依赖parents去除extra black（<strong>与插入CASE 3的IDEA一样，通过旋转和重染色修复被破坏部分</strong>）</li>
+</ul>
+</li>
+</ul>
+<p>所以插入和删除的IDEA是一致的，能够将破坏上移就上移，直到能修复它（当然一直上移也可以修复，只不过插入会使得黑高增1而删除会使得黑高减1但不违反性质4，为什么会出现这种情况呢？因为我们将破坏上移，一般不会到根节点，这样新的破坏位置就是子树根节点，是路径途经点，而树根节点的话，插入时，红色会染黑，而原来的红色染黑了，黑高增1；删除时，黑色吸收的extra black无法吐出来而吃的黑高减1，可以自己画图试试）</p>
+<p>（注意以上所有情形都是相对uncle或sibling在左边的情形，实际上还有对称情形省略了）</p>
+<h1 id="一个可以测试红黑树的网站"><a href="#一个可以测试红黑树的网站" class="headerlink" title="一个可以测试红黑树的网站"></a>一个可以测试红黑树的网站</h1><p><a href="https://www.cs.usfca.edu/~galles/visualization/RedBlack.html" target="_blank" rel="noopener">红黑树可视化调试</a></p>
+<p>这个网站的理论和该文是一致的，只不过删除时用的是前继而不是后继，所以要稍微变换一下</p>
+<h1 id="Code"><a href="#Code" class="headerlink" title="Code"></a>Code</h1><p><a href="https://github.com/Conzxy/CLRS-Introduction-to-Algorithm-/blob/master/ch13_Red_Black_Tree/rb_tree_impl.h" target="_blank" rel="noopener">红黑树实现</a></p>
 
       
 
@@ -410,7 +558,7 @@ f_i \le s_k < f_k \le s_j <f_j
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">greedy algorithm</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Balanced Search tree</a>
         		</li>
       		
 		</ul>
@@ -422,11 +570,11 @@ f_i \le s_k < f_k \le s_j <f_j
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Algorithm//" class="article-tag-list-link color5">Algorithm</a>
+        			<a href="/categories/Search-binary-tree//" class="article-tag-list-link color4">Search binary tree</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/Algorithm/greedy//" class="article-tag-list-link color2">greedy</a>
+        			<a href="/categories/Search-binary-tree/Balanced-Search-tree//" class="article-tag-list-link color1">Balanced Search tree</a>
         		</li>
       		
 		</ul>
@@ -481,7 +629,7 @@ f_i \le s_k < f_k \le s_j <f_j
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/21/CLRS/Activity-Selection/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/01/26/CLRS/Search-Tree/BlackRedTree/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -495,18 +643,18 @@ f_i \le s_k < f_k \le s_j <f_j
   
 <nav id="article-nav">
   
-    <a href="/2021/01/25/CLRS/BinarySearchTree/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2021/02/01/CLRS/Graph/BFS/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          BinarySearchTree
+          BFS
         
       </div>
     </a>
   
   
-    <a href="/2021/01/21/Cppt/Directory/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">C++ Templates reading note</div>
+    <a href="/2021/01/25/CLRS/Search-Tree/BinarySearchTree/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">BinarySearchTree</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -537,7 +685,7 @@ f_i \le s_k < f_k \le s_j <f_j
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#活动选择问题"><span class="toc-number">1.</span> <span class="toc-text">活动选择问题</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DP"><span class="toc-number">2.</span> <span class="toc-text">DP</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Greedy-Choice"><span class="toc-number">3.</span> <span class="toc-text">Greedy Choice</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#递归版本"><span class="toc-number">3.1.</span> <span class="toc-text">递归版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#迭代版本"><span class="toc-number">3.2.</span> <span class="toc-text">迭代版本</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#小结"><span class="toc-number">4.</span> <span class="toc-text">小结</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#红黑树"><span class="toc-number">1.</span> <span class="toc-text">红黑树</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#ROTATION"><span class="toc-number">2.</span> <span class="toc-text">ROTATION</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#INSERT"><span class="toc-number">3.</span> <span class="toc-text">INSERT</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#流程讲解"><span class="toc-number">3.1.</span> <span class="toc-text">流程讲解</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-1-x-’s-uncle-is-red"><span class="toc-number">3.1.1.</span> <span class="toc-text">CASE 1:$x$’s uncle is red</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child"><span class="toc-number">3.1.2.</span> <span class="toc-text">CASE 2:$x$’s uncle is black and $x$ is a right child</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-3：-x-’s-uncle-is-black-and-x-is-a-left-child"><span class="toc-number">3.1.3.</span> <span class="toc-text">CASE 3：$x$’s uncle is black and $x$ is a left child</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间复杂度"><span class="toc-number">3.2.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#DELETE"><span class="toc-number">4.</span> <span class="toc-text">DELETE</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#TARANSPLANT"><span class="toc-number">4.1.</span> <span class="toc-text">TARANSPLANT</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#情形分析"><span class="toc-number">4.2.</span> <span class="toc-text">情形分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-1-w-is-red"><span class="toc-number">4.2.1.</span> <span class="toc-text">CASE 1:$w$ is red</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-2-w-is-black-w-left-and-w-right-is-black"><span class="toc-number">4.2.2.</span> <span class="toc-text">CASE 2:$w$ is black ,$w.left$ and $w.right$ is black</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black"><span class="toc-number">4.2.3.</span> <span class="toc-text">CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#CASE-4-w-is-black-and-w-right-color-is-red"><span class="toc-number">4.2.4.</span> <span class="toc-text">CASE 4:$w$ is black and $w.right.color$ is red</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#时间复杂度-1"><span class="toc-number">4.3.</span> <span class="toc-text">时间复杂度</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#总结"><span class="toc-number">5.</span> <span class="toc-text">总结</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#一个可以测试红黑树的网站"><span class="toc-number">6.</span> <span class="toc-text">一个可以测试红黑树的网站</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Code"><span class="toc-number">7.</span> <span class="toc-text">Code</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -571,7 +719,7 @@ if(true){
     repo: 'Conzxy.github.io',
     owner: 'Conzxy',
     admin: ['Conzxy'],
-    id: 'Thu Jan 21 2021 21:37:18 GMT+0800',
+    id: 'Tue Jan 26 2021 19:59:53 GMT+0800',
     distractionFreeMode: 'true'
 })
 gitalk.render('gitalk-container')
@@ -815,6 +963,22 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
               </li>
             
             <div class="clearfix"></div>
