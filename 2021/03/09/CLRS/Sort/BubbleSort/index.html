@@ -16,7 +16,7 @@
 <meta property="og:description" content="冒泡排序冒泡排序的思想就是相邻交换从而将最小元素浮上来，达到“冒泡”的效果">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-09T06:06:12.635Z">
-<meta property="article:modified_time" content="2021-04-11T05:41:17.928Z">
+<meta property="article:modified_time" content="2021-04-15T07:04:20.859Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="algorithm">
 <meta property="article:tag" content="sort">
@@ -261,7 +261,7 @@
         <h1 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h1><p>冒泡排序的思想就是相邻交换从而将最小元素浮上来，达到<strong>“冒泡”</strong>的效果</p>
 <a id="more"></a>
 <p>这里我们也可以划分已排序区域和未排序区域，已经“冒泡”的就是已经排序的，我们要做的是将未排序区域中的最小元素浮上来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BUBBLE-SORT(A)</span><br><span class="line">for i ← 0 to n do</span><br><span class="line"> for j ← n-1 down to i do</span><br><span class="line">  if A[j+1] &lt; A[j]</span><br><span class="line">   then swapped with A[j+1] and A[j]</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">BUBBLE-SORT(A)</span><br><span class="line">for i ← 1 to n do</span><br><span class="line"> for j ← n-1 down to i do</span><br><span class="line">  if A[j+1] &lt; A[j]</span><br><span class="line">   then swapped with A[j+1] and A[j]</span><br></pre></td></tr></table></figure>
 <h2 id="算法正确性"><a href="#算法正确性" class="headerlink" title="算法正确性"></a>算法正确性</h2><p>循环不变式为</p>
 <p>$A[0…i-1]$已排序</p>
 <ul>
@@ -714,6 +714,14 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OOP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">prototype design</a>
               </li>
             
             <div class="clearfix"></div>
