@@ -22,7 +22,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png">
 <meta property="article:published_time" content="2021-01-24T16:25:19.699Z">
-<meta property="article:modified_time" content="2021-02-01T14:35:00.278Z">
+<meta property="article:modified_time" content="2021-06-24T11:14:39.026Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Search binary Tree">
 <meta name="twitter:card" content="summary">
@@ -285,7 +285,7 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">TREE-MAXIMUM-RECURSION(x)</span><br><span class="line">if x.right &#x3D; NIL</span><br><span class="line"> then return x</span><br><span class="line"> </span><br><span class="line">TREE-MAXIMUM-RECURSION(x.right)</span><br><span class="line"></span><br><span class="line">TREE-MINIMUM-RECURSION(x)</span><br><span class="line">if x.left &#x3D; NIL</span><br><span class="line"> then return x</span><br><span class="line"> </span><br><span class="line">TREE-MINIMUM-RECURSION(x.left)</span><br></pre></td></tr></table></figure>
 <h2 id="SUCCESSOR"><a href="#SUCCESSOR" class="headerlink" title="SUCCESSOR"></a>SUCCESSOR</h2><p>SUCCESSOR可译作“后继”，表示大于该节点的最小节点</p>
 <ul>
-<li><p>当右子树不为空时，直接用$TREE-MIMIMUM(x.right)$得到右子树最小值即可</p>
+<li><p>当右子树不为空时，直接用$TREE-MINIMUM(x.right)$得到右子树最小值即可</p>
 </li>
 <li><p>当右子树为空时</p>
 </li>
@@ -302,16 +302,15 @@
 <p>因此$y$一定是$x$的祖先。</p>
 <p>假设$y$的右孩子是$x$的祖先，那么$x$出现在$y$的右子树中，意味着$x&gt;y$，与$y$是$x$的后继矛盾</p>
 <p>因此$y$的左孩子一定是$x$的祖先。</p>
-<p>假设$y$不是最近的祖先，则$\exists  y \ne y’$是具有“左孩子为$x$祖先”性质的最近祖先</p>
-<p>假设$y’.left=z$，$z$是$x$的祖先，则必然有$x \le z &lt;y’$，因为$y$不是最近祖先且左孩子也为$x$祖先，因此$y’&lt;y$，</p>
-<p>即有 $x &lt; y’ &lt;y$，与$y$是$x$的后继矛盾，故不存在这样的$y’$使得$y$是$x$的后继，</p>
-<p>i.e.$y$是$x$的最近祖先且其左孩子为其祖先$\blacksquare$</p>
+<p>假设$y$不是最近的祖先，则$\exists  y’ \ne y$是具有“左孩子为$x$祖先”性质的最近祖先</p>
+<p>假设$x$必然在$y$的右子树中，则必然有$x &lt; y’ &lt;y$，$y$是$x$的后继矛盾，故不存在这样的$y’$使得$y$是$x$的后继，</p>
+<p>i.e.$y$是$x$的最近祖先且其左孩子为其祖先                    $\blacksquare$</p>
 <p>另外，</p>
 <ul>
 <li>当$y.left \ne x$，那么$x$不可能在$y.left$的左子树中，否则$y.left$会成为具有”左孩子为$x$祖先”性质的最近祖先，与$y$矛盾</li>
 </ul>
-<p>因此$x$必然在$z$的右子树中，且必然是斜树，否则又会出现新的具有”左孩子为$x$祖先”的最近祖先</p>
-<p>这样我们可以得到右子树为空的节点后继的树模型（蓝色椭圆表示右子斜树）：</p>
+<p>因此$x$必然在$z$的右子树中</p>
+<p>这样我们可以得到右子树为空的节点后继的树模型（蓝色椭圆表示右子树，其中允许有左孩子）：</p>
 <p><img src="https://i.loli.net/2021/02/01/VAe9IClE3PHnGkD.png" alt="image.png"></p>
 <ul>
 <li>当$y.left =x$时，因为$x$可以是$x$的祖先，亦然满足条件</li>
