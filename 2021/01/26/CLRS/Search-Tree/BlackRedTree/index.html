@@ -32,7 +32,7 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png">
 <meta property="article:published_time" content="2021-01-26T11:59:53.132Z">
-<meta property="article:modified_time" content="2021-03-01T13:18:35.672Z">
+<meta property="article:modified_time" content="2021-06-30T03:19:31.705Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Balanced Search tree">
 <meta name="twitter:card" content="summary">
@@ -395,18 +395,22 @@
 <h1 id="DELETE"><a href="#DELETE" class="headerlink" title="DELETE"></a>DELETE</h1><h2 id="TARANSPLANT"><a href="#TARANSPLANT" class="headerlink" title="TARANSPLANT"></a>TARANSPLANT</h2><p>因为$T.nil$是一个确实的节点，而不是NIL，因此$\text{RB-TRANSPLANT}$稍微有一点不同：</p>
 <p>而且注意，链接parents不需要检测替代节点是否为$T.nil$，这个很关键，因为后面删除操作很可能$T.nil$上位，那么就必须要知道$T.nil$的parents，一般$T.nil$除了color是black外，其他的都是任意的</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">RB-TRANSPLANT(T,u,v)</span><br><span class="line">if u.p &#x3D; T.nil</span><br><span class="line"> then T.root ← v</span><br><span class="line"> elseif u.p.left &#x3D; u</span><br><span class="line">  then u.p.left ← v</span><br><span class="line">  else</span><br><span class="line">   u.p.right ← v</span><br><span class="line">   </span><br><span class="line">v.p ← u.p &#x2F;&#x2F;无条件链接parents</span><br></pre></td></tr></table></figure>
-<p>我们约定</p>
+<p>为讲解方便，我们约定</p>
 <ul>
-<li>$y$表示要将移去的节点或是在树中移动的节点。<ul>
-<li>single or one child——将移去的节点</li>
-<li>two children——该节点的后继</li>
+<li><p>$y$表示</p>
+<ul>
+<li><p>将删除节点（one child）</p>
+</li>
+<li><p>将删除节点的后继（two child）（必然在右子树，因为此时拥有两个孩子）</p>
+</li>
 </ul>
 </li>
-<li>因为$y$的移去可能导致破坏RB性质，因此需要用一个变量$y-original-color$存储$y$原来的颜色。</li>
-<li><p>因为$y.right$会占据$y$的原位置，我们用$x$来表示这个节点</p>
+<li><p>因为$y$的移去可能导致破坏RB性质，因此需要用一个变量$y-original-color$存储$y$原来的颜色。</p>
+</li>
+<li><p>因为$y.right$会占据$y$的原位置，我们用$x$来表示这个节点（以下两种情况是讨论two child）（one child亦用$x$表示$y.right$）</p>
 <ul>
-<li>如果$y.p \ne z$，因为$y.p$不会被移去，因此$x.p=y.p$</li>
-<li>如果$y.p =z$，则直接$x.p=y$</li>
+<li>如果 $y.p \ne z$，因为$y.p$不会被移去，因此$x.p=y.p$</li>
+<li>如果 $y.p =z$，则直接$x.p=y$</li>
 </ul>
 </li>
 <li><p>如果$y-original-color=RED$，那么不需要维护红黑树，因为不会有任何性质被破坏</p>
@@ -420,15 +424,16 @@
 <p>所以$y-original-color=BLACK$才是我们应该关注的问题。RB性质几乎都可能被破坏：</p>
 <ul>
 <li>性质2：如果$y$是根节点，右孩子为红节点，右孩子取代$y$，违反性质2</li>
-<li>性质3：$x$和$x.p$都是红的，违反性质3</li>
+<li>性质3：$x$ 和 $y.p$ 都是红的，违反性质3</li>
 <li>性质4：这个是最显然的，将黑节点一拿，黑高就减一了，那么该节点($y$)之前的祖先均违反性质4</li>
 </ul>
 <p>性质2好维护，只要调整的时候将根节点顺便染黑就行了（以下CASE2和CASE4处理了，自己尝试证明一下）</p>
-<p>性质3也好维护，直接把$x$染黑就行了，因为原来$y$在的时候，就没破坏任何性质，恢复原状罢了（同时，你会发现，当$y.p$的另一个孩子成为它的兄弟时，它是唯一的孩子且是红的），而且染黑也顺带把性质4也修复了，但是本来就是黑的（e.g.$T.nil$），性质4还是被破坏的</p>
+<p>性质3也好维护，直接把$x$染黑就行了，因为原来$y$在的时候，就没破坏任何性质，恢复原状罢了（同时，你会发现，当$y.p$的另一个孩子成为它的兄弟时，它是唯一的孩子且是红的）</p>
 <p>那么（最难的）性质4，怎么维护呢？<strong>转化多出来的黑色！</strong></p>
 <p>因为$x$会占据$y$的原位置，我们可以给$x$添加一个“额外”的黑色（<strong>extra black</strong>），这样性质4就没破坏</p>
 <p>但是这个“额外”的黑色给$color$吗？这样就违反了性质1，$x$成为了黑/红节点以外的节点，但是我们可以给节点本身赋予黑色（可能有点抽象）</p>
 <p>我们约定如果$x$本身是红色，则加上“额外”的黑色称为<strong>红-黑点（red-and-black node)</strong>，本身是黑色，则称为<strong>双黑点（doubly black node）</strong></p>
+<p>（P.S. 如果是one child，那么$x$必为红黑点，因此操作是trivial的，no child亦是如此，所以真正需要处理的是two child）</p>
 <p>但是实际上，这个“额外”的黑色并不存在，因此我们必须想办法去掉它</p>
 <p>我们会设计一个循环，其目的是将黑色节点上移（<strong>和插入的IDEA是一致的</strong>），直到</p>
 <ol>
@@ -443,7 +448,8 @@
 </blockquote>
 <p>根据这个IDEA，我们用</p>
 <script type="math/tex; mode=display">
-c(color)=\begin{cases}
+c(color)=
+\begin{cases}
 0 \ if \ color=RED(including  \ red-black ) \ &\\
 1 \ if \ color=BLACK(including \ doubly \ black) \ &\\
 \end{cases}</script><p>作为子树根的计数，我们需要保证变换前后（包括）子树根到各子树的黑节点数是相等的</p>
@@ -471,7 +477,7 @@ c(color)=\begin{cases}
 </ul>
 <p>变换前后黑节点数并未变化，请自行验证</p>
 <p>为什么要这个过渡态？如果你想像CASE4那样对称变换的话，又会出现一个新的双黑点需要处理，请自行尝试找到这个新双黑点</p>
-<h3 id="CASE-4-w-is-black-and-w-right-color-is-red"><a href="#CASE-4-w-is-black-and-w-right-color-is-red" class="headerlink" title="CASE 4:$w$ is black and $w.right.color$ is red"></a>CASE 4:$w$ is black and $w.right.color$ is red</h3><p><img src="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png" alt="image.png"></p>
+<h3 id="CASE-4-w-is-black-and-w-right-color-is-red"><a href="#CASE-4-w-is-black-and-w-right-color-is-red" class="headerlink" title="CASE 4:$w$ is black and $w.right.color$ is red"></a>CASE 4:$w$ is black and $w.right.color$ is red</h3><p><img src="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png" alt></p>
 <p>我们将D和E合成一个3节点，可以看出：</p>
 <ul>
 <li>到E的子树需要c+1个黑节点</li>
@@ -479,9 +485,10 @@ c(color)=\begin{cases}
 <li>到A的子树需要c+2个黑节点</li>
 </ul>
 <p>由E和A可以看出来，它们是对称的，$x$是依赖自已的双黑，E是依赖父节点的黑色，那么我们反过来，$x$依赖自己的父节点，E依赖自己，这样就把$x$的extra black转移给了$x.p$，要让$x$依赖父节点，E依赖自己，则需要左旋并重染色。至于C，因为左旋会把C给$x.p$接手，而$x.p$染成黑色，黑节点数并不变化（实质上就是想让黑色兄弟转变成黑色父母，分摊extra black，因为是多了一个实际的节点，因此不需要循环）</p>
+<p>颜色转移：$x =&gt; w =&gt; E(w.right)$</p>
 <p>如此一来，红黑树性质得到了维护，然后令$x$为树根节点退出循环</p>
 <p>接下来，伪码就不难写出：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br></pre></td><td class="code"><pre><span class="line">RB-DELETE(T,z)</span><br><span class="line">y ← z</span><br><span class="line">y-original-color ← y.color</span><br><span class="line">if z.left &#x3D; T.nil</span><br><span class="line"> then x ← z.right </span><br><span class="line"> 	  RB-TRANSPLANT(T,z,z.right)</span><br><span class="line"> elseif z.right &#x3D; T.nil</span><br><span class="line">  then x ← z.left</span><br><span class="line">  	   RB-TRANSPLANT(T,z,z.left)</span><br><span class="line">   else y ← TREE-MAXIMUM(z.right)</span><br><span class="line">        y-original-color ← y.color</span><br><span class="line">        x ← y.right</span><br><span class="line">        if y.p &#x3D; z</span><br><span class="line">         then x.p &#x3D; y</span><br><span class="line">        else TREE-TRANSPLANT(T,y,y.right)</span><br><span class="line">             y.right ← z.right</span><br><span class="line">             y.right.p ← y</span><br><span class="line">        TREE-TRANSPLANT(T,z,y)</span><br><span class="line">        y.left ← z.left</span><br><span class="line">        y.left.p ← y</span><br><span class="line">        y.color ← z.color</span><br><span class="line">        </span><br><span class="line">if y-original-color &#x3D; BLACK</span><br><span class="line"> then RB-DELETE-FIXUP(T,x)</span><br><span class="line"> </span><br><span class="line">RB-DELETE-FIXUP(T,x)</span><br><span class="line">while x ≠ T.root and x.color &#x3D; BLACK</span><br><span class="line"> do if x.p.left &#x3D; x</span><br><span class="line"> 	 then w ← x.p.right</span><br><span class="line"> 	      if w.color &#x3D; RED   									&#x2F;&#x2F;&lt;CASE1&gt;</span><br><span class="line"> 	       then x.p.color ← RED</span><br><span class="line"> 	            w.color ← BLACK</span><br><span class="line"> 	            LEFT-ROTATION(T,x.p)</span><br><span class="line"> 	      if w.right.color &#x3D; BLACK and w.left.color &#x3D; BLACK		&#x2F;&#x2F;&lt;CASE2&gt;</span><br><span class="line"> 	       then w.color ← RED</span><br><span class="line"> 	            x ← x.p</span><br><span class="line"> 	       else if w.right.color &#x3D; BLACK						&#x2F;&#x2F;&lt;CASE3&gt;</span><br><span class="line"> 	       		 then w.color ← RED</span><br><span class="line"> 	       		      w.left.color ← BLACK</span><br><span class="line"> 	            	  RIGHT-ROTATION(T,w)</span><br><span class="line"> 	            	  w ← x.p.right</span><br><span class="line"> 	            w.color ← x.p.color								&#x2F;&#x2F;&lt;CASE4&gt;</span><br><span class="line"> 	            x.p.color ← BLACK</span><br><span class="line"> 	            w.right.color ← BALAK</span><br><span class="line"> 	            LEFT-RATATION(T,x.p)</span><br><span class="line"> 	            x ← T.root</span><br><span class="line">    else</span><br><span class="line">     &lt;with &quot;left&quot; and &quot;right&quot; swapped&gt;</span><br><span class="line">x.color ← BLACK</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">RB-DELETE(T,z)</span><br><span class="line">y ← z</span><br><span class="line">y-original-color ← y.color</span><br><span class="line">if z.left &#x3D; T.nil</span><br><span class="line"> then x ← z.right </span><br><span class="line"> 	  RB-TRANSPLANT(T,z,z.right)</span><br><span class="line"> elseif z.right &#x3D; T.nil</span><br><span class="line">  then x ← z.left</span><br><span class="line">  	   RB-TRANSPLANT(T,z,z.left)</span><br><span class="line">  else y ← TREE-MAXIMUM(z.right)</span><br><span class="line">       y-original-color ← y.color</span><br><span class="line">       x ← y.right</span><br><span class="line">       if y.p &#x3D; z</span><br><span class="line">        then x.p &#x3D; y</span><br><span class="line">       else TREE-TRANSPLANT(T,y,y.right)</span><br><span class="line">             y.right ← z.right</span><br><span class="line">             y.right.p ← y</span><br><span class="line">       TREE-TRANSPLANT(T,z,y)</span><br><span class="line">       y.left ← z.left</span><br><span class="line">       y.left.p ← y</span><br><span class="line">       y.color ← z.color</span><br><span class="line">        </span><br><span class="line">if y-original-color &#x3D; BLACK</span><br><span class="line"> then RB-DELETE-FIXUP(T,x)</span><br><span class="line"> </span><br><span class="line">RB-DELETE-FIXUP(T,x)</span><br><span class="line">while x ≠ T.root and x.color &#x3D; BLACK</span><br><span class="line"> do if x.p.left &#x3D; x</span><br><span class="line"> 	 then w ← x.p.right</span><br><span class="line"> 	      if w.color &#x3D; RED   									&#x2F;&#x2F;&lt;CASE1&gt;</span><br><span class="line"> 	       then x.p.color ← RED</span><br><span class="line"> 	            w.color ← BLACK</span><br><span class="line"> 	            LEFT-ROTATION(T,x.p)</span><br><span class="line"> 	      if w.right.color &#x3D; BLACK and w.left.color &#x3D; BLACK		&#x2F;&#x2F;&lt;CASE2&gt;</span><br><span class="line"> 	       then w.color ← RED</span><br><span class="line"> 	            x ← x.p</span><br><span class="line"> 	       else </span><br><span class="line"> 	       		if w.right.color &#x3D; BLACK						&#x2F;&#x2F;&lt;CASE3&gt;</span><br><span class="line"> 	       		 then w.color ← RED</span><br><span class="line"> 	       		      w.left.color ← BLACK</span><br><span class="line"> 	            	  RIGHT-ROTATION(T,w)</span><br><span class="line"> 	            	  w ← x.p.right</span><br><span class="line"> 	             w.color ← x.p.color								&#x2F;&#x2F;&lt;CASE4&gt;</span><br><span class="line"> 	             x.p.color ← BLACK</span><br><span class="line"> 	             w.right.color ← BALAK</span><br><span class="line"> 	             LEFT-RATATION(T,x.p)</span><br><span class="line"> 	             x ← T.root</span><br><span class="line">    else</span><br><span class="line">     &lt;with &quot;left&quot; and &quot;right&quot; swapped&gt;</span><br><span class="line">x.color ← BLACK</span><br></pre></td></tr></table></figure>
 <h2 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>分析和$RB-INSERT$差不多：</p>
 <p>首先一般的BST删除$\rightarrow O(lgn)$</p>
 <p>$RB-DELETE-FIXUP$</p>
@@ -991,6 +998,18 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
               </li>
             
             <div class="clearfix"></div>
