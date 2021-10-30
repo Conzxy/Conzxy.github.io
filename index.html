@@ -233,6 +233,83 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-DataAnalysis/1.1" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/10/20/DataAnalysis/1.1/">DataAnalysis/1.1</a>
+    </h1>
+  
+
+        
+        <a href="/2021/10/20/DataAnalysis/1.1/" class="archive-article-date">
+  	<time datetime="2021-10-20T05:49:03.618Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-10-20</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h1><blockquote>
+<p>数字特征：用简单的量概括数据包含的主要信息或特征.包括数据的集中位置、分散程度、数据分布的形状、关联性等特征等.<br>分布特征：反映数据整体结构特征.如分布函数,概率密度</p>
+<h1 id="均值-mean"><a href="#均值-mean" class="headerlink" title="均值(mean)"></a>均值(mean)</h1><script type="math/tex; mode=display">
+\bar{x} = \frac{\sum_{i=1}^{n} x_{i}}{n}</script><h2 id="优点"><a href="#优点" class="headerlink" title="优点"></a>优点</h2><ul>
+<li>无偏一致性估计</li>
+<li>较为完整地反映数据信息<h2 id="缺点"><a href="#缺点" class="headerlink" title="缺点"></a>缺点</h2></li>
+<li>易受异常值干扰，即缺少稳健性<h1 id="中位数"><a href="#中位数" class="headerlink" title="中位数"></a>中位数</h1><script type="math/tex; mode=display">
+M = 
+\begin{cases}
+x_{\tfrac{n+1}{2}},  &n \ is \ odd \\
+\cfrac{1}{2}(x_{\tfrac{n}{2}}+x_{\tfrac{n}{2}+1}), &n \ is \ even
+\end{cases}</script></li>
+</ul>
+</blockquote>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/10/20/DataAnalysis/1.1/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-netpro/Epoller" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -350,9 +427,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="half-close"><a href="#half-close" class="headerlink" title="half-close"></a>half-close</h1><h2 id="what"><a href="#what" class="headerlink" title="what"></a>what</h2><p>只断开output，并可以继续读取peer发来的数据<br><img src="https://i.loli.net/2021/10/13/wVTfFSYnyUkZtE1.png" alt="D_Y_1HX_TWPCLN2F4I@_P_K.png"></p>
-<h2 id="why"><a href="#why" class="headerlink" title="why"></a>why</h2><p>half-close是一种很方便告诉对方“我已经发完数据”的手段<br>通常用于client，这样server在处理完数据后可以立马关闭该连接（节约资源）</p>
-<h2 id="In-kanon"><a href="#In-kanon" class="headerlink" title="In kanon"></a>In kanon</h2>
+        <h1 id="half-close"><a href="#half-close" class="headerlink" title="half-close"></a>half-close</h1>
+        
+          <a class="article-more-a" href="/2021/10/13/tcp/half_close/#more">more >></a>
+        
       
 
       
@@ -415,29 +493,10 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="析构和多线程"><a href="#析构和多线程" class="headerlink" title="析构和多线程"></a>析构和多线程</h1><p>鉴于C++没有（原生）垃圾回收机制，因此析构的race condition需要程序员来考虑</p>
-<h2 id="析构函数不需要锁来保证线程安全"><a href="#析构函数不需要锁来保证线程安全" class="headerlink" title="析构函数不需要锁来保证线程安全"></a>析构函数不需要锁来保证线程安全</h2><p>析构函数不能用锁来保护，原因有：</p>
-<p>1）基类与派生类的析构函数是割裂的，因此必然无法保证线程安全</p>
-<p>2）安全的析构原则上只有其他线程都不用它时才是安全的，即成为“垃圾”时</p>
-<p>这个结论较为显而易见</p>
-<h2 id="析构函数的race-condition"><a href="#析构函数的race-condition" class="headerlink" title="析构函数的race condition"></a>析构函数的race condition</h2><p>析构函数有几个竞态条件：</p>
-<p>1）析构的时候，是否有其他线程正在调用其成员函数</p>
-<p>2）调用成员函数期间，其他线程是否正在析构其对象</p>
-<p>3）在调用成员函数前，如何知道其是否存活</p>
-<p>4）其他race condition</p>
-<p>正如前面所说，如果有类似GC的机制就会好办很多</p>
-<p>因此我们可以采取<code>std::shared_ptr</code>来解决1），2），而与<code>std::weak_ptr</code>组合成的<strong>弱回调（weak callback）</strong>可以解决3）</p>
-<p>1）如果存在其他线程正在调用其成员函数，那么它的引用计数至少为1，不可能在析构</p>
-<p>2）与1）同理，在调用成员函数期间，其他线程不可能正在析构其对象</p>
-<p>3）通过<code>std::weak_ptr</code>的<code>lock()</code>原子提升为<code>std::shared_ptr</code>，可以探明其是否存活</p>
-<p>但请注意，在个别情况应用<code>expired()</code>来代替<code>lock()</code>，因为它引来了<code>std::shared_ptr</code>的拷贝</p>
-<p>设想如果对象A与B存在相互引用，在A的析构中我想探明B是否有它的引用，如果用<code>lock()</code>，尽管可以保证其引用计数至少为2，但是如果突然另外一个线程将其析构，引用计数减1，待离开block scope时有得再次析构，这是很可能会陷入单线程重复加锁而陷入</p>
-<h2 id="weak-callback"><a href="#weak-callback" class="headerlink" title="weak callback"></a>weak callback</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">callback</span><span class="params">(<span class="built_in">std</span>::weak_ptr&lt;T&gt; <span class="keyword">const</span>&amp; ptr, Args&amp;&amp;... args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   	<span class="keyword">auto</span> sp = ptr.lock();</span><br><span class="line">    <span class="keyword">if</span>(sp)</span><br><span class="line">        sp-&gt;member-function(forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>weak callback 的语义为：<strong>若对象存活， 则调用其成员函数</strong></p>
-<p>可以进一步用模板抽象为function object</p>
-<p>参见：<a href="[zxy_toys/weak-callback.h at master · Conzxy/zxy_toys (github.com">weak-callback.h</a>](<a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/weak-callback.h" target="_blank" rel="noopener">https://github.com/Conzxy/zxy_toys/blob/master/thread/weak-callback.h</a>))</p>
-<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p><a href="[zxy_toys/object-pool.h at master · Conzxy/zxy_toys (github.com">对象池</a>](<a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/test/object-pool.h" target="_blank" rel="noopener">https://github.com/Conzxy/zxy_toys/blob/master/thread/test/object-pool.h</a>))</p>
-
+        <h1 id="析构和多线程"><a href="#析构和多线程" class="headerlink" title="析构和多线程"></a>析构和多线程</h1>
+        
+          <a class="article-more-a" href="/2021/08/18/MultiThread/destruct/#more">more >></a>
+        
       
 
       
@@ -1016,87 +1075,6 @@
 
 
   
-    <article id="post-CLRS/Sort/QuickSort" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2021/03/08/CLRS/Sort/QuickSort/">Quick Sort</a>
-    </h1>
-  
-
-        
-        <a href="/2021/03/08/CLRS/Sort/QuickSort/" class="archive-article-date">
-  	<time datetime="2021-03-08T15:12:49.519Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-03-08</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="快排"><a href="#快排" class="headerlink" title="快排"></a>快排</h1><h2 id="算法思路"><a href="#算法思路" class="headerlink" title="算法思路"></a>算法思路</h2><p>快排的算法思想是<strong>分治</strong>：</p>
-        
-          <a class="article-more-a" href="/2021/03/08/CLRS/Sort/QuickSort/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">algorithm</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sort</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2021/03/08/CLRS/Sort/QuickSort/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/2/">Next &amp;raquo;</a>
@@ -1223,11 +1201,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1235,19 +1217,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1271,10 +1249,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查找</a>
               </li>
              
@@ -1283,7 +1257,67 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">graph</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1299,10 +1333,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">namespace</a>
               </li>
              
@@ -1311,47 +1341,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">graph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1363,19 +1353,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

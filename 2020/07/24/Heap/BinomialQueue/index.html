@@ -274,31 +274,31 @@
 <a id="more"></a>
 <p><img src="https://img-blog.csdnimg.cn/20200724231105276.png" alt="B0 B1 B2 B3"></p>
 <p>如上图所示，这是由B0、B1、B2、B3组成的二项队列，其中每一颗树都称为<strong>二项树(binomial tree)</strong>。我们将其表示为Bk。k表示二项树高度，Bk实际上是由B（k-1）接在另一个B（k-1）的根上（merge的基础）。在每个高度都只有惟一一个二项树，因此二项队列可以表示为任意大小。<br>二项队列为什么会如此命名，是因为二项树的性质。  </p>
-<p><img src="https://img-blog.csdnimg.cn/20200724234125453.gif" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200724234125453.gif" alt></p>
 <p>性质一来源于定义，而性质二和性质三都可以通过数学归纳法得出，性质二比较显然，这里稍微证明一下性质三：</p>
-<p><img src="https://img-blog.csdnimg.cn/2020072423585494.gif" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/2020072423585494.gif" alt></p>
 <p>性质四也很好理解，我这里举一个例子吧，假设二项队列大小为27，27=1+2+8+16，因此可以是由B0，B1，B3，B4组成的，那么27的二进制表示就是11011，自己算算确实如此，因此我们可以根据总结点数来得出二项队列是由哪些二项树组成的。性质四实质就是十进制转二进制。</p>
-<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p><img src="https://img-blog.csdnimg.cn/20200725002547573.gif" alt=""></p>
+<h2 id="算法分析"><a href="#算法分析" class="headerlink" title="算法分析"></a>算法分析</h2><p><img src="https://img-blog.csdnimg.cn/20200725002547573.gif" alt></p>
 <p>补充一点在上面，从这点也可以看出寻找最小元素的算法分析度为O(logn)。<br>我们还是来重点讲一下合并操作吧。</p>
 <h3 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h3><p>合并操作我们假设有H1和H2，如下图所示</p>
-<p><img src="https://img-blog.csdnimg.cn/20200725102418747.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725102418747.png" alt></p>
 <p>这里先提一下rank（阶）的意思，</p>
 <pre><code>rank=No. of children=height of tree
 </code></pre><p>我们会以H1作为新堆，合并操作结束后H2置为空，合并就是看两个二项队列中有没有同阶的，有同阶的则进行合并，没有同阶的则保留到新H1中，因此合并结果为：</p>
-<p><img src="https://img-blog.csdnimg.cn/20200725102948616.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725102948616.png" alt></p>
 <p>从这里也可以看出我们需要提供一个同阶二项树的算法，这个在后面有所体现。  </p>
 <h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>合并两个同阶二项树的操作仅需常数时间，而二项树最多有O(logn)个，所以最坏情况为O(logn)。<br>我们再来看下插入，插入是合并的一种情形，即单结点树与二项树合并，那么最坏时间复杂度为O(logn)。最好情况呢？当二项队列为<strong>偶数</strong>时，B0是空的，此时插入就是O(1)，但是实际上我们很难遇到最坏情况，我们这里采用<strong>摊还分析</strong>来得到平均时间：</p>
-<p><img src="https://img-blog.csdnimg.cn/2020072512134883.gif" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/2020072512134883.gif" alt></p>
 <p>所以插入的时间复杂度取平均时间为O(1)。这就是二项队列比左式堆优越的点。</p>
-<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p><img src="https://img-blog.csdnimg.cn/20200725123610941.gif" alt=""></p>
-<p><img src="https://img-blog.csdnimg.cn/20200725132132934.gif" alt=""></p>
+<h2 id="补充"><a href="#补充" class="headerlink" title="补充"></a>补充</h2><p><img src="https://img-blog.csdnimg.cn/20200725123610941.gif" alt></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725132132934.gif" alt></p>
 <h2 id="deleteMin"><a href="#deleteMin" class="headerlink" title="deleteMin"></a>deleteMin</h2><p>接下来将deleteMin，我们删除掉最小根植二项树的根要如何操作？<br>就拿上面的H1来举例，首先我们要把最小根植和所有子树分离（假设那个点为最小根植点）</p>
-<p><img src="https://img-blog.csdnimg.cn/20200725133256368.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725133256368.png" alt></p>
 <p>我们用H’’表示子树形成的新二项队列，而H’表示原来除最小根植树的其他二项树组成的二项队列，然后这两个二项队列进行合并，这样得到的新二项队列就是我们想要的。</p>
 <h3 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>由上面流程可以得知分两步：找最小根植O(logn)和合并O(logn)，加起来还是O(logn)。</p>
 <h2 id="实现（implement）"><a href="#实现（implement）" class="headerlink" title="实现（implement）"></a>实现（implement）</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">BinomialNode</span>&#123;</span></span><br><span class="line">    DataType element;</span><br><span class="line">    BinomialNode* leftchild;</span><br><span class="line">    BinomialNode* nextSibling;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>用的是兄弟-儿子表示法。<br>同时我们会弄一个数组来存储每个根结点<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">vector</span>&lt;BinomialNode*&gt; theTrees;</span><br></pre></td></tr></table></figure><br>如用图表示大概就是这样：</p>
-<p><img src="https://img-blog.csdnimg.cn/20200725134334871.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200725134334871.png" alt></p>
 <p>为了操作的便利，我们要求儿子按照子树的大小按顺序排列。数组的下标代表着二项树的rank。同时你会发现儿子以及兄弟都会以<strong>扩散式</strong>的递减，如图中的14是个r(2)树，而儿子和兄弟是r(1)，直至到r(0)。</p>
 <p>我们来看下代码吧：</p>
 <h3 id="Source-Code"><a href="#Source-Code" class="headerlink" title="Source Code"></a>Source Code</h3><h4 id="capacity"><a href="#capacity" class="headerlink" title="capacity"></a>capacity</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">capacity</span><span class="params">()</span><span class="keyword">const</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">return</span> (<span class="number">1</span>&lt;&lt;theTrees())<span class="number">-1</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -639,11 +639,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -651,19 +655,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -687,10 +687,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查找</a>
               </li>
              
@@ -699,7 +695,67 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">graph</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -715,10 +771,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">namespace</a>
               </li>
              
@@ -727,47 +779,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">graph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -779,19 +791,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

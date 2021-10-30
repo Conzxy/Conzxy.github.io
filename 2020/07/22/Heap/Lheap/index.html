@@ -270,16 +270,16 @@
 </code></pre><p>所以只有一个儿子或是没有儿子的结点的零路径长为0。<br>左式堆的性质是：每个结点的左儿子的零路径长大于等于右儿子。因此左式堆是不平衡堆，偏向于向左增加深度，也因此便于合并，故得名——Leftist。<br>事实上，右路径是左式堆路径中最短的，否则，将会破坏左式堆性质。</p>
 <h2 id="定理"><a href="#定理" class="headerlink" title="定理"></a>定理</h2><p>这里我们来证明一个定理：</p>
 <pre><code>在右路径上有r个结点的左式堆至少有2^r-1个结点
-</code></pre><p>证明：<br><img src="https://img-blog.csdnimg.cn/20200722122747426.gif" alt=""></p>
+</code></pre><p>证明：<br><img src="https://img-blog.csdnimg.cn/20200722122747426.gif" alt></p>
 <p>也就是说含有N个结点的左式堆，有一条最多含有[log(N+1)]个结点的右路径。<br>也正因此我们处理左式堆的一般思路就是将一切工作都放在右路径上进行，这样尽可能地保证了树的深度小（后面的操作有体现）。</p>
 <h2 id="合并操作"><a href="#合并操作" class="headerlink" title="合并操作"></a>合并操作</h2><p>我们主要侧重来看一下合并是如何进行的。<br>先声明一下，插入是合并的一种特殊形式，看做单个点构成的左式堆与左式堆（也可能是单个点甚至为空）合并即可。<br>我们主要是通过递归来得到合并后的左式堆的，就像数学归纳法一样，如果一次合并成功了，那么递归得到的左式堆也应该是成功的。<br>下面是两个左式堆H1和H2：</p>
-<p><img src="https://img-blog.csdnimg.cn/2020072212321743.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/2020072212321743.png" alt></p>
 <p>第一步是要比较两个堆的根值哪个比较大，我们递归地将较小根值的堆的右子堆与较大根值的堆合并：</p>
-<p><img src="https://img-blog.csdnimg.cn/20200722123619520.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200722123619520.png" alt></p>
 <p>这样就得到了新的堆，这个堆会成为H1的左子堆。</p>
-<p><img src="https://img-blog.csdnimg.cn/20200722123841692.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200722123841692.png" alt></p>
 <p>检查一下是否满足堆序性质，OK，没问题，那左式堆的性质呢？显然，左儿子的npl=1，而右儿子的npl=2，那么我们怎样维护左式堆的性质呢？很简单，只要把左右儿子对调即可。</p>
-<p><img src="https://img-blog.csdnimg.cn/20200722123853223.png" alt=""></p>
+<p><img src="https://img-blog.csdnimg.cn/20200722123853223.png" alt></p>
 <p>这样就得到了合并的新左式堆，新左式堆的根由原先的较小根值接手（显然）</p>
 <h3 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h3><p>显然，通过上面的流程，我们可以得出：合并操作所用时间与右路径长度呈正比，而造访每个结点用的时间是常数时间，因此时间复杂度为O(logn)。</p>
 <h3 id="code"><a href="#code" class="headerlink" title="code"></a>code</h3><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Comparable&gt;</span><br><span class="line"><span class="keyword">void</span> LeftistHeap&lt;Comparable&gt;::merge(LeftistHeap &amp;rhs)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">this</span>==&amp;rhs)    <span class="comment">//identity test</span></span><br><span class="line">        <span class="keyword">return</span> ;</span><br><span class="line">    root=merge(root,rhs.root);</span><br><span class="line">    rhs.root=<span class="literal">nullptr</span>;       <span class="comment">//置为nullptr，将资源管理权转交给合并后的heap，避免double free</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Comparable&gt;</span><br><span class="line"><span class="keyword">typename</span> LeftistHeap&lt;Comparable&gt;::LeftistNode *</span><br><span class="line">LeftistHeap&lt;Comparable&gt;::merge(LeftistNode* h1,LeftistNode* h2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(h1==<span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> h2;</span><br><span class="line">    <span class="keyword">if</span>(h2==<span class="literal">nullptr</span>)</span><br><span class="line">        <span class="keyword">return</span> h1;</span><br><span class="line">    <span class="keyword">if</span>(h1-&gt;element&lt;h2-&gt;element)</span><br><span class="line">        <span class="keyword">return</span> merge1(h1,h2);</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">        <span class="keyword">return</span> merge1(h2,h1);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Comparable&gt;</span><br><span class="line"><span class="keyword">typename</span> LeftistHeap&lt;Comparable&gt;::LeftistNode *</span><br><span class="line">LeftistHeap&lt;Comparable&gt;::merge1(LeftistNode *h1, LeftistNode *h2)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="keyword">if</span>(h1-&gt;left==<span class="literal">nullptr</span>) <span class="comment">//a single node</span></span><br><span class="line">        h1-&gt;left=h2;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        h1-&gt;right=merge(h1-&gt;right,h2);</span><br><span class="line">        <span class="keyword">if</span>(h1-&gt;left-&gt;npl&lt;h1-&gt;right-&gt;npl)</span><br><span class="line">            swapChildren(h1);</span><br><span class="line">        h1-&gt;npl=h1-&gt;right-&gt;npl+<span class="number">1</span>;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> h1;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
@@ -614,11 +614,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,19 +630,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -662,10 +662,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查找</a>
               </li>
              
@@ -674,7 +670,67 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">graph</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -690,10 +746,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">namespace</a>
               </li>
              
@@ -702,47 +754,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">graph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -754,19 +766,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

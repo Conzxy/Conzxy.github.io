@@ -8,15 +8,15 @@
   <link rel="dns-prefetch" href="http://yoursite.com">
   <title>MultiThread/destruct | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="析构和多线程鉴于C++没有（原生）垃圾回收机制，因此析构的race condition需要程序员来考虑 析构函数不需要锁来保证线程安全析构函数不能用锁来保护，原因有： 1）基类与派生类的析构函数是割裂的，因此必然无法保证线程安全 2）安全的析构原则上只有其他线程都不用它时才是安全的，即成为“垃圾”时 这个结论较为显而易见 析构函数的race condition析构函数有几个竞态条件： 1）析构的时">
+  <meta name="description" content="析构和多线程">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MultiThread&#x2F;destruct">
 <meta property="og:url" content="http://yoursite.com/2021/08/18/MultiThread/destruct/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="析构和多线程鉴于C++没有（原生）垃圾回收机制，因此析构的race condition需要程序员来考虑 析构函数不需要锁来保证线程安全析构函数不能用锁来保护，原因有： 1）基类与派生类的析构函数是割裂的，因此必然无法保证线程安全 2）安全的析构原则上只有其他线程都不用它时才是安全的，即成为“垃圾”时 这个结论较为显而易见 析构函数的race condition析构函数有几个竞态条件： 1）析构的时">
+<meta property="og:description" content="析构和多线程">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-08-18T13:59:28.492Z">
-<meta property="article:modified_time" content="2021-08-19T09:15:28.432Z">
+<meta property="article:modified_time" content="2021-10-30T16:36:36.504Z">
 <meta property="article:author" content="Conzxy">
 <meta name="twitter:card" content="summary">
   
@@ -256,7 +256,8 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="析构和多线程"><a href="#析构和多线程" class="headerlink" title="析构和多线程"></a>析构和多线程</h1><p>鉴于C++没有（原生）垃圾回收机制，因此析构的race condition需要程序员来考虑</p>
+        <h1 id="析构和多线程"><a href="#析构和多线程" class="headerlink" title="析构和多线程"></a>析构和多线程</h1><a id="more"></a>
+<p>鉴于C++没有（原生）垃圾回收机制，因此析构的race condition需要程序员来考虑</p>
 <h2 id="析构函数不需要锁来保证线程安全"><a href="#析构函数不需要锁来保证线程安全" class="headerlink" title="析构函数不需要锁来保证线程安全"></a>析构函数不需要锁来保证线程安全</h2><p>析构函数不能用锁来保护，原因有：</p>
 <p>1）基类与派生类的析构函数是割裂的，因此必然无法保证线程安全</p>
 <p>2）安全的析构原则上只有其他线程都不用它时才是安全的，即成为“垃圾”时</p>
@@ -276,8 +277,8 @@
 <h2 id="weak-callback"><a href="#weak-callback" class="headerlink" title="weak callback"></a>weak callback</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">callback</span><span class="params">(<span class="built_in">std</span>::weak_ptr&lt;T&gt; <span class="keyword">const</span>&amp; ptr, Args&amp;&amp;... args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   	<span class="keyword">auto</span> sp = ptr.lock();</span><br><span class="line">    <span class="keyword">if</span>(sp)</span><br><span class="line">        sp-&gt;member-function(forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 <p>weak callback 的语义为：<strong>若对象存活， 则调用其成员函数</strong></p>
 <p>可以进一步用模板抽象为function object</p>
-<p>参见：<a href="[zxy_toys/weak-callback.h at master · Conzxy/zxy_toys (github.com">weak-callback.h</a>](<a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/weak-callback.h" target="_blank" rel="noopener">https://github.com/Conzxy/zxy_toys/blob/master/thread/weak-callback.h</a>))</p>
-<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p><a href="[zxy_toys/object-pool.h at master · Conzxy/zxy_toys (github.com">对象池</a>](<a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/test/object-pool.h" target="_blank" rel="noopener">https://github.com/Conzxy/zxy_toys/blob/master/thread/test/object-pool.h</a>))</p>
+<p>参见：<a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/weak-callback.h" target="_blank" rel="noopener">weak-callback.h</a></p>
+<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p><a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/test/object-pool.h" target="_blank" rel="noopener">对象池</a></p>
 
       
 
@@ -578,11 +579,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -590,19 +595,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -626,10 +627,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查找</a>
               </li>
              
@@ -638,7 +635,67 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">graph</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -654,10 +711,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">namespace</a>
               </li>
              
@@ -666,47 +719,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">graph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -718,19 +731,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>

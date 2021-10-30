@@ -16,7 +16,7 @@
 <meta property="og:description" content="kanon::EpollerEpoll处理逻辑与poll有很大的不一样。epoll在内核维护感兴趣事件的表，同时将发生事件的数组返回，因此我们不需要轮询，而是针对返回的数组进行事件处理">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-10-13T11:04:19.626Z">
-<meta property="article:modified_time" content="2021-10-13T15:25:21.362Z">
+<meta property="article:modified_time" content="2021-10-30T16:47:16.804Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="IO Multiplexing">
 <meta property="article:tag" content="netLib">
@@ -263,6 +263,7 @@
 <h2 id="poll"><a href="#poll" class="headerlink" title="poll()"></a>poll()</h2><p>我们准备了一个vector容器来填充事件，这样就不需要每次都分配空间，而是复用这个容器<br>流程：<br>epoll_wait —&gt; fill events_ —&gt; return receive_time<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">TimeStamp</span><br><span class="line">Epoller::poll(<span class="keyword">int</span> ms, ChannelVec&amp; activeChannels) &#123;</span><br><span class="line">    <span class="comment">// ensure in loop</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">int</span> ev_num = ::epoll_wait(epoll_fd_,</span><br><span class="line">                              events_.data(),</span><br><span class="line">                              <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(events_.size()),</span><br><span class="line">                              ms);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> now&#123; TimeStamp::now() &#125;;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (ev_num &gt; <span class="number">0</span>) &#123;</span><br><span class="line">        fillActiveChannels(ev_num, activeChannels);</span><br><span class="line">        </span><br><span class="line">        <span class="keyword">if</span> (ev_num == <span class="keyword">static_cast</span>&lt;<span class="keyword">int</span>&gt;(events_.size()))</span><br><span class="line">            events_.resize(ev_num &lt;&lt; <span class="number">1</span>);</span><br><span class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span> (ev_num == <span class="number">0</span>) &#123;</span><br><span class="line">        <span class="comment">// log nothing ready</span></span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// error handling</span></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> now;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>fillActiveChannels() 用了一个trick：<br>在关注该事件时，将它塞进了epoll_data中，这样可以不需要去channelMap_查表<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">Epoller::filleActiveChannels(<span class="keyword">int</span> ev_num, ChannelVec&amp; activeChannels) KANON_NOEXCEPT &#123;</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i != ev_num; ++i) &#123;</span><br><span class="line">        <span class="keyword">auto</span> channel = <span class="keyword">reinterpret_cast</span>&lt;Channel*&gt;(events_[i].data.ptr);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// check channel in channelMap_ actually</span></span><br><span class="line"></span><br><span class="line">        channel-&gt;setRevent(events[i].events);</span><br><span class="line">        activeChannels.emplace_back(channel);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="updateChannel"><a href="#updateChannel" class="headerlink" title="updateChannel()"></a>updateChannel()</h2><p>由于我们不需要维护所有事件的表，而只是维护实际发生事件的表，因此Channel::index_的用途与poll不一样，这里我们用来表示事件在内核事件表中的状态<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">enum</span> EventStatus &#123;</span><br><span class="line">    kNew = <span class="number">-1</span>, <span class="comment">// event is never added to events table</span></span><br><span class="line">    kAdded = <span class="number">1</span>, <span class="comment">// event has added</span></span><br><span class="line">    kDeleted = <span class="number">2</span>, <span class="comment">// event has been added before but deleted now</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure><br>如果status为kNew或kDeleted，说明没有在内核时间表注册<br>如果status为kAdded，说明已经在内核事件表注册过，如果是NoneEvent，那么注销它，否则，更改其感兴趣的事件<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">Epoller::updateChannel(Channel* ch) &#123;</span><br><span class="line">    <span class="comment">// check in loop thread</span></span><br><span class="line">    <span class="keyword">if</span> (ch-&gt;index() == kNew || ch-&gt;index() == kDeleted) &#123;</span><br><span class="line">        <span class="keyword">if</span> (ch-&gt;index() == kNew) &#123;</span><br><span class="line">            <span class="comment">// check ch is not in channelMap_</span></span><br><span class="line">            channelMap_[ch-&gt;fd()] = ch;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// check ch is in channelMap_</span></span><br><span class="line">        &#125;</span><br><span class="line">        </span><br><span class="line">        updateEpollEvent(EPOLL_CTL_ADD, ch);</span><br><span class="line">        ch-&gt;setIndex(kAdded);</span><br><span class="line">    &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// check status is kAdded</span></span><br><span class="line">        <span class="comment">// check ch whether in channelMap_</span></span><br><span class="line">        <span class="comment">// check ch index is kAdded</span></span><br><span class="line"></span><br><span class="line">        <span class="keyword">if</span> (ch-&gt;isNoneEvent()) &#123;</span><br><span class="line">            updateEpollEvent(EPOLL_CTL_ADD, ch);</span><br><span class="line">            ch-&gt;setIndex(kDeleted);</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            updateEpollEvent(EPOLL_CTL_MOD, ch);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>epoll_ctl() 共提供了三种操作（operation）：注册，更改，注销，以此来修改事件在内核事件表中的状态<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">Epoller::updateEpollEvent(<span class="keyword">int</span> op, Channel* ch) KANON_NOEXCEPT &#123;</span><br><span class="line">    <span class="keyword">int</span> fd = ch-&gt;fd();</span><br><span class="line">    </span><br><span class="line">    Event ev;</span><br><span class="line">    ev.events = ch-&gt;events();</span><br><span class="line">    ev.data.ptr = <span class="keyword">static_cast</span>&lt;<span class="keyword">void</span>*&gt;(ch);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (::epoll_ctl(epoll_fd_, op, &amp;ev)) &#123;</span><br><span class="line">        <span class="keyword">if</span> (op == EPOLL_CTL_DLE) &#123;</span><br><span class="line">            <span class="comment">// system error</span></span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="comment">// system fatal error</span></span><br><span class="line">            <span class="comment">// log and abort</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <h2 id="removeChannel"><a href="#removeChannel" class="headerlink" title="removeChannel()"></a>removeChannel()</h2><p>从channelMap_中移除,比较trivially的一个操作<br>此时status不应为kNew，而且为kAdded的时候需要先注销事件<br>最后，我们还需要将status置为kNew，以便它重新注册<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span></span><br><span class="line">Epoller::removeChannel(Channel* ch) &#123;</span><br><span class="line">    <span class="comment">// check in thread loop</span></span><br><span class="line">    <span class="comment">// check ch in channelMap_ actually</span></span><br><span class="line">    <span class="keyword">int</span> status = ch-&gt;index();</span><br><span class="line">    assert(status == kAdded || status == kDeleted);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span> (status == kAdded) &#123;</span><br><span class="line">        updateEpollEvent(EPOLL_CTL_DEL, ch);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    channelMap_.erase(ch-&gt;fd());</span><br><span class="line">    <span class="comment">// check erase return value must equals 1</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">// set status to kNew, then we can readd it</span></span><br><span class="line">    ch-&gt;setIndex(kNew);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h1 id="site"><a href="#site" class="headerlink" title="site"></a>site</h1><p><a href="https://github.com/Conzxy/kanon/tree/master/kanon/net/poll/Epoller.h" target="_blank" rel="noopener">Epoller.h</a><br><a href="https://github.com/Conzxy/kanon/tree/master/kanon/net/poll/Epoller.cc" target="_blank" rel="noopener">Epoller.cc</a></p>
 
       
 
@@ -386,6 +387,15 @@
   
 <nav id="article-nav">
   
+    <a href="/2021/10/20/DataAnalysis/1.1/" id="article-nav-newer" class="article-nav-link-wrap">
+      <i class="icon-circle-left"></i>
+      <div class="article-nav-title">
+        
+          DataAnalysis/1.1
+        
+      </div>
+    </a>
+  
   
     <a href="/2021/10/13/tcp/half_close/" id="article-nav-older" class="article-nav-link-wrap">
       <div class="article-nav-title">tcp/half_close</div>
@@ -419,7 +429,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kanon-Epoller"><span class="toc-number">1.</span> <span class="toc-text">kanon::Epoller</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#poll"><span class="toc-number">1.1.</span> <span class="toc-text">poll()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#updateChannel"><span class="toc-number">1.2.</span> <span class="toc-text">updateChannel()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#removeChannel"><span class="toc-number">1.3.</span> <span class="toc-text">removeChannel()</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#kanon-Epoller"><span class="toc-number">1.</span> <span class="toc-text">kanon::Epoller</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#poll"><span class="toc-number">1.1.</span> <span class="toc-text">poll()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#updateChannel"><span class="toc-number">1.2.</span> <span class="toc-text">updateChannel()</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#removeChannel"><span class="toc-number">1.3.</span> <span class="toc-text">removeChannel()</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#site"><span class="toc-number">2.</span> <span class="toc-text">site</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -584,11 +594,15 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">图论</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">图论</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -596,19 +610,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -632,10 +642,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查找</a>
               </li>
              
@@ -644,7 +650,67 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">graph</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -660,10 +726,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">namespace</a>
               </li>
              
@@ -672,47 +734,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">graph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -724,19 +746,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>
