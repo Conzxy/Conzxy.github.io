@@ -20,9 +20,9 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/26/1eRKDlVaTJ3MAz8.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/8aW1eQxriOjTA5p.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/03/ZLXgOAehPDVwIbH.png">
 <meta property="article:published_time" content="2021-01-24T16:25:19.699Z">
-<meta property="article:modified_time" content="2021-06-25T14:48:52.470Z">
+<meta property="article:modified_time" content="2021-11-03T11:22:26.707Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Search binary Tree">
 <meta name="twitter:card" content="summary">
@@ -353,8 +353,7 @@
 <p>实际上，CASE 1并入到了CASE 2中，当左（右）子树为NIL时直接将NIL顶替原节点，再删除即可</p>
 <h3 id="CASE-3"><a href="#CASE-3" class="headerlink" title="CASE 3"></a>CASE 3</h3><p><img src="https://i.loli.net/2021/01/26/s5jDW7Frf1MTHtG.png" alt="image.png"></p>
 <p>当右孩子正好是后继时，我们可以直接将$y$顶替上去，再讲$l(z.left)$重定向即可</p>
-<p><img src="https://i.loli.net/2021/01/26/Dn3arB7d68iFTeu.png" alt="image.png"></p>
-<p>如果右孩子不是后继，则后继在右子树的最左，我可以把$x(y.right)$转交给$y.p$，而$y$与$r(z.right)$重构链接关系，实际上$z$和$y$的链接属性并不重要，因为$TRANSPLANT$并不关注链接属性，然后接手$l(z.left)$即可</p>
+<p><img src="https://i.loli.net/2021/11/03/ZLXgOAehPDVwIbH.png" alt="19~BZ20_JF7~VTLYU__NW_B.png"><br>如果右孩子不是后继，则后继在右子树的最左，我可以把$x(y.right)$转交给$y.p$，而$y$与$r(z.right)$重构链接关系，实际上$z$和$y$的链接属性并不重要，因为$TRANSPLANT$并不关注链接属性，然后接手$l(z.left)$即可</p>
 <p>根据这些信息，我们可以写出如下伪码：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">TREE-DELETE(T,z)</span><br><span class="line">if z.right &#x3D; NIL</span><br><span class="line"> then TREE-TRANSPLANT(T,z,z.left)</span><br><span class="line"> elseif z.left &#x3D; NIL</span><br><span class="line">  then TREE-TRANSPLANT(T,z,z.right)</span><br><span class="line">  else</span><br><span class="line">   then y ← TREE-MINIMUM(z.right)</span><br><span class="line">    	if y ≠ z.right</span><br><span class="line">    	 then TREE-TRANSPLANT(T,y,y.right)</span><br><span class="line">    	 	  y.right ← z.right</span><br><span class="line">    	 	  y.right.p ← y</span><br><span class="line">    	TRANSPLANT(T,z,y)</span><br><span class="line">    	y.left ← z.left</span><br><span class="line">    	y.left.p ← y</span><br></pre></td></tr></table></figure>
 <h2 id="时间复杂度"><a href="#时间复杂度" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>以上所有操作除$TREE-TRANSPLANT$为$O(1)$，其他的均为$O(h)$</p>
@@ -690,11 +689,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -706,10 +705,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
@@ -718,11 +713,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -738,14 +729,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
               </li>
              
@@ -758,19 +741,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">堆</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">数学</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -786,7 +777,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -798,19 +793,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -826,10 +817,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">OOP</a>
               </li>
              
@@ -838,11 +825,23 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>
