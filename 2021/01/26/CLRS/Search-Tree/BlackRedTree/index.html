@@ -22,17 +22,18 @@
 <meta property="og:image" content="https://i.loli.net/2021/01/27/8oCfRzYAUgnHW3D.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/29/uixIdDj8WCZ1YsR.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/DkyHbS7T3rf5J4j.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/ToGRs8Vxeb6dE2D.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/t8ZAnVNBxzovk6F.png">
-<meta property="og:image" content="https://i.loli.net/2021/01/27/yOHDBezVAPgUfKo.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/PchS9e8GYfgw26J.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/27/HbKLY25fxBI9MUo.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/mnhj6sz8AkuSXfp.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/Odn5qoa4eIbkB3c.png">
+<meta property="og:image" content="https://i.loli.net/2021/11/05/RADxbahrzswZFj3.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png">
 <meta property="og:image" content="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png">
 <meta property="article:published_time" content="2021-01-26T11:59:53.132Z">
-<meta property="article:modified_time" content="2021-11-03T15:11:54.782Z">
+<meta property="article:modified_time" content="2021-11-05T11:49:00.507Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Balanced Search tree">
 <meta name="twitter:card" content="summary">
@@ -369,20 +370,11 @@
 </ul>
 <p>下图是插入15时的处理：</p>
 <p><img src="https://i.loli.net/2021/01/27/DkyHbS7T3rf5J4j.png" alt="image.png"></p>
-<p>现在考虑了uncle为红（无论x为left/right）的处理，为了覆盖所有情形，我们还要考虑</p>
-<ul>
-<li>uncle is black, and x is right child</li>
-<li>uncle is black, and x is left child<br>（但其实通过旋转这两种情形是可以互化的）<h3 id="CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child"><a href="#CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child" class="headerlink" title="CASE 2:$x$’s uncle is black and $x$ is a right child"></a>CASE 2:$x$’s uncle is black and $x$ is a right child</h3></li>
-</ul>
-<p><img src="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png" alt="image.png"></p>
-<p>这个是CASE2的图，我们要把它转成CASE3，你可能会想为什么要怎么做？</p>
-<p>我们先看下CASE3在哪里优于CASE2：</p>
+<p>现在考虑了uncle为红的修复情况，为了覆盖所有情况，我们还需要考虑uncle为黑的情况，并提出解决方案:</p>
+<p>我们仍然考虑染黑parent，但是会破坏性质4，因为uncle是黑色，我们可以染红grandpa而不破坏性质3，此时只有右子树黑高较左子树少1，那么把红根节点下移，黑parent上移成为新的根节点，即绕D左旋，就可以恢复性质4(而且还减少了高度差）</p>
+<p>那么问题在于重染色和旋转后会不会又破坏性质，我们假定新插入节点和parent的关系未知，那么旋转之后的图如下所示<br><img src="https://i.loli.net/2021/11/05/ToGRs8Vxeb6dE2D.png" alt="image.png"><br>可以确认到黑高没问题，唯一不可测的就是红节点究竟是A还是B？如果为B会继续破坏性质3，所以新插入节点如果为左节点会最好，如果为右节点的话，可以通过旋转转化，这就是case2和case3的来源。</p>
+<h3 id="CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child"><a href="#CASE-2-x-’s-uncle-is-black-and-x-is-a-right-child" class="headerlink" title="CASE 2:$x$’s uncle is black and $x$ is a right child"></a>CASE 2:$x$’s uncle is black and $x$ is a right child</h3><p><img src="https://i.loli.net/2021/01/27/tuw6enq4cY9mHvl.png" alt="image.png"></p>
 <h3 id="CASE-3：-x-’s-uncle-is-black-and-x-is-a-left-child"><a href="#CASE-3：-x-’s-uncle-is-black-and-x-is-a-left-child" class="headerlink" title="CASE 3：$x$’s uncle is black and $x$ is a left child"></a>CASE 3：$x$’s uncle is black and $x$ is a left child</h3><p><img src="https://i.loli.net/2021/01/27/t8ZAnVNBxzovk6F.png" alt="image.png"></p>
-<p>CASE3只要右旋就可以将该树调整成整体平衡，不再违反性质3（而且还减少了高度差）</p>
-<p>如果我CASE2就右旋：</p>
-<p><img src="https://i.loli.net/2021/01/27/yOHDBezVAPgUfKo.png" alt="image.png"></p>
-<p>乍一看好像不再违反性质3万事大吉，实际上违反了性质4，黑高不再等同了。而且重染色是没有用的，因为想要维护性质4，就必须把A染黑，B和C染红，而这又违反了性质3,因此这是条死路。</p>
-<p>所以前辈们先左旋parents，得到两个绝对平衡的子树（将子树看成一个复合黑节点），两个孩子为红，根节点为黑即可。这样既不违反性质3又不违反性质4。至此，循环结束，整棵树整体平衡。</p>
 <p>上面那个例子的话，过程就是</p>
 <ul>
 <li>RIGHT-ROTATION(18)，使黑-红-红在一条直线上</li>
@@ -476,15 +468,15 @@ c(color)=
 <p>你可能会说：如果这条路径全部都是黑节点咋办，遇不到红节点，而根节点是黑的，已经上不去了啊？</p>
 <p>注意这种极端情况，一般情况，我们是通过移除extra black给父节点，直到遇到红节点，将它染黑。</p>
 <p>但是根节点是$new \ x$的话，已经上不去了，<strong>但也没有上去的必要了</strong>，根节点是双黑点，但是extra black已经吐不出来了，因为它的parents是$T.nil$，那就不吐了，直接将兄弟染红，使得黑高减1但是黑高仍相等，并没有违反性质4，因此是合理的（当然遇到红节点最好，直接退出循环），你可以试着画一颗全黑树，就是可以一直上升最终把根节点的另一个孩子染红了（网上博客有人还评论全黑树怎么删，写算法都不考虑边界条件的吗）</p>
-<hr>
-<p>2021/11/3<br>此时还剩下未处理情形有：</p>
+<p>此时还剩下未处理情形有：</p>
 <ul>
 <li>left is red, right is black</li>
 <li>left is black, right is red</li>
 <li>left is red, right is red</li>
 </ul>
-<p>其实把这三张图画出来，第一直觉就是将B左旋，而这里面当right = black时会出现新的double black节点，而red没有这问题，这两种情形对标insert的case2和case3</p>
-<hr>
+<p>我们假设黑兄弟的孩子颜色除了不允许双黑之外未知，此时我们已经无法剥离兄弟的黑色了，因为会破坏性质3，我们改变思路，通过旋转使得到从根节点到双黑点的路径上黑节点增多，即将黑色转让给parent，通过B的左旋可以轻松做到，然后通过重染色维护性质3和性质4即可。<br>如下图所示：</p>
+<p>（白色表示要么是黑要么是红）<br><img src="https://i.loli.net/2021/11/05/RADxbahrzswZFj3.png" alt="image.png"></p>
+<p>但是有个问题，如果E本身就是黑色，那么性质4仍是被破坏的，因此当右孩子为黑色的时候，我们需要旋转将它转化为右孩子为红。这里与插入的case2和case3是对称的。</p>
 <h3 id="CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black"><a href="#CASE-3-w-is-black-w-left-color-is-red-and-w-right-color-is-black" class="headerlink" title="CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black"></a>CASE 3:$w$ is black , $w.left.color$ is red,and $w.right.color$ is black</h3><p><img src="https://i.loli.net/2021/01/28/UNiGgIhBvTFf2OP.png" alt="image.png"></p>
 <p>CASE3是CASE4的过渡态。主要是为了让红节点成为兄弟的右孩子，这个并不难，我们只需要把左孩子转换成右孩子</p>
 <ul>
@@ -493,17 +485,8 @@ c(color)=
 <li>重定兄弟：$w=x.p.right$</li>
 </ul>
 <p>变换前后黑节点数并未变化，请自行验证</p>
-<p>为什么要这个过渡态？如果你想像CASE4那样对称变换的话，又会出现一个新的双黑点需要处理，请自行尝试找到这个新双黑点</p>
 <h3 id="CASE-4-w-is-black-and-w-right-color-is-red"><a href="#CASE-4-w-is-black-and-w-right-color-is-red" class="headerlink" title="CASE 4:$w$ is black and $w.right.color$ is red"></a>CASE 4:$w$ is black and $w.right.color$ is red</h3><p><img src="https://i.loli.net/2021/01/28/DGNSIkv1Cm3yaWE.png" alt></p>
-<p>我们将D和E合成一个3节点，可以看出：</p>
-<ul>
-<li>到E的子树需要c+1个黑节点</li>
-<li>到C的子树需要c+1+c’个黑节点</li>
-<li>到A的子树需要c+2个黑节点</li>
-</ul>
-<p>由E和A可以看出来，它们是对称的，$x$是依赖自已的双黑，E是依赖父节点的黑色，那么我们反过来，$x$依赖自己的父节点，E依赖自己，这样就把$x$的extra black转移给了$x.p$，要让$x$依赖父节点，E依赖自己，则需要左旋并重染色。至于C，因为左旋会把C给$x.p$接手，而$x.p$染成黑色，黑节点数并不变化（实质上就是想让黑色兄弟转变成黑色父母，分摊extra black，因为是多了一个实际的节点，因此不需要循环）</p>
-<p>颜色转移：$x =&gt; w =&gt; E(w.right)$</p>
-<p>如此一来，红黑树性质得到了维护，然后令$x$为树根节点退出循环</p>
+<p>具体流程在上两张图中有，之后令$x$为树根节点退出循环便可。</p>
 <p>接下来，伪码就不难写出：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">RB-DELETE(T,z)</span><br><span class="line">y ← z</span><br><span class="line">y-original-color ← y.color</span><br><span class="line">if z.left &#x3D; T.nil</span><br><span class="line"> then x ← z.right </span><br><span class="line"> 	  RB-TRANSPLANT(T,z,z.right)</span><br><span class="line"> elseif z.right &#x3D; T.nil</span><br><span class="line">  then x ← z.left</span><br><span class="line">  	   RB-TRANSPLANT(T,z,z.left)</span><br><span class="line">  else y ← TREE-MAXIMUM(z.right)</span><br><span class="line">       y-original-color ← y.color</span><br><span class="line">       x ← y.right</span><br><span class="line">       if y.p &#x3D; z</span><br><span class="line">        then x.p &#x3D; y</span><br><span class="line">       else TREE-TRANSPLANT(T,y,y.right)</span><br><span class="line">             y.right ← z.right</span><br><span class="line">             y.right.p ← y</span><br><span class="line">       TREE-TRANSPLANT(T,z,y)</span><br><span class="line">       y.left ← z.left</span><br><span class="line">       y.left.p ← y</span><br><span class="line">       y.color ← z.color</span><br><span class="line">        </span><br><span class="line">if y-original-color &#x3D; BLACK</span><br><span class="line"> then RB-DELETE-FIXUP(T,x)</span><br><span class="line"> </span><br><span class="line">RB-DELETE-FIXUP(T,x)</span><br><span class="line">while x ≠ T.root and x.color &#x3D; BLACK</span><br><span class="line"> do if x.p.left &#x3D; x</span><br><span class="line"> 	 then w ← x.p.right</span><br><span class="line"> 	      if w.color &#x3D; RED   									&#x2F;&#x2F;&lt;CASE1&gt;</span><br><span class="line"> 	       then x.p.color ← RED</span><br><span class="line"> 	            w.color ← BLACK</span><br><span class="line"> 	            LEFT-ROTATION(T,x.p)</span><br><span class="line"> 	      if w.right.color &#x3D; BLACK and w.left.color &#x3D; BLACK		&#x2F;&#x2F;&lt;CASE2&gt;</span><br><span class="line"> 	       then w.color ← RED</span><br><span class="line"> 	            x ← x.p</span><br><span class="line"> 	       else </span><br><span class="line"> 	       		if w.right.color &#x3D; BLACK						&#x2F;&#x2F;&lt;CASE3&gt;</span><br><span class="line"> 	       		 then w.color ← RED</span><br><span class="line"> 	       		      w.left.color ← BLACK</span><br><span class="line"> 	            	  RIGHT-ROTATION(T,w)</span><br><span class="line"> 	            	  w ← x.p.right</span><br><span class="line"> 	             w.color ← x.p.color								&#x2F;&#x2F;&lt;CASE4&gt;</span><br><span class="line"> 	             x.p.color ← BLACK</span><br><span class="line"> 	             w.right.color ← BALAK</span><br><span class="line"> 	             LEFT-RATATION(T,x.p)</span><br><span class="line"> 	             x ← T.root</span><br><span class="line">    else</span><br><span class="line">     &lt;with &quot;left&quot; and &quot;right&quot; swapped&gt;</span><br><span class="line">x.color ← BLACK</span><br></pre></td></tr></table></figure>
 <h2 id="时间复杂度-1"><a href="#时间复杂度-1" class="headerlink" title="时间复杂度"></a>时间复杂度</h2><p>分析和$RB-INSERT$差不多：</p>
@@ -518,7 +501,7 @@ c(color)=
 <p>插入需要考察uncle的颜色，在性质3被破坏时，grandpa是一定存在的，uncle为叶子也可（体现了作为哨兵的好处：拥有颜色）</p>
 <p>插入除一个过渡态CASE2，实际上只有两种情形：</p>
 <ul>
-<li>uncle是红（CASE1），将parents和uncle染黑，grandpa染红，从而将破坏部分上移，直到进入CASE2或CASE3</li>
+<li>uncle是红（CASE1），将parents和uncle染黑，grandpa染红，从而将破坏部分上移，直到进入CASE2或CASE3或循环终止</li>
 <li>uncle是黑，$x$，parents和grandpa在一条线上（CASE3）而不是”&lt;”形（CASE2）</li>
 </ul>
 <p>（吐槽：插入相比删除那真是弟弟）</p>
@@ -539,7 +522,7 @@ c(color)=
 </li>
 <li><p>左红右黑（CASE3），过渡态。将左红转化为右红（CASE4）</p>
 </li>
-<li>右红（左任意，CASE4）。转变黑色兄弟为parents，依赖parents去除extra black（<strong>与插入CASE 3的IDEA一样，通过旋转和重染色修复被破坏部分</strong>）</li>
+<li>右红（左任意，CASE4）。通过旋转和重染色使得到双黑点的路径的黑节点增多从而平摊黑色（<strong>与插入CASE 3的IDEA一样，通过旋转和重染色修复被破坏部分</strong>）</li>
 </ul>
 </li>
 </ul>
@@ -902,7 +885,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">堆</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">排序</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -910,7 +913,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
+                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -926,23 +937,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">数据结构</a>
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">堆</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">树</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -958,15 +957,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -978,15 +969,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -998,23 +989,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">OOP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">prototype design</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1023,6 +1002,14 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OOP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">prototype design</a>
               </li>
              
               <li class="article-tag-list-item">
