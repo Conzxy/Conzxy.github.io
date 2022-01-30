@@ -6,20 +6,20 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>Concurrent Sort | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>条件变量Question&amp;answer | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="并发排序在《APUE》中pthread_barrier处有一个例子是开8个线程对80万个元素进行排序，这是我第一次接触并发算法，感觉很有趣于是记录一下。">
+  <meta name="description" content="条件变量的问题&amp;参考回答">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Concurrent Sort">
-<meta property="og:url" content="http://yoursite.com/2021/05/28/Cpp/Thread/quicksort/index.html">
+<meta property="og:title" content="条件变量Question&amp;answer">
+<meta property="og:url" content="http://yoursite.com/2021/12/20/Cpp/Concurrent/cond_var/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="并发排序在《APUE》中pthread_barrier处有一个例子是开8个线程对80万个元素进行排序，这是我第一次接触并发算法，感觉很有趣于是记录一下。">
+<meta property="og:description" content="条件变量的问题&amp;参考回答">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-05-28T03:49:31.459Z">
-<meta property="article:modified_time" content="2021-05-28T08:30:19.878Z">
+<meta property="article:published_time" content="2021-12-20T03:04:46.847Z">
+<meta property="article:modified_time" content="2022-01-30T06:18:17.270Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="C++">
-<meta property="article:tag" content="Concurrent">
+<meta property="article:tag" content="concurrent">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
@@ -237,20 +237,20 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-Cpp/Thread/quicksort" class="article article-type-post " itemscope itemprop="blogPost">
+            <article id="post-Cpp/Concurrent/cond_var" class="article article-type-post " itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 class="article-title" itemprop="name">
-      Concurrent Sort
+      条件变量Question&amp;answer
     </h1>
   
 
         
-        <a href="/2021/05/28/Cpp/Thread/quicksort/" class="archive-article-date">
-  	<time datetime="2021-05-28T03:49:31.459Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-05-28</time>
+        <a href="/2021/12/20/Cpp/Concurrent/cond_var/" class="archive-article-date">
+  	<time datetime="2021-12-20T03:04:46.847Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-12-20</time>
 </a>
         
         
@@ -258,18 +258,46 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="并发排序"><a href="#并发排序" class="headerlink" title="并发排序"></a>并发排序</h1><p>在《APUE》中pthread_barrier处有一个例子是开8个线程对80万个元素进行排序，这是我第一次接触并发算法，感觉很有趣于是记录一下。<br><a id="more"></a><br>思路是这样的：每个线程对“待排序元素个数/线程数”个元素进行进行排序（局部排序），然后最后通过一个合并算法来统合所有元素。<br>算法如下：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">	<span class="built_in">std</span>::<span class="keyword">size_t</span> numthread = <span class="number">1</span>, <span class="keyword">typename</span> RI1, <span class="keyword">typename</span> RI2, <span class="keyword">typename</span> BinaryPred,</span><br><span class="line">	<span class="keyword">typename</span> V = <span class="keyword">typename</span> <span class="built_in">std</span>::iterator_traits&lt;RI1&gt;::value_type</span><br><span class="line">	&gt;</span><br><span class="line"><span class="keyword">void</span> merge_impl(RI1 first1, RI1 last1,</span><br><span class="line">		RI2 first2,</span><br><span class="line">		BinaryPred pred)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> num = last1 - first1;</span><br><span class="line">	<span class="keyword">int</span> numperthread = num / numthread;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">int</span> idx[numthread];</span><br><span class="line">	<span class="comment">//idx: record the first element index of sorted range</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; numthread; ++i)&#123;</span><br><span class="line">		idx[i] = i * numperthread;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//ridx:result index </span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> ridx = <span class="number">0</span>; ridx != num; ++ridx)&#123;</span><br><span class="line">		<span class="comment">/*int min_element = INT_MAX;</span></span><br><span class="line"><span class="comment">		int min_idx = 0;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">		for(int tidx = 1; tidx != numthread; ++tidx)&#123;</span></span><br><span class="line"><span class="comment">			if((idx[tidx] &lt; (tidx + 1) * numperthread) &amp;&amp; (pred(*(first1 + idx[tidx]), min_element)))&#123;</span></span><br><span class="line"><span class="comment">				min_element = *(first1 + idx[tidx]);</span></span><br><span class="line"><span class="comment">				min_idx = tidx;</span></span><br><span class="line"><span class="comment">			&#125;</span></span><br><span class="line"><span class="comment">		&#125;</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">		</span></span><br><span class="line"><span class="comment">		*(first2 + ridx) = *(first1 + idx[min_idx]);</span></span><br><span class="line"><span class="comment">		++idx[min_idx];*/</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">int</span> sz = <span class="number">0</span>;</span><br><span class="line">		V minarr[numthread];</span><br><span class="line"></span><br><span class="line">		<span class="keyword">for</span>(<span class="keyword">int</span> tidx = <span class="number">0</span>; tidx != numthread; ++tidx)&#123;</span><br><span class="line">			<span class="keyword">if</span>((idx[tidx] &lt; (tidx + <span class="number">1</span>) * numperthread))&#123;</span><br><span class="line">				minarr[sz++] = *(first1 + idx[tidx]);</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">auto</span> min_iter = <span class="built_in">std</span>::min_element(minarr, minarr + sz, pred);</span><br><span class="line"></span><br><span class="line">		*(first2 + ridx) = *min_iter;</span><br><span class="line">		++idx[min_iter - minarr];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;</span><br><span class="line">	<span class="built_in">std</span>::<span class="keyword">size_t</span> numthread = <span class="number">1</span>, <span class="keyword">typename</span> RI1, <span class="keyword">typename</span> RI2,</span><br><span class="line">        <span class="keyword">typename</span> V = <span class="keyword">typename</span> <span class="built_in">std</span>::iterator_traits&lt;RI1&gt;::value_type,</span><br><span class="line">	<span class="keyword">typename</span> BinaryPred = <span class="built_in">std</span>::less&lt;V&gt;</span><br><span class="line">	&gt;</span><br><span class="line"><span class="keyword">void</span> mymerge(RI1 first1, RI1 last1, </span><br><span class="line">	RI2 first2,</span><br><span class="line">	BinaryPred pred = &#123;&#125;)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">using</span> V1 = <span class="keyword">typename</span> <span class="built_in">std</span>::iterator_traits&lt;RI1&gt;::value_type;</span><br><span class="line">	<span class="keyword">using</span> V2 = <span class="keyword">typename</span> <span class="built_in">std</span>::iterator_traits&lt;RI2&gt;::value_type;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">static_assert</span>(<span class="built_in">std</span>::is_convertible&lt;V1, V2&gt;::value || <span class="built_in">std</span>::is_convertible&lt;V2, V1&gt;::value, </span><br><span class="line">				  <span class="string">" value_type doesn't convertible\n"</span>);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	merge_impl&lt;numthread&gt;(first1, last1, </span><br><span class="line">						  first2, </span><br><span class="line">						  pred);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>这个算法我改良了一下，注释的部分是原文的，但是它只适用于int，为了让它能够与泛型搭配，适用于任何类型（提供了operator&lt;或定制谓词的），用一个容器装符合条件的元素，并用std::min_element得到对应的迭代器，得到其位置和值。<br>merge算法思路异常简单：</p>
-<ul>
-<li>开一个数组idx记录每个线程排序区间的head</li>
-<li>对这些head进行比较（满足索引在线程排序区间中），由于不用所谓的min_element记录，所以用一个容器装，用pred谓词进行筛选，被选中的元素加入res数组，并将被选择的head所在的索引前进一位</li>
-</ul>
-<p>当然，为了兼容STL，接口风格是\<algorithm>式的，你需要保证dst区间大小至少与src区间一样大，如果是空容器，必须用inserter迭代器适配器</algorithm></p>
-<p>除此之外，我还有两个收获：</p>
-<ul>
-<li>如果该位置后面的元素都可以被推断出来，那么可以给该位置放置默认模板参数（非类型或类型），这种称为<code>depending on following arguments</code>的default arguments，如果该位置后面的元素提供了默认模板参数亦然可以，和已推断等效</li>
-<li>一开始std::less&lt;&gt;不是这么写的：<br><code>BinaryPred pred = std::less&lt;V&gt;</code>，但是很明显不对，因为此时V是未决类型，编译器此时正在进行模式匹配，从而推断类型，而V并未推断出来，所以编译器不认得，自然报错<br>改为模板类型参数，然后默认构造就好了（无state的function object）</li>
-</ul>
-<p>主函数部分：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> quicksort sort</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> gNumThread = <span class="number">8</span>;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> gNumElement = <span class="number">800000</span>;</span><br><span class="line"><span class="keyword">constexpr</span> <span class="keyword">int</span> gNumPerThread = gNumElement / gNumThread;</span><br><span class="line"></span><br><span class="line"><span class="keyword">pthread_barrier_t</span> b;</span><br><span class="line"><span class="keyword">double</span> nums[gNumElement];</span><br><span class="line"><span class="keyword">double</span> res[gNumElement];</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">	<span class="class"><span class="keyword">struct</span> <span class="title">timeval</span> <span class="title">beg</span>, <span class="title">end</span>;</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	<span class="built_in">std</span>::default_random_engine dre&#123;&#125;;</span><br><span class="line">	<span class="function"><span class="built_in">std</span>::uniform_int_distribution&lt;<span class="keyword">int</span>&gt; <span class="title">di</span><span class="params">(<span class="number">0</span>, <span class="number">9999</span>)</span></span>;</span><br><span class="line">	<span class="function"><span class="built_in">std</span>::uniform_real_distribution&lt;<span class="keyword">double</span>&gt; <span class="title">dd</span><span class="params">(<span class="number">0</span>, <span class="number">9999.0</span>)</span></span>;</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != gNumElement; ++i)&#123;</span><br><span class="line">		nums[i] = dd(dre);</span><br><span class="line">		res[i] = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	gettimeofday(&amp;beg, <span class="literal">NULL</span>);</span><br><span class="line">	pthread_barrier_init(&amp;b, <span class="literal">NULL</span>, gNumThread + <span class="number">1</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i != gNumThread; ++i)&#123;</span><br><span class="line">		<span class="comment">//auto g = MutexGuard&#123;lock&#125;;</span></span><br><span class="line">		<span class="keyword">int</span> idx = i * gNumPerThread;</span><br><span class="line">		<span class="comment">//printf("idx addr: %p\n", &amp;idx);</span></span><br><span class="line">		<span class="comment">//gIdx = i * gNumPerThread;</span></span><br><span class="line"></span><br><span class="line">		<span class="function">Thread <span class="title">thr</span><span class="params">([idx]()&#123;</span></span></span><br><span class="line"><span class="function"><span class="params">						quicksort(nums + idx, nums + idx + gNumPerThread);</span></span></span><br><span class="line"><span class="function"><span class="params">						pthread_barrier_wait(&amp;b);</span></span></span><br><span class="line"><span class="function"><span class="params">					&#125;,</span></span></span><br><span class="line"><span class="function"><span class="params">				   <span class="string">"thread"</span>)</span></span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">//Thread thr(fun, "thread");</span></span><br><span class="line">		thr.setBarriered(<span class="literal">true</span>);</span><br><span class="line">		thr.start();</span><br><span class="line">		<span class="comment">/*pthread_t tid;</span></span><br><span class="line"><span class="comment">		TCHECK(pthread_create(&amp;tid, NULL, fun2, (void*)&amp;idx));*/</span></span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	pthread_barrier_wait(&amp;b);</span><br><span class="line">	pthread_barrier_destroy(&amp;b);</span><br><span class="line"></span><br><span class="line">	mymerge&lt;gNumThread&gt;(&amp;*nums, nums + gNumElement, </span><br><span class="line">						&amp;*res);</span><br><span class="line">	</span><br><span class="line">	gettimeofday(&amp;end, <span class="literal">NULL</span>);</span><br><span class="line">	</span><br><span class="line">	<span class="keyword">constexpr</span> <span class="keyword">int</span> useconds = <span class="number">1000000</span>;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">auto</span> startusec = beg.tv_sec * useconds + beg.tv_usec;</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">auto</span> endusec = end.tv_sec * useconds + end.tv_usec;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">auto</span> time = <span class="keyword">static_cast</span>&lt;<span class="keyword">double</span>&gt;(endusec - startusec) / useconds;</span><br><span class="line"></span><br><span class="line">	<span class="built_in">printf</span>(<span class="string">"sort total took %.4f\n"</span>, time);</span><br><span class="line"></span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> PRINT_SWITCH</span></span><br><span class="line">	<span class="keyword">for</span>(<span class="keyword">int</span> i = <span class="number">0</span>; i &lt;= gNumElement; ++i)&#123;</span><br><span class="line">		<span class="keyword">if</span>(i % <span class="number">10</span> == <span class="number">0</span>)</span><br><span class="line">			<span class="built_in">printf</span>(<span class="string">"%d~%d: "</span>, i + <span class="number">1</span>, i + <span class="number">10</span>);</span><br><span class="line"></span><br><span class="line">		<span class="built_in">printf</span>(<span class="string">"%.3f "</span>, res[i]);</span><br><span class="line">		</span><br><span class="line">		<span class="keyword">if</span>((i + <span class="number">1</span>) % <span class="number">10</span> == <span class="number">0</span>)</span><br><span class="line">			<span class="built_in">puts</span>(<span class="string">""</span>);</span><br><span class="line">	&#125;</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><br>经个人实践，C++想要做到线程安全，比如传参，通过pthread_create是不行的，因为C++不允许int-&gt;void*（reinterpret_cast）也别想，而通过地址传值，那就意味着很容易被修改，如前面的for循环，idx如果是地址传值，那么下一个循环idx的值就被改了，于是悲剧了，你可能会说加锁，加锁的话，其他线程的创建就会是原子性的，那么多线程的优势直接没了，其实我们需要的就是原子性传参，那么拷贝一份即可，用function object和lambda以拷贝形式封装该state即可（现在的看法）</p>
+        <h1 id="条件变量的问题-amp-参考回答"><a href="#条件变量的问题-amp-参考回答" class="headerlink" title="条件变量的问题&amp;参考回答"></a>条件变量的问题&amp;参考回答</h1><a id="more"></a>
+<blockquote>
+<p>Q1: Why need while() instead of if() when calling pthread_cond_wait()</p>
+</blockquote>
+<p>A1: 因为可能会导致<strong>假唤醒（spurious wakeup）</strong>。设想一种情景，比如生产者消费者问题，有多个消费线程在等待,当一个消费者（C1）将被唤醒时，此时另外一个消费者（C2）可能抢占（preempt）这个信号，而C2很可能消费了C1应消费的，从而导致C1可能出现UB行为（比如assert保证此时有资源可供消费），这种情景应该继续sleep，用while进行多次判断从而避免单次判断带来的假唤醒。</p>
+<blockquote>
+<p>Q2: Why need mutex when calling pthead_cond_signal/wait()</p>
+</blockquote>
+<p>A2: 共享不强制要求互斥，但互斥需求是常有的，条件变量也不例外，其关联的变量往往也有互斥需求，需要保证其操作是原子的。设想如下情景：<br>当调用wait()要sleep时，突然中断或异常发生，上下文切换到其他线程，并且调用signal()，然后再切换回原来的线程，那么这个线程很可能就没有其他线程可以唤醒了，这种现象称为“<strong>丢失唤醒</strong>”。<br>因此为了避免出现“丢失唤醒”，我们应该用mutex等满足互斥需求的同步原语同步线程的行为。</p>
+<blockquote>
+<p>Q3: Is is necessary to lock when calling wait()</p>
+</blockquote>
+<p>A3: 从A2来看，是很有必要的，否则可能出现“丢失唤醒”。</p>
+<blockquote>
+<p>Q4: Is is necessary to lock when calling signal()</p>
+</blockquote>
+<p>A4: 对于timedwait()来说不是必要的，但终究是非常规用法。对于一般的wait()还是必须得加锁，不能在临界区外面调用signal()。设想如下情景：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mutex.lock();</span><br><span class="line">increment_condition_variable(); <span class="comment">// increment the variable related to condition instead condition itself</span></span><br><span class="line">mutex.unlock(); <span class="comment">// FIXME use MutexGuard</span></span><br><span class="line">cond.signal();</span><br></pre></td></tr></table></figure><br>还是生产者消费者问题：在unlock()与signal()间，上下文切换到消费者线程，由于signal()没有被锁住，所以它可能会在消费者线程调用wait()前就被调用，从而导致出现“丢失唤醒”。</p>
+<blockquote>
+<p>Q5: The semantic of signal()/broadcast()</p>
+</blockquote>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>API</th>
+<th>semantic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>signal</td>
+<td>resource availability</td>
+</tr>
+<tr>
+<td>broadcast</td>
+<td>state change</td>
+</tr>
+</tbody>
+</table>
+</div>
 
       
 
@@ -308,7 +336,7 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Concurrent</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">concurrent</a>
         		</li>
       		
 		</ul>
@@ -324,7 +352,7 @@
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="/categories/C/Concurrent//" class="article-tag-list-link color1">Concurrent</a>
+        			<a href="/categories/C/concurrent//" class="article-tag-list-link color1">concurrent</a>
         		</li>
       		
 		</ul>
@@ -379,7 +407,7 @@
     <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
     <p>扫一扫，分享到微信</p>
     <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/05/28/Cpp/Thread/quicksort/" alt="微信分享二维码">
+      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/12/20/Cpp/Concurrent/cond_var/" alt="微信分享二维码">
     </div>
 </div>
 
@@ -393,18 +421,18 @@
   
 <nav id="article-nav">
   
-    <a href="/2021/08/18/MultiThread/destruct/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2022/01/28/stl/forward_list/" id="article-nav-newer" class="article-nav-link-wrap">
       <i class="icon-circle-left"></i>
       <div class="article-nav-title">
         
-          MultiThread/destruct
+          My ForwardList Implemetation
         
       </div>
     </a>
   
   
-    <a href="/2021/04/23/Cpp/think/surrogate/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">surrogate class</div>
+    <a href="/2021/11/07/jos/lab3/" id="article-nav-older" class="article-nav-link-wrap">
+      <div class="article-nav-title">Lab3 User environments</div>
       <i class="icon-circle-right"></i>
     </a>
   
@@ -435,7 +463,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#并发排序"><span class="toc-number">1.</span> <span class="toc-text">并发排序</span></a></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#条件变量的问题-amp-参考回答"><span class="toc-number">1.</span> <span class="toc-text">条件变量的问题&amp;参考回答</span></a></li></ol>
                     </div>
                 </span>
             </div>
@@ -469,7 +497,7 @@ if(true){
     repo: 'Conzxy.github.io',
     owner: 'Conzxy',
     admin: ['Conzxy'],
-    id: 'Fri May 28 2021 11:49:31 GMT+0800',
+    id: 'Mon Dec 20 2021 11:04:46 GMT+0800',
     distractionFreeMode: 'true'
 })
 gitalk.render('gitalk-container')
@@ -488,7 +516,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Conzxy
+    		&copy; 2022 Conzxy
     	</div>
       	<div class="footer-right">
           <!-- # PV方式，单个用户连续点击 n 篇，记录 n 次记录值 -->
@@ -744,10 +772,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">OOP</a>
               </li>
              
@@ -757,6 +781,26 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">process</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Single linked list</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Data structure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">concurrent</a>
               </li>
             
             <div class="clearfix"></div>

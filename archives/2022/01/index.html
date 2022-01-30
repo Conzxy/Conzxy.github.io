@@ -6,17 +6,13 @@
   <meta name="renderer" content="webkit">
   <meta http-equiv="X-UA-Compatible" content="IE=edge" >
   <link rel="dns-prefetch" href="http://yoursite.com">
-  <title>MultiThread/destruct | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
+  <title>Archives: 2022/1 | (●ˇ∀ˇ●)Conzxy&#39;s blog</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="析构和多线程">
-<meta property="og:type" content="article">
-<meta property="og:title" content="MultiThread&#x2F;destruct">
-<meta property="og:url" content="http://yoursite.com/2021/08/18/MultiThread/destruct/index.html">
+  <meta property="og:type" content="website">
+<meta property="og:title" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
+<meta property="og:url" content="http://yoursite.com/archives/2022/01/index.html">
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
-<meta property="og:description" content="析构和多线程">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2021-08-18T13:59:28.492Z">
-<meta property="article:modified_time" content="2021-10-30T16:36:36.504Z">
 <meta property="article:author" content="Conzxy">
 <meta name="twitter:card" content="summary">
   
@@ -235,229 +231,79 @@
             <canvas data-colors="#eaeaea" data-sectionHeight="100" data-contentId="js-content" id="myCanvas1" class="anm-canvas"></canvas>
           </div>
           <div id="js-content" class="content-ll">
-            <article id="post-MultiThread/destruct" class="article article-type-post " itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
+            
   
-    <h1 class="article-title" itemprop="name">
-      MultiThread/destruct
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2022" class="archive-year">2022</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      	<div class="article-meta">
+	      	<a href="/2022/01/28/stl/forward_list/" class="archive-article-date">
+  	<time datetime="2022-01-28T14:55:19.231Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2022-01-28</time>
+</a>
+        </div>
+    	 
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2022/01/28/stl/forward_list/">My ForwardList Implemetation</a>
     </h1>
   
 
-        
-        <a href="/2021/08/18/MultiThread/destruct/" class="archive-article-date">
-  	<time datetime="2021-08-18T13:59:28.492Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-08-18</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="析构和多线程"><a href="#析构和多线程" class="headerlink" title="析构和多线程"></a>析构和多线程</h1><a id="more"></a>
-<p>鉴于C++没有（原生）垃圾回收机制，因此析构的race condition需要程序员来考虑</p>
-<h2 id="析构函数不需要锁来保证线程安全"><a href="#析构函数不需要锁来保证线程安全" class="headerlink" title="析构函数不需要锁来保证线程安全"></a>析构函数不需要锁来保证线程安全</h2><p>析构函数不能用锁来保护，原因有：</p>
-<p>1）基类与派生类的析构函数是割裂的，因此必然无法保证线程安全</p>
-<p>2）安全的析构原则上只有其他线程都不用它时才是安全的，即成为“垃圾”时</p>
-<p>这个结论较为显而易见</p>
-<h2 id="析构函数的race-condition"><a href="#析构函数的race-condition" class="headerlink" title="析构函数的race condition"></a>析构函数的race condition</h2><p>析构函数有几个竞态条件：</p>
-<p>1）析构的时候，是否有其他线程正在调用其成员函数</p>
-<p>2）调用成员函数期间，其他线程是否正在析构其对象</p>
-<p>3）在调用成员函数前，如何知道其是否存活</p>
-<p>4）其他race condition</p>
-<p>正如前面所说，如果有类似GC的机制就会好办很多</p>
-<p>因此我们可以采取<code>std::shared_ptr</code>来解决1），2），而与<code>std::weak_ptr</code>组合成的<strong>弱回调（weak callback）</strong>可以解决3）</p>
-<p>1）如果存在其他线程正在调用其成员函数，那么它的引用计数至少为1，不可能在析构</p>
-<p>2）与1）同理，在调用成员函数期间，其他线程不可能正在析构其对象</p>
-<p>3）通过<code>std::weak_ptr</code>的<code>lock()</code>原子提升为<code>std::shared_ptr</code>，可以探明其是否存活</p>
-<p>但请注意，在个别情况应用<code>expired()</code>来代替<code>lock()</code>，因为它引来了<code>std::shared_ptr</code>的拷贝</p>
-<p>设想如果对象A与B存在相互引用，在A的析构中我想探明B是否有它的引用，如果用<code>lock()</code>，尽管可以保证其引用计数至少为2，但是如果突然另外一个线程将其析构，引用计数减1，待离开block scope时有得再次析构，这是很可能会陷入单线程重复加锁而陷入</p>
-<h2 id="weak-callback"><a href="#weak-callback" class="headerlink" title="weak callback"></a>weak callback</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 伪代码</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">callback</span><span class="params">(<span class="built_in">std</span>::weak_ptr&lt;T&gt; <span class="keyword">const</span>&amp; ptr, Args&amp;&amp;... args)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">   	<span class="keyword">auto</span> sp = ptr.lock();</span><br><span class="line">    <span class="keyword">if</span>(sp)</span><br><span class="line">        sp-&gt;member-function(forward&lt;Args&gt;(args)...);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>weak callback 的语义为：<strong>若对象存活， 则调用其成员函数</strong></p>
-<p>可以进一步用模板抽象为function object</p>
-<p>参见：<a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/weak-callback.h" target="_blank" rel="noopener">weak-callback.h</a></p>
-<h2 id="example"><a href="#example" class="headerlink" title="example"></a>example</h2><p><a href="https://github.com/Conzxy/zxy_toys/blob/master/thread/test/object-pool.h" target="_blank" rel="noopener">对象池</a></p>
+        <div class="article-info info-on-right">
+          
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Single linked list</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">Data structure</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      
+          
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Container//" class="article-tag-list-link color5">Container</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Container/forward-list//" class="article-tag-list-link color3">forward_list</a>
+        		</li>
+      		
+		</ul>
+	</div>
 
-      
-        <div class="page-reward">
-          <a href="javascript:;" class="page-reward-btn tooltip-top">
-            <div class="tooltip tooltip-east">
-            <span class="tooltip-item">
-              赏
-            </span>
-            <span class="tooltip-content">
-              <span class="tooltip-text">
-                <span class="tooltip-inner">
-                  <p class="reward-p"><i class="icon icon-quo-left"></i>Thanks♪(･ω･)谢谢打赏ﾉ<i class="icon icon-quo-right"></i></p>
-                  <div class="reward-box">
-                    
-                    
-                  </div>
-                </span>
-              </span>
-            </span>
-          </div>
-          </a>
+
         </div>
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-      
-
-      
-
-      
-        
-<div class="share-btn share-icons tooltip-left">
-  <div class="tooltip tooltip-east">
-    <span class="tooltip-item">
-      <a href="javascript:;" class="share-sns share-outer">
-        <i class="icon icon-share"></i>
-      </a>
-    </span>
-    <span class="tooltip-content">
-      <div class="share-wrap">
-        <div class="share-icons">
-          <a class="weibo share-sns" href="javascript:;" data-type="weibo">
-            <i class="icon icon-weibo"></i>
-          </a>
-          <a class="weixin share-sns wxFab" href="javascript:;" data-type="weixin">
-            <i class="icon icon-weixin"></i>
-          </a>
-          <a class="qq share-sns" href="javascript:;" data-type="qq">
-            <i class="icon icon-qq"></i>
-          </a>
-          <a class="douban share-sns" href="javascript:;" data-type="douban">
-            <i class="icon icon-douban"></i>
-          </a>
-          <a class="qzone share-sns" href="javascript:;" data-type="qzone">
-            <i class="icon icon-qzone"></i>
-          </a>
-          <a class="facebook share-sns" href="javascript:;" data-type="facebook">
-            <i class="icon icon-facebook"></i>
-          </a>
-          <a class="twitter share-sns" href="javascript:;" data-type="twitter">
-            <i class="icon icon-twitter"></i>
-          </a>
-          <a class="google share-sns" href="javascript:;" data-type="google">
-            <i class="icon icon-google"></i>
-          </a>
-        </div>
-      </div>
-    </span>
-  </div>
-</div>
-
-<div class="page-modal wx-share js-wx-box">
-    <a class="close js-modal-close" href="javascript:;"><i class="icon icon-close"></i></a>
-    <p>扫一扫，分享到微信</p>
-    <div class="wx-qrcode">
-      <img src="//pan.baidu.com/share/qrcode?url=http://yoursite.com/2021/08/18/MultiThread/destruct/" alt="微信分享二维码">
-    </div>
-</div>
-
-<div class="mask js-mask"></div>
-      
-      <div class="clearfix"></div>
-    </div>
+        <div class="clearfix"></div>
+    </header>
   </div>
 </article>
-
-  
-<nav id="article-nav">
-  
-    <a href="/2021/10/13/tcp/half_close/" id="article-nav-newer" class="article-nav-link-wrap">
-      <i class="icon-circle-left"></i>
-      <div class="article-nav-title">
-        
-          tcp/half_close
-        
-      </div>
-    </a>
   
   
-    <a href="/2021/05/28/Cpp/Thread/quicksort/" id="article-nav-older" class="article-nav-link-wrap">
-      <div class="article-nav-title">Concurrent Sort</div>
-      <i class="icon-circle-right"></i>
-    </a>
+    </div></section>
   
-</nav>
-
-<span id="busuanzi_container_page_pv">
-        本文阅读量: <span id="busuanzi_value_page_pv"></span>次
- </span>
-
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-        <div class="toc-container tooltip-left">
-            <i class="icon-font icon-category"></i>
-            <div class="tooltip tooltip-east">
-                <span class="tooltip-item">
-                </span>
-                <span class="tooltip-content">
-                    <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#析构和多线程"><span class="toc-number">1.</span> <span class="toc-text">析构和多线程</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#析构函数不需要锁来保证线程安全"><span class="toc-number">1.1.</span> <span class="toc-text">析构函数不需要锁来保证线程安全</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#析构函数的race-condition"><span class="toc-number">1.2.</span> <span class="toc-text">析构函数的race condition</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#weak-callback"><span class="toc-number">1.3.</span> <span class="toc-text">weak callback</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#example"><span class="toc-number">1.4.</span> <span class="toc-text">example</span></a></li></ol></li></ol>
-                    </div>
-                </span>
-            </div>
-        </div>
-        
-    </div>
-</aside>
-
-
-
-  
-
-  
-
-  
-
-  
-
-  
-    <div id="gitalk-container" style="padding: 0px 30px 0px 30px;"></div>
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.css">
-<script src="https://cdn.jsdelivr.net/npm/gitalk@1/dist/gitalk.min.js"></script>
-
-<script type="text/javascript">
-
-if(true){
-    var gitalk = new Gitalk({
-    clientID: '777f04a5b126f26c2e07',
-    clientSecret: '8f8dd09899f1d1d8f688e50ab6119b788982da7d',
-    repo: 'Conzxy.github.io',
-    owner: 'Conzxy',
-    admin: ['Conzxy'],
-    id: 'Wed Aug 18 2021 21:59:28 GMT+0800',
-    distractionFreeMode: 'true'
-})
-gitalk.render('gitalk-container')
-}
-</script>
 
     
-    
-  
 
 
           </div>
@@ -467,7 +313,7 @@ gitalk.render('gitalk-container')
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Conzxy
+    		&copy; 2022 Conzxy
     	</div>
       	<div class="footer-right">
           <!-- # PV方式，单个用户连续点击 n 篇，记录 n 次记录值 -->
@@ -486,8 +332,8 @@ gitalk.render('gitalk-container')
 	var yiliaConfig = {
 		mathjax: true,
 		isHome: false,
-		isPost: true,
-		isArchive: false,
+		isPost: false,
+		isArchive: true,
 		isTag: false,
 		isCategory: false,
 		open_in_new: false,
@@ -723,10 +569,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">OOP</a>
               </li>
              
@@ -736,6 +578,26 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">process</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Single linked list</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Data structure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">concurrent</a>
               </li>
             
             <div class="clearfix"></div>

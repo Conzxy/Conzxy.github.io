@@ -233,6 +233,295 @@
           <div id="js-content" class="content-ll">
             
   
+    <article id="post-CLRS/Search-Tree/BlackRedTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/26/CLRS/Search-Tree/BlackRedTree/">Red-Black tree</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/26/CLRS/Search-Tree/BlackRedTree/" class="archive-article-date">
+  	<time datetime="2021-01-26T11:59:53.132Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-26</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h1><p>红黑树保证两颗子树之间高度不会相差两倍以上，因此是（红黑）<strong>“近似平衡”</strong>（黑节点是<strong>完美平衡</strong>）的</p>
+<p>红黑树满足以下性质（约定称为<strong>RB性质</strong>）：</p>
+<ul>
+<li>Every node either red or black</li>
+<li>The root and leaves(NIL ‘s)are black</li>
+<li>If a node is red,then its parent is black</li>
+<li>All simple paths from any node $x$ to a descendant leaf have the same number of black nodes =<strong>black-height($x$)</strong> or <strong>bh($x$)</strong>  </li>
+</ul>
+<p>（注意$bh(x)$不包含$x$本身，即本身是黑节点不记数，否则黑高和等价2-3-4树的高度不等）</p>
+        
+          <a class="article-more-a" href="/2021/01/26/CLRS/Search-Tree/BlackRedTree/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color1">Balanced Search tree</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-tree//" class="article-tag-list-link color4">Search binary tree</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-tree/Balanced-Search-tree//" class="article-tag-list-link color1">Balanced Search tree</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/26/CLRS/Search-Tree/BlackRedTree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CLRS/Search-Tree/BinarySearchTree" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/25/CLRS/Search-Tree/BinarySearchTree/">BinarySearchTree</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/25/CLRS/Search-Tree/BinarySearchTree/" class="archive-article-date">
+  	<time datetime="2021-01-24T16:25:19.699Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-25</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="搜索二叉树"><a href="#搜索二叉树" class="headerlink" title="搜索二叉树"></a>搜索二叉树</h1><p>这里不对搜索二叉树做出定义，仅讲解主要操作</p>
+<h2 id="DATATYPE"><a href="#DATATYPE" class="headerlink" title="DATATYPE"></a>DATATYPE</h2><p>结点属性为$left,right,p(arents),key$，分别表示左孩子，右孩子，父（母）节点，键值</p>
+<p>树仅保存$root$，表示整个树的根节点</p>
+<p>$NIL$表示该位置为空（一般用空指针表示）</p>
+        
+          <a class="article-more-a" href="/2021/01/25/CLRS/Search-Tree/BinarySearchTree/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Search binary Tree</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-Tree//" class="article-tag-list-link color4">Search binary Tree</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Search-binary-Tree/plain//" class="article-tag-list-link color1">plain</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/25/CLRS/Search-Tree/BinarySearchTree/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-CLRS/Greedy-Choice/Activity-Selection" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2021/01/21/CLRS/Greedy-Choice/Activity-Selection/">CLRS/Greedy-Choice/Activity-Selection</a>
+    </h1>
+  
+
+        
+        <a href="/2021/01/21/CLRS/Greedy-Choice/Activity-Selection/" class="archive-article-date">
+  	<time datetime="2021-01-21T13:37:18.121Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2021-01-21</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="活动选择问题"><a href="#活动选择问题" class="headerlink" title="活动选择问题"></a>活动选择问题</h1><blockquote>
+<p>Scheduling several competing activites that require exclusive use of a common resource,with a goal of selecting a maximum-size set of mutually compatible activities.Suppose we have a set $S=\{a_1,a_2,…,a_n\}$ of n proposed <strong>activities</strong> that wish to use a resource,such as a lecture,which can serve only one activity at a time.Each activity $a_i$ has a <strong>start time</strong> $s_i$ and a <strong>finish time</strong> $f_i$,where $0 \leq s_i &lt; f_i &lt; \infty$.If selected,activity $a_i$ takes place during the half-open time interval $[s_i,f_i)$.Activities $a_i$ and $a_j$ are <strong>compatible</strong> if the intervals $[s_i,f_i)$ and $[s_j,f_j)$ do not overlap.i.e.,$a_i$ and $a_j$ are compatible if $f_i \le s_j$ or $f_j \le s_i $.</p>
+</blockquote>
+        
+          <a class="article-more-a" href="/2021/01/21/CLRS/Greedy-Choice/Activity-Selection/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">greedy algorithm</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Algorithm//" class="article-tag-list-link color5">Algorithm</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Algorithm/greedy//" class="article-tag-list-link color2">greedy</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2021/01/21/CLRS/Greedy-Choice/Activity-Selection/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
     <article id="post-Cppt/Directory" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
@@ -857,293 +1146,9 @@
 
 
   
-    <article id="post-Cpp/Black magic/SFINAE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/31/Cpp/Black%20magic/SFINAE/">SFINAE</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/31/Cpp/Black%20magic/SFINAE/" class="archive-article-date">
-  	<time datetime="2020-08-31T12:50:13.861Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="Substitution-Failure-is-not-an-Error"><a href="#Substitution-Failure-is-not-an-Error" class="headerlink" title="Substitution Failure is not an Error"></a>Substitution Failure is not an Error</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>SFINAE技术是指在编译期将函数模板的形参换成实参，如果替换失败不会算作编译错误，而是继续寻找合适的特化版本，直到所有的模板版本都替换失败编译器才报错。<br></p>
-        
-          <a class="article-more-a" href="/2020/08/31/Cpp/Black%20magic/SFINAE/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Black magic</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/template//" class="article-tag-list-link color4">template</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/31/Cpp/Black%20magic/SFINAE/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Heap/BinaryHeap" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/28/Heap/BinaryHeap/">BinaryHeap</a>
-    </h1>
-  
-
-        
-        <a href="/2020/08/28/Heap/BinaryHeap/" class="archive-article-date">
-  	<time datetime="2020-08-28T06:11:57.254Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-28</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="二叉堆"><a href="#二叉堆" class="headerlink" title="二叉堆"></a>二叉堆</h1><p>支持合并有左式堆和二项队列，我们实现二叉堆用最基本的数组就行了。<br></p>
-        
-          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/28/Heap/BinaryHeap/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Heap/BinomialQueue" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/24/Heap/BinomialQueue/">Binomial Queues</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/24/Heap/BinomialQueue/" class="archive-article-date">
-  	<time datetime="2020-07-24T14:36:47.243Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-24</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="二项队列-Binomial-Queues"><a href="#二项队列-Binomial-Queues" class="headerlink" title="二项队列(Binomial Queues)"></a>二项队列(Binomial Queues)</h1><h2 id="名字由来"><a href="#名字由来" class="headerlink" title="名字由来"></a>名字由来</h2><p>首先我们来认识一下二项队列是个什么东西，二项队列不是一颗满足堆序性质的树，而是由这些树组成的<strong>森林(forest)</strong>。</p>
-        
-          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">堆</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构//" class="article-tag-list-link color5">数据结构</a>
-        		</li>
-      		 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数据结构/堆//" class="article-tag-list-link color2">堆</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/24/Heap/BinomialQueue/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
-      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/7/">7</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
+      <a class="extend prev" rel="prev" href="/page/2/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><span class="page-number current">3</span><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/4/">Next &amp;raquo;</a>
     </nav>
   
 
@@ -1155,7 +1160,7 @@
   <div class="outer">
     <div id="footer-info">
     	<div class="footer-left">
-    		&copy; 2021 Conzxy
+    		&copy; 2022 Conzxy
     	</div>
       	<div class="footer-right">
           <!-- # PV方式，单个用户连续点击 n 篇，记录 n 次记录值 -->
@@ -1411,10 +1416,6 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Concurrent</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">OOP</a>
               </li>
              
@@ -1424,6 +1425,26 @@ MathJax.Hub.Queue(function() {
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">os</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">process</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Single linked list</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Data structure</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">concurrent</a>
               </li>
             
             <div class="clearfix"></div>
