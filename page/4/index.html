@@ -233,20 +233,20 @@
           <div id="js-content" class="content-ll">
             
   
-    <article id="post-Cpp/Black magic/SFINAE" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+    <article id="post-CLRS/Sort/Insertion Sort" class="article article-type-post  article-index" itemscope itemprop="blogPost">
   <div class="article-inner">
     
       <header class="article-header">
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2020/08/31/Cpp/Black%20magic/SFINAE/">SFINAE</a>
+      <a class="article-title" href="/2020/12/20/CLRS/Sort/Insertion%20Sort/">Insertion Sort</a>
     </h1>
   
 
         
-        <a href="/2020/08/31/Cpp/Black%20magic/SFINAE/" class="archive-article-date">
-  	<time datetime="2020-08-31T12:50:13.861Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-08-31</time>
+        <a href="/2020/12/20/CLRS/Sort/Insertion%20Sort/" class="archive-article-date">
+  	<time datetime="2020-12-20T04:39:11.930Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-12-20</time>
 </a>
         
         
@@ -254,9 +254,9 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <h1 id="Substitution-Failure-is-not-an-Error"><a href="#Substitution-Failure-is-not-an-Error" class="headerlink" title="Substitution Failure is not an Error"></a>Substitution Failure is not an Error</h1><h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p>SFINAE技术是指在编译期将函数模板的形参换成实参，如果替换失败不会算作编译错误，而是继续寻找合适的特化版本，直到所有的模板版本都替换失败编译器才报错。<br></p>
+        <h1 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h1><p>我们将欲排序的元素称为<code>Key</code>。插入排序的思想就是将<code>A[j]</code>（key）插入到前面<code>A[1..j-1]</code>有序序列的第一个使得该序列仍然保持有序的位置。</p>
         
-          <a class="article-more-a" href="/2020/08/31/Cpp/Black%20magic/SFINAE/#more">more >></a>
+          <a class="article-more-a" href="/2020/12/20/CLRS/Sort/Insertion%20Sort/#more">more >></a>
         
       
 
@@ -270,11 +270,88 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color2">Black magic</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">algorithm</a>
         		</li>
       		 
         		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">template</a>
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color5">sort</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/12/20/CLRS/Sort/Insertion%20Sort/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Effective Cpp/Item 5" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/29/Effective%20Cpp/Item%205/">item 5:Know what functions C++ silently writes and calls</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/29/Effective%20Cpp/Item%205/" class="archive-article-date">
+  	<time datetime="2020-10-29T11:46:46.362Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="了解C-默默编写并调用了哪些函数"><a href="#了解C-默默编写并调用了哪些函数" class="headerlink" title="了解C++默默编写并调用了哪些函数"></a>了解C++默默编写并调用了哪些函数</h1>
+        
+          <a class="article-more-a" href="/2020/10/29/Effective%20Cpp/Item%205/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
         		</li>
       		
 		</ul>
@@ -286,7 +363,11 @@
 		<ul class="article-tag-list">
 			 
         		<li class="article-tag-list-item">
-        			<a href="/categories/template//" class="article-tag-list-link color4">template</a>
+        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C/Constructors-Destructors-and-Assignment-Operators//" class="article-tag-list-link color5">Constructors,Destructors,and Assignment Operators</a>
         		</li>
       		
 		</ul>
@@ -295,7 +376,237 @@
 
       
         <p class="article-more-link">
-          <a class="article-more-a" href="/2020/08/31/Cpp/Black%20magic/SFINAE/">展开全文 >></a>
+          <a class="article-more-a" href="/2020/10/29/Effective%20Cpp/Item%205/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Effective Cpp/Item 4" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/29/Effective%20Cpp/Item%204/">item 4 Make sure that objects are initialized before they&#39;re used</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/29/Effective%20Cpp/Item%204/" class="archive-article-date">
+  	<time datetime="2020-10-29T11:46:35.275Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-29</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="确定对象被使用前已被初始化"><a href="#确定对象被使用前已被初始化" class="headerlink" title="确定对象被使用前已被初始化"></a>确定对象被使用前已被初始化</h1><h2 id="基本保证"><a href="#基本保证" class="headerlink" title="基本保证"></a>基本保证</h2><p><strong>永远在使用对象之前先将它初始化</strong>：</p>
+<ul>
+<li><p>对于无任何成员的内置类型，你必须手工完成此事</p>
+</li>
+<li><p>对于内置类型以外的自定义类型，则确保每一个构造函数都能将所有成员初始化</p>
+</li>
+</ul>
+<h2 id="初值列表"><a href="#初值列表" class="headerlink" title="初值列表"></a>初值列表</h2><p>构造函数优先选择初值列表（<code>member initialization list</code>）</p>
+<p>有这样几个优点：</p>
+<ul>
+<li><p>省去了拷贝赋值的开销以及没有多余的默认构造</p>
+</li>
+<li><p>如果成员类型为const或引用，不得不初始化</p>
+</li>
+</ul>
+<p>承诺：</p>
+<ul>
+<li><p>总是在初值列表中初始化所有成员</p>
+</li>
+<li><p>按照成员声明次序进行初始化</p>
+</li>
+</ul>
+<h2 id="non-local-static对象的处理方式"><a href="#non-local-static对象的处理方式" class="headerlink" title="non-local static对象的处理方式"></a>non-local static对象的处理方式</h2><p>这里指的non-local是相对于函数而言的，函数以内的static对象是local</p>
+<p>（但实际local只要是个block scope都是，不限于函数）</p>
+<p>注：这里static是指static storage duration不是声明为static，也不一定得是internal linkage</p>
+<p>我们的问题是：</p>
+<blockquote>
+<p>如果某翻译单元内的某个non-local static对象的初始化用到了另一个翻译单元的某个non-local static对象，可能是还没有初始化的</p>
+</blockquote>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileSystem</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    ...</span><br><span class="line">    <span class="function"><span class="built_in">std</span>::<span class="keyword">size_t</span> <span class="title">numDisks</span><span class="params">()</span><span class="keyword">const</span></span>;</span><br><span class="line">    ...</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">extern</span> FileSystem tfs;</span><br></pre></td></tr></table></figure>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Directory</span>&#123;</span></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">    Directory(paras);</span><br><span class="line">    ...    </span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">Directory::Directory(paras)&#123;</span><br><span class="line">    ...</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> disks=tfs.numDisks();</span><br><span class="line">    ...</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function">Directory <span class="title">tempDir</span><span class="params">(paras)</span></span>&#123;...&#125;<span class="comment">//须在Directory构造之前初始化tfs</span></span><br></pre></td></tr></table></figure>
+<p>注意，C++并没有明确定义“在不同翻译单元内的non-local static对象的初始化次序”</p>
+<p>解决方法就是利用已明确定义的规则：函数内的local static对象会在“该函数被调用期间”“首次遇到对象定义式”时被初始化，即<strong>用local static对象代替non-local static对象</strong></p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">FileSystem</span>&#123;</span>...&#125;;</span><br><span class="line"><span class="function">FileSystem&amp; <span class="title">tfs</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> FileSystem fs;</span><br><span class="line">    <span class="keyword">return</span> fs;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Directory</span>&#123;</span>...&#125;;</span><br><span class="line">Directory::Directory(paras)&#123;</span><br><span class="line">    <span class="built_in">std</span>::<span class="keyword">size_t</span> disks=tfs().numDisks;   </span><br><span class="line">&#125;</span><br><span class="line"><span class="function">Directory&amp; <span class="title">tempDir</span><span class="params">()</span></span>&#123;</span><br><span class="line">    <span class="keyword">static</span> Directory td;</span><br><span class="line">    <span class="keyword">return</span> td;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="Things-to-Remember"><a href="#Things-to-Remember" class="headerlink" title="Things to Remember"></a>Things to Remember</h2><ul>
+<li><p>为内置类型对象进行手工初始化，即使在file scope中也是如此</p>
+</li>
+<li><p>构造函数应使用初值列表来进行初始化并且严格按照成员声明顺序</p>
+</li>
+<li><p>为避免“跨翻译单元的初始化次序”问题，用local static对象替代non-local static对象</p>
+</li>
+</ul>
+
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/Effective-C/Accustoming-Yourself-to-C//" class="article-tag-list-link color3">Accustoming Yourself to C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/29/Effective%20Cpp/Item%204/">展开全文 >></a>
+        </p>
+      
+
+      
+      <div class="clearfix"></div>
+    </div>
+  </div>
+</article>
+
+<aside class="wrap-side-operation">
+    <div class="mod-side-operation">
+        
+        <div class="jump-container" id="js-jump-container" style="display:none;">
+            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
+                <i class="icon-font icon-back"></i>
+            </a>
+            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
+                <i class="icon-font icon-plane jump-plane"></i>
+            </div>
+        </div>
+        
+        
+    </div>
+</aside>
+
+
+
+
+  
+    <article id="post-Cpp/OOP/primer ch15" class="article article-type-post  article-index" itemscope itemprop="blogPost">
+  <div class="article-inner">
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2020/10/28/Cpp/OOP/primer%20ch15/">Object-Oriented Programming</a>
+    </h1>
+  
+
+        
+        <a href="/2020/10/28/Cpp/OOP/primer%20ch15/" class="archive-article-date">
+  	<time datetime="2020-10-28T12:12:43.712Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-10-28</time>
+</a>
+        
+        
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h1 id="OOP"><a href="#OOP" class="headerlink" title="OOP"></a>OOP</h1><h2 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h2><p>OOP，全名：<strong>Object-Oriented Programming</strong></p>
+<p>其核心思想为：</p>
+<ul>
+<li><p><strong>数据抽象（封装）</strong>：使得类的接口和实现分离</p>
+</li>
+<li><p><strong>继承</strong>：可以建立相似关系模型</p>
+</li>
+<li><p><strong>动态绑定（多态）</strong>：可以在一定程度忽略相似类型的区别从而以统一的方式使用</p></li></ul>
+        
+          <a class="article-more-a" href="/2020/10/28/Cpp/OOP/primer%20ch15/#more">more >></a>
+        
+      
+
+      
+    </div>
+    <div class="article-info article-info-index">
+      
+      
+	<div class="article-tag tagcloud">
+		<i class="icon-price-tags icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">C++</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+      
+	<div class="article-category tagcloud">
+		<i class="icon-book icon"></i>
+		<ul class="article-tag-list">
+			 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C//" class="article-tag-list-link color4">C++</a>
+        		</li>
+      		 
+        		<li class="article-tag-list-item">
+        			<a href="/categories/C/primer笔记//" class="article-tag-list-link color4">primer笔记</a>
+        		</li>
+      		
+		</ul>
+	</div>
+
+
+      
+        <p class="article-more-link">
+          <a class="article-more-a" href="/2020/10/28/Cpp/OOP/primer%20ch15/">展开全文 >></a>
         </p>
       
 
@@ -889,270 +1200,6 @@
 
 
   
-    <article id="post-Effective Cpp/item 10" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/08/Effective%20Cpp/item%2010/">item 10:Have assignment operators return a reference to *this</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/08/Effective%20Cpp/item%2010/" class="archive-article-date">
-  	<time datetime="2020-07-08T15:17:02.341Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-08</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="令operator-返回一个reference-to-this"><a href="#令operator-返回一个reference-to-this" class="headerlink" title="令operator=返回一个reference to *this"></a>令operator=返回一个reference to *this</h1><p>赋值运算符重载一般都是返回一个对*this的引用，这与资源管理优化及内置类型的要求是分不开的。<br></p>
-        
-          <a class="article-more-a" href="/2020/07/08/Effective%20Cpp/item%2010/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/08/Effective%20Cpp/item%2010/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-math/转动惯量" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">转动惯量</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/" class="archive-article-date">
-  	<time datetime="2020-07-05T03:40:55.484Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-05</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="常见转动惯量的推导"><a href="#常见转动惯量的推导" class="headerlink" title="常见转动惯量的推导"></a>常见转动惯量的推导</h1><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>闲来无事，本人记性差，想着转动惯量还是自己推一遍为好，见课件定积分求法过于麻烦（要找对应的一元微元），于是用重积分（二重、三重）以及曲线（面）积分来求以下七种常见类型的转动惯量，<br></p>
-        
-          <a class="article-more-a" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/数学//" class="article-tag-list-link color3">数学</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/05/math/%E8%BD%AC%E5%8A%A8%E6%83%AF%E9%87%8F/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
-    <article id="post-Effective Cpp/item 7" class="article article-type-post  article-index" itemscope itemprop="blogPost">
-  <div class="article-inner">
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2020/07/01/Effective%20Cpp/item%207/">item 7:Declare destructors virtual in polymorphic base classes</a>
-    </h1>
-  
-
-        
-        <a href="/2020/07/01/Effective%20Cpp/item%207/" class="archive-article-date">
-  	<time datetime="2020-06-30T16:03:20.221Z" itemprop="datePublished"><i class="icon-calendar icon"></i>2020-07-01</time>
-</a>
-        
-        
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h1 id="多态基类应当声明virtual析构函数"><a href="#多态基类应当声明virtual析构函数" class="headerlink" title="多态基类应当声明virtual析构函数"></a>多态基类应当声明virtual析构函数</h1><p>当继承体系中涉及动态分配对象时，设置一个基类virtual析构函数就显得很必要了。<br></p>
-        
-          <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/#more">more >></a>
-        
-      
-
-      
-    </div>
-    <div class="article-info article-info-index">
-      
-      
-	<div class="article-tag tagcloud">
-		<i class="icon-price-tags icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="javascript:void(0)" class="js-tag article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-      
-	<div class="article-category tagcloud">
-		<i class="icon-book icon"></i>
-		<ul class="article-tag-list">
-			 
-        		<li class="article-tag-list-item">
-        			<a href="/categories/Effective-C//" class="article-tag-list-link color4">Effective C++</a>
-        		</li>
-      		
-		</ul>
-	</div>
-
-
-      
-        <p class="article-more-link">
-          <a class="article-more-a" href="/2020/07/01/Effective%20Cpp/item%207/">展开全文 >></a>
-        </p>
-      
-
-      
-      <div class="clearfix"></div>
-    </div>
-  </div>
-</article>
-
-<aside class="wrap-side-operation">
-    <div class="mod-side-operation">
-        
-        <div class="jump-container" id="js-jump-container" style="display:none;">
-            <a href="javascript:void(0)" class="mod-side-operation__jump-to-top">
-                <i class="icon-font icon-back"></i>
-            </a>
-            <div id="js-jump-plan-container" class="jump-plan-container" style="top: -11px;">
-                <i class="icon-font icon-plane jump-plane"></i>
-            </div>
-        </div>
-        
-        
-    </div>
-</aside>
-
-
-
-
-  
   
     <nav id="page-nav">
       <a class="extend prev" rel="prev" href="/page/3/">&amp;laquo; Prev</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="page-number" href="/page/6/">6</a><span class="space">&hellip;</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/5/">Next &amp;raquo;</a>
@@ -1295,7 +1342,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1303,7 +1350,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">并查集</a>
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1319,6 +1366,10 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">串</a>
               </li>
              
@@ -1331,107 +1382,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">时间复杂度</a>
+                <a href="javascript:void(0)" class="js-tag color4">Database</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">数学</a>
+                <a href="javascript:void(0)" class="js-tag color2">bustub</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+                <a href="javascript:void(0)" class="js-tag color1">Index</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+                <a href="javascript:void(0)" class="js-tag color1">csapp</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">IO Multiplexing</a>
+                <a href="javascript:void(0)" class="js-tag color3">linking</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">netLib</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">graph</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">sort</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">Black magic</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">template</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">OOP</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">prototype design</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+                <a href="javascript:void(0)" class="js-tag color3">library</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -1451,7 +1422,83 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">Balanced Search tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">STL</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">Algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">dynamic programming</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">greedy algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">graph</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">BFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">algorithm</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">sort</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Search binary Tree</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color1">concurrent</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">namespace</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">declaration</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color4">OOP</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">prototype design</a>
               </li>
             
             <div class="clearfix"></div>
