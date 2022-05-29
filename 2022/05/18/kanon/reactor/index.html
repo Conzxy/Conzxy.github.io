@@ -16,11 +16,11 @@
 <meta property="og:description" content="Kanon(二)：Reactor模式">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://s2.loli.net/2022/05/29/o6krazbxiOv4FuY.png">
-<meta property="og:image" content="https://s2.loli.net/2022/05/29/pwdCWGTMeqRurB8.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/29/FGdYUQys9cC8PZN.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/20/JisRkSIoYWcr2Ov.png">
-<meta property="og:image" content="https://s2.loli.net/2022/05/29/s5j9v4GcHmiMIgx.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/29/SZMqnXui1R7bdfJ.png">
 <meta property="article:published_time" content="2022-05-18T10:48:41.855Z">
-<meta property="article:modified_time" content="2022-05-29T05:52:53.648Z">
+<meta property="article:modified_time" content="2022-05-29T06:13:58.190Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="network">
 <meta property="article:tag" content="kanon">
@@ -284,7 +284,7 @@
 <li><code>Request Handler</code> - 各种回调</li>
 </ul>
 <p>由于事件不止触发一次，后面仍然有事件触发，需要不断循环，即所谓的<code>EventLoop</code>。</p>
-<p><img src="https://s2.loli.net/2022/05/29/pwdCWGTMeqRurB8.png" alt="event_loop.png"><br><code>kanon</code>的事件循环分为三个阶段：</p>
+<p><img src="https://s2.loli.net/2022/05/29/FGdYUQys9cC8PZN.png" alt="event_loop.png"><br><code>kanon</code>的事件循环分为三个阶段：</p>
 <ul>
 <li><code>等待事件阶段</code>：通过<code>poll()</code>或<code>epoll_wait()</code>阻塞当前进程，等待有事件触发，进入下一个阶段</li>
 <li><code>事件处理阶段</code>：<code>Channel</code>根据具体的事件类型分发到各个回调，处理各种事件</li>
@@ -304,7 +304,7 @@
 <li>使用其Public方法，比如<code>Channel</code>会使用<code>EventLoop</code>的<code>XXXChannel()</code></li>
 <li>保证<code>One loop per thread</code>不变式成立（通过<code>AssertInThread()</code>）</li>
 </ul>
-<h2 id="多线程Reactor-Mutithread-Reactor"><a href="#多线程Reactor-Mutithread-Reactor" class="headerlink" title="多线程Reactor(Mutithread-Reactor)"></a>多线程Reactor(Mutithread-Reactor)</h2><p>显然，<strong>单线程Reactor</strong>处理IO事件在大多数场景是足够的，但是在多核机器上没有充分利用多核优势。<br>我们将处理IO事件的线程称为<code>IO线程</code>，在单线程模式下，主线程就是唯一的<code>IO线程</code>，而<strong>多线程Reactor</strong>模式下，我们将<strong>除主线程外的其他线程作为IO线程去处理IO事件，主线程接受连接并通过特定的调度策略将接受到的连接分发到不同的IO线程中去</strong>，这样就利用了多核优势，每个IO线程处理一定数量的连接，可以认为起到了均衡负载器的作用。<br>这就是所谓的<code>One loop per thread</code>策略：通过多个IO线程处理各自的IO事件，可以在同一时间响应多个客户端请求（并发执行）。<br><img src="https://s2.loli.net/2022/05/29/s5j9v4GcHmiMIgx.png" alt="mutithread_reactor.png"></p>
+<h2 id="多线程Reactor-Mutithread-Reactor"><a href="#多线程Reactor-Mutithread-Reactor" class="headerlink" title="多线程Reactor(Mutithread-Reactor)"></a>多线程Reactor(Mutithread-Reactor)</h2><p>显然，<strong>单线程Reactor</strong>处理IO事件在大多数场景是足够的，但是在多核机器上没有充分利用多核优势。<br>我们将处理IO事件的线程称为<code>IO线程</code>，在单线程模式下，主线程就是唯一的<code>IO线程</code>，而<strong>多线程Reactor</strong>模式下，我们将<strong>除主线程外的其他线程作为IO线程去处理IO事件，主线程接受连接并通过特定的调度策略将接受到的连接分发到不同的IO线程中去</strong>，这样就利用了多核优势，每个IO线程处理一定数量的连接，可以认为起到了均衡负载器的作用。<br>这就是所谓的<code>One loop per thread</code>策略：通过多个IO线程处理各自的IO事件，可以在同一时间响应多个客户端请求（并发执行）。<br><img src="https://s2.loli.net/2022/05/29/SZMqnXui1R7bdfJ.png" alt="mutithread_reactor.png"></p>
 <p>一般IO线程的分配需要根据<strong>机器的核数</strong>和<strong>服务类型</strong>来确定。</p>
 <ul>
 <li><code>IO密集型</code>服务，由于主要是IO操作，可以让出cpu给其他线程，cpu占用率低，创建超过机器核数倍数的IO线程可以使多个线程被充分利用</li>
@@ -637,11 +637,11 @@ MathJax.Hub.Queue(function() {
           <ul class="article-tag-list" q-show="showTags">
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Effective C++</a>
+                <a href="javascript:void(0)" class="js-tag color4">C++</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -649,19 +649,19 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">DFS</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color4">并查集</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
+                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">最小生成树</a>
+                <a href="javascript:void(0)" class="js-tag color4">DFS</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color5">最短路径</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -681,15 +681,27 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color2">串</a>
-              </li>
-             
-              <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color3">查找</a>
               </li>
              
               <li class="article-tag-list-item">
                 <a href="javascript:void(0)" class="js-tag color2">树</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color2">串</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">csapp</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">linking</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">library</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -705,15 +717,11 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">csapp</a>
+                <a href="javascript:void(0)" class="js-tag color3">network</a>
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">linking</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">library</a>
+                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -773,15 +781,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">stack</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -789,7 +789,15 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">Big Five</a>
+                <a href="javascript:void(0)" class="js-tag color5">名字查找</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color1">stack</a>
+              </li>
+             
+              <li class="article-tag-list-item">
+                <a href="javascript:void(0)" class="js-tag color3">parse string</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -801,7 +809,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
+                <a href="javascript:void(0)" class="js-tag color4">smart pointer</a>
               </li>
              
               <li class="article-tag-list-item">
@@ -813,15 +821,7 @@ MathJax.Hub.Queue(function() {
               </li>
              
               <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color4">smart pointer</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color3">network</a>
-              </li>
-             
-              <li class="article-tag-list-item">
-                <a href="javascript:void(0)" class="js-tag color1">kanon</a>
+                <a href="javascript:void(0)" class="js-tag color5">HDOJ</a>
               </li>
             
             <div class="clearfix"></div>
