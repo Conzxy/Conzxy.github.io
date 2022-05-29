@@ -15,17 +15,17 @@
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
 <meta property="og:description" content="Kanon(二)：Reactor模式">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2022/05/29/LopAW8lBYOI7P32.png">
-<meta property="og:image" content="https://s2.loli.net/2022/05/18/WIhDTn6VeaULZmQ.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/29/o6krazbxiOv4FuY.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/29/pwdCWGTMeqRurB8.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/20/JisRkSIoYWcr2Ov.png">
-<meta property="og:image" content="https://s2.loli.net/2022/05/18/L8nRUsdkriJVW75.png">
+<meta property="og:image" content="https://s2.loli.net/2022/05/29/s5j9v4GcHmiMIgx.png">
 <meta property="article:published_time" content="2022-05-18T10:48:41.855Z">
-<meta property="article:modified_time" content="2022-05-29T05:24:46.318Z">
+<meta property="article:modified_time" content="2022-05-29T05:52:53.648Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="network">
 <meta property="article:tag" content="kanon">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2022/05/29/LopAW8lBYOI7P32.png">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/29/o6krazbxiOv4FuY.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -264,9 +264,10 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Kanon-二-：Reactor模式"><a href="#Kanon-二-：Reactor模式" class="headerlink" title="Kanon(二)：Reactor模式"></a>Kanon(二)：Reactor模式</h1><a id="more"></a>
-<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><code>Reactor</code>直译为<code>反应器/堆</code>，之所以这么起名是因为<code>Reactor</code>模式本身是一个<strong>对已触发事件反应的事件处理设计模式</strong>。</p>
-<p><code>Reactor</code>通过<code>同步的事件解多路复用器</code>接受多个输入<code>源</code>，然后根据每个输入源的请求分发到具体的<code>事件处理器</code>。</p>
-<p><img src="https://s2.loli.net/2022/05/29/LopAW8lBYOI7P32.png" alt="reactor_1.png"></p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><code>Reactor</code>直译为<code>反应器/堆</code>，之所以这么起名我想是因为<code>Reactor</code>模式是一个<strong>对触发事件反应的事件处理设计模式</strong>。<br><code>Reactor</code>通过<code>事件解多路复用器</code>获取多个准备就绪的<code>输入源</code>，然后根据每个<code>输入源</code>的<strong>请求（即触发的事件）</strong>分发到具体的<code>事件处理器</code>。<br>因此<code>Reactor</code>模式的核心就是<code>事件分发</code>。</p>
+<p><code>Reactor</code>可以说是<code>网络同步并发模型</code>最广泛被使用的，比如<code>libevent</code>，<code>redis</code>均采用了该模型。与之相对的是”真正“<code>异步</code>的<code>Proactor</code>模式，这个被<code>ASIO</code>采用。<br>对于<code>Unix/Linux</code>等Unix-like平台而言，更为偏爱<code>Reactor</code>，因为它们提供的多路复用API就是同步的，而对于<code>Windows</code>的<code>IOCP</code>而言，更适合于<code>Proactor</code>。</p>
+<p>由于<code>kanon</code>暂时不考虑跨平台，所以采用<code>Reactor</code>不需要考虑如何兼容<code>Windows</code>的<code>IOCP</code>。</p>
+<p><img src="https://s2.loli.net/2022/05/29/o6krazbxiOv4FuY.png" alt="reactor_1.png"></p>
 <h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><p>根据<a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="noopener">Wikipedia</a>，Reactor模式由以下构成：</p>
 <ul>
 <li><code>Resources</code>：提供输入或消费输出的资源，对应的是<code>Socket fd</code>。</li>
@@ -274,7 +275,7 @@
 <li><code>Dispatcher</code>：主要负责注册和注销事件处理器，以及根据触发的事件分发到具体的事件处理器。</li>
 <li><code>Request Handler</code>：具体的事件处理器，一个事件处理器只会关联一个资源。</li>
 </ul>
-<p>当然，还得有个组件提供<em>注册感兴趣的事件</em>和<em>注销事件</em>的功能。<br>从OS提供的<code>API</code>的角度来看待，要注册或注销事件必须通过<code>struct pollfd</code>或<code>epoll_ctl()</code>，也就是说<code>解复用器</code>提供这些功能的API。<br>为了简化<code>解复用器</code>的负责工作，由<code>事件分发器</code>提供事件的注册和注销：转发给<code>解复用器</code>（在下面你会看到<code>kanon</code>是怎么做的）。从语义上来看，<code>事件分发器</code>提供这些服务也是容易理解的。</p>
+<p>当然，还得有个组件提供<em>注册感兴趣的事件</em>和<em>注销事件</em>的功能。<br>从OS提供的<code>API</code>的角度来看待，要注册或注销事件必须通过<code>struct pollfd</code>或<code>epoll_ctl()</code>，也就是说<code>解复用器</code>提供这些功能的API。<br>为了简化<code>解复用器</code>的负责工作，由<code>事件分发器</code>提供事件的注册和注销：转发给<code>解复用器</code>（在下面你会看到<code>kanon</code>是怎么做的）。从语义上来看，<code>事件分发器</code>提供这些服务也是容易接受的。</p>
 <h2 id="kanon的对应设施"><a href="#kanon的对应设施" class="headerlink" title="kanon的对应设施"></a>kanon的对应设施</h2><p>在<code>kanon</code>中可以对应为：</p>
 <ul>
 <li><code>Resources</code> - <code>Channel</code>中的socket fd</li>
@@ -283,7 +284,7 @@
 <li><code>Request Handler</code> - 各种回调</li>
 </ul>
 <p>由于事件不止触发一次，后面仍然有事件触发，需要不断循环，即所谓的<code>EventLoop</code>。</p>
-<p><img src="https://s2.loli.net/2022/05/18/WIhDTn6VeaULZmQ.png" alt="image.png"><br><code>kanon</code>的事件循环分为三个阶段：</p>
+<p><img src="https://s2.loli.net/2022/05/29/pwdCWGTMeqRurB8.png" alt="event_loop.png"><br><code>kanon</code>的事件循环分为三个阶段：</p>
 <ul>
 <li><code>等待事件阶段</code>：通过<code>poll()</code>或<code>epoll_wait()</code>阻塞当前进程，等待有事件触发，进入下一个阶段</li>
 <li><code>事件处理阶段</code>：<code>Channel</code>根据具体的事件类型分发到各个回调，处理各种事件</li>
@@ -303,7 +304,7 @@
 <li>使用其Public方法，比如<code>Channel</code>会使用<code>EventLoop</code>的<code>XXXChannel()</code></li>
 <li>保证<code>One loop per thread</code>不变式成立（通过<code>AssertInThread()</code>）</li>
 </ul>
-<h2 id="多线程Reactor-Mutithread-Reactor"><a href="#多线程Reactor-Mutithread-Reactor" class="headerlink" title="多线程Reactor(Mutithread-Reactor)"></a>多线程Reactor(Mutithread-Reactor)</h2><p>显然，<strong>单线程Reactor</strong>处理IO事件在大多数场景是足够的，但是在多核机器上没有充分利用多核优势。<br>我们将处理IO事件的线程称为<code>IO线程</code>，在单线程模式下，主线程就是唯一的<code>IO线程</code>，而<strong>多线程Reactor</strong>模式下，我们将<strong>除主线程外的其他线程作为IO线程去处理IO事件，主线程接受连接并通过特定的调度策略将接受到的连接分发到不同的IO线程中去</strong>，这样就利用了多核优势，每个IO线程处理一定数量的连接，可以认为起到了均衡负载器的作用。<br>这就是所谓的<code>One loop per thread</code>策略：通过多个IO线程处理各自的IO事件，可以在同一时间响应多个客户端请求（并发执行）。<br><img src="https://s2.loli.net/2022/05/18/L8nRUsdkriJVW75.png" alt="mutithread_reactor.png"></p>
+<h2 id="多线程Reactor-Mutithread-Reactor"><a href="#多线程Reactor-Mutithread-Reactor" class="headerlink" title="多线程Reactor(Mutithread-Reactor)"></a>多线程Reactor(Mutithread-Reactor)</h2><p>显然，<strong>单线程Reactor</strong>处理IO事件在大多数场景是足够的，但是在多核机器上没有充分利用多核优势。<br>我们将处理IO事件的线程称为<code>IO线程</code>，在单线程模式下，主线程就是唯一的<code>IO线程</code>，而<strong>多线程Reactor</strong>模式下，我们将<strong>除主线程外的其他线程作为IO线程去处理IO事件，主线程接受连接并通过特定的调度策略将接受到的连接分发到不同的IO线程中去</strong>，这样就利用了多核优势，每个IO线程处理一定数量的连接，可以认为起到了均衡负载器的作用。<br>这就是所谓的<code>One loop per thread</code>策略：通过多个IO线程处理各自的IO事件，可以在同一时间响应多个客户端请求（并发执行）。<br><img src="https://s2.loli.net/2022/05/29/s5j9v4GcHmiMIgx.png" alt="mutithread_reactor.png"></p>
 <p>一般IO线程的分配需要根据<strong>机器的核数</strong>和<strong>服务类型</strong>来确定。</p>
 <ul>
 <li><code>IO密集型</code>服务，由于主要是IO操作，可以让出cpu给其他线程，cpu占用率低，创建超过机器核数倍数的IO线程可以使多个线程被充分利用</li>
