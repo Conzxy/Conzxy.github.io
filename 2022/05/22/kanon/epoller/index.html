@@ -16,7 +16,7 @@
 <meta property="og:description" content="Kanon(六): Epoller(epoll wrapper)谈谈Epoller的实现细节。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-05-22T05:27:01.487Z">
-<meta property="article:modified_time" content="2022-05-22T05:46:07.193Z">
+<meta property="article:modified_time" content="2022-05-22T05:55:08.862Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="network">
 <meta property="article:tag" content="kanon">
@@ -276,10 +276,10 @@
 <li>否则表示当前有新事件注册或旧事件注销，调用<code>UpdateEpollEvent(EPOLL_MOD, ch)</code></li>
 </ul>
 <blockquote>
-<p>PS: 尽管当前所有事件都被注销了也不应调用<code>UpdateEpollEvent(EPOLL_CTL_DEL, ch)</code>，<br>这么做的好处是：</p>
+<p>PS: 当前所有事件都不关心了应不应该调用<code>UpdateEpollEvent(EPOLL_CTL_DEL, ch)</code>？<br>这么做的好处是：</p>
 <ul>
 <li>在之后没有新事件注册时，可以节省一次系统调用</li>
-<li>使用带来了心理负担，得考虑先<code>EnableXXX()</code>再<code>DisableXXX()</code>，不然会引发下面提到的坏处。</li>
+<li>带来了心理负担，得考虑先<code>EnableXXX()</code>再<code>DisableXXX()</code>，不然会引发下面提到的坏处。</li>
 </ul>
 <p>坏处是：</p>
 <ul>

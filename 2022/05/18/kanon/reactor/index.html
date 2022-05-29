@@ -15,16 +15,17 @@
 <meta property="og:site_name" content="(●ˇ∀ˇ●)Conzxy&#39;s blog">
 <meta property="og:description" content="Kanon(二)：Reactor模式">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/05/29/LopAW8lBYOI7P32.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/18/WIhDTn6VeaULZmQ.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/20/JisRkSIoYWcr2Ov.png">
 <meta property="og:image" content="https://s2.loli.net/2022/05/18/L8nRUsdkriJVW75.png">
 <meta property="article:published_time" content="2022-05-18T10:48:41.855Z">
-<meta property="article:modified_time" content="2022-05-21T04:59:25.991Z">
+<meta property="article:modified_time" content="2022-05-29T05:24:46.318Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="network">
 <meta property="article:tag" content="kanon">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2022/05/18/WIhDTn6VeaULZmQ.png">
+<meta name="twitter:image" content="https://s2.loli.net/2022/05/29/LopAW8lBYOI7P32.png">
   
     <link rel="alternative" href="/atom.xml" title="(●ˇ∀ˇ●)Conzxy&#39;s blog" type="application/atom+xml">
   
@@ -263,13 +264,17 @@
     <div class="article-entry" itemprop="articleBody">
       
         <h1 id="Kanon-二-：Reactor模式"><a href="#Kanon-二-：Reactor模式" class="headerlink" title="Kanon(二)：Reactor模式"></a>Kanon(二)：Reactor模式</h1><a id="more"></a>
-<p>根据<a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="noopener">Wikipedia</a>，Reactor模式由以下构成：</p>
+<h2 id="概念"><a href="#概念" class="headerlink" title="概念"></a>概念</h2><p><code>Reactor</code>直译为<code>反应器/堆</code>，之所以这么起名是因为<code>Reactor</code>模式本身是一个<strong>对已触发事件反应的事件处理设计模式</strong>。</p>
+<p><code>Reactor</code>通过<code>同步的事件解多路复用器</code>接受多个输入<code>源</code>，然后根据每个输入源的请求分发到具体的<code>事件处理器</code>。</p>
+<p><img src="https://s2.loli.net/2022/05/29/LopAW8lBYOI7P32.png" alt="reactor_1.png"></p>
+<h2 id="组件"><a href="#组件" class="headerlink" title="组件"></a>组件</h2><p>根据<a href="https://en.wikipedia.org/wiki/Reactor_pattern" target="_blank" rel="noopener">Wikipedia</a>，Reactor模式由以下构成：</p>
 <ul>
-<li><code>Resources</code>：提供输入或消费输出的资源，在该处即<code>Socket</code>。</li>
+<li><code>Resources</code>：提供输入或消费输出的资源，对应的是<code>Socket fd</code>。</li>
 <li><code>Synchronous Event Demultiplexer</code>：对应的是<code>select/poll/epoll</code>这些多路复用API，它们会阻塞当前进程，等待有资源可用（事件触发），然后送往事件分发器。</li>
 <li><code>Dispatcher</code>：主要负责注册和注销事件处理器，以及根据触发的事件分发到具体的事件处理器。</li>
-<li><code>Request Handler</code>：具体的事件处理器，一个事件处理器只会关联一个资源</li>
+<li><code>Request Handler</code>：具体的事件处理器，一个事件处理器只会关联一个资源。</li>
 </ul>
+<p>当然，还得有个组件提供<em>注册感兴趣的事件</em>和<em>注销事件</em>的功能。<br>从OS提供的<code>API</code>的角度来看待，要注册或注销事件必须通过<code>struct pollfd</code>或<code>epoll_ctl()</code>，也就是说<code>解复用器</code>提供这些功能的API。<br>为了简化<code>解复用器</code>的负责工作，由<code>事件分发器</code>提供事件的注册和注销：转发给<code>解复用器</code>（在下面你会看到<code>kanon</code>是怎么做的）。从语义上来看，<code>事件分发器</code>提供这些服务也是容易理解的。</p>
 <h2 id="kanon的对应设施"><a href="#kanon的对应设施" class="headerlink" title="kanon的对应设施"></a>kanon的对应设施</h2><p>在<code>kanon</code>中可以对应为：</p>
 <ul>
 <li><code>Resources</code> - <code>Channel</code>中的socket fd</li>
@@ -466,7 +471,7 @@
                 </span>
                 <span class="tooltip-content">
                     <div class="toc-article">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Kanon-二-：Reactor模式"><span class="toc-number">1.</span> <span class="toc-text">Kanon(二)：Reactor模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#kanon的对应设施"><span class="toc-number">1.1.</span> <span class="toc-text">kanon的对应设施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多线程Reactor-Mutithread-Reactor"><span class="toc-number">1.2.</span> <span class="toc-text">多线程Reactor(Mutithread-Reactor)</span></a></li></ol></li></ol>
+                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Kanon-二-：Reactor模式"><span class="toc-number">1.</span> <span class="toc-text">Kanon(二)：Reactor模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#概念"><span class="toc-number">1.1.</span> <span class="toc-text">概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#组件"><span class="toc-number">1.2.</span> <span class="toc-text">组件</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#kanon的对应设施"><span class="toc-number">1.3.</span> <span class="toc-text">kanon的对应设施</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#多线程Reactor-Mutithread-Reactor"><span class="toc-number">1.4.</span> <span class="toc-text">多线程Reactor(Mutithread-Reactor)</span></a></li></ol></li></ol>
                     </div>
                 </span>
             </div>
