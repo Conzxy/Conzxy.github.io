@@ -5,14 +5,14 @@
 <meta property="og:site_name" content="Conzxy&#39;s blog">
 <meta property="og:description" content="ForwardList 实现事先声明：本人并未参考STL实现，仅根据cppreferece的描述进行编写，且增加了我个人觉得方便的API，我是因为觉得std::forward_list&lt;&gt;不好用才打算写一个自己的">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png">
+<meta property="og:image" content="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png">
 <meta property="article:published_time" content="2022-01-28T14:55:19.231Z">
 <meta property="article:modified_time" content="2022-01-30T06:25:14.960Z">
 <meta property="article:author" content="Conzxy">
 <meta property="article:tag" content="Single linked list">
 <meta property="article:tag" content="Data structure">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png"><link rel="shortcut icon" href="https://s2.loli.net/2022/08/11/GzwcjJWagFYDrqA.png"><link rel="canonical" href="http://yoursite.com/2022/01/28/stl/forward_list/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+<meta name="twitter:image" content="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png"><link rel="shortcut icon" href="https://s2.loli.net/2022/08/11/GzwcjJWagFYDrqA.png"><link rel="canonical" href="http://yoursite.com/2022/01/28/stl/forward_list/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
   algolia: undefined,
   localSearch: undefined,
@@ -145,14 +145,16 @@
     detectApple()
     })(window)</script><!-- hexo injector head_end start -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
-<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">47</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">41</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw 首页"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw 归档"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw 标签"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw 分类"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Conzxy's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw 首页"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw 归档"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw 标签"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw 分类"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">My ForwardList Implemetation</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-28T14:55:19.231Z" title="发表于 2022-01-28 22:55:19">2022-01-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-30T06:25:14.960Z" title="更新于 2022-01-30 14:25:14">2022-01-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Container/">Container</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Container/forward-list/">forward_list</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="My ForwardList Implemetation"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/01/28/stl/forward_list/#post-comment"><span class="gitalk-comment-count"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="ForwardList-实现"><a href="#ForwardList-实现" class="headerlink" title="ForwardList 实现"></a>ForwardList 实现</h1><p><strong>事先声明：本人并未参考STL实现，仅根据cppreferece的描述进行编写，且增加了我个人觉得方便的API，我是因为觉得std::forward_list&lt;&gt;不好用才打算写一个自己的</strong></p>
-<a id="more"></a>
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">47</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">41</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw 首页"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw 归档"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw 标签"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw 分类"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Conzxy's blog</a></span><div id="menus"><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw 首页"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw 归档"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw 标签"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw 分类"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">My ForwardList Implemetation</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-01-28T14:55:19.231Z" title="发表于 2022-01-28 22:55:19">2022-01-28</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-01-30T06:25:14.960Z" title="更新于 2022-01-30 14:25:14">2022-01-30</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Container/">Container</a><i class="fas fa-angle-right post-meta-separator"></i><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/Container/forward-list/">forward_list</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">5.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>25分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="My ForwardList Implemetation"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/01/28/stl/forward_list/#post-comment"><span class="gitalk-comment-count"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="ForwardList-实现"><a href="#ForwardList-实现" class="headerlink" title="ForwardList 实现"></a>ForwardList 实现</h1><p><strong>事先声明：本人并未参考STL实现，仅根据cppreferece的描述进行编写，且增加了我个人觉得方便的API，我是因为觉得std::forward_list&lt;&gt;不好用才打算写一个自己的</strong></p>
+<span id="more"></span>
 <h1 id="设计"><a href="#设计" class="headerlink" title="设计"></a>设计</h1><p>首先，<code>ForwardList</code>是带哨兵（<code>header</code>）的单向不循环链表（循环对于单向没啥用），<code>std::forward_list&lt;&gt;</code>估计也是如此，因为有<code>std::forward_list&lt;&gt;::before_begin()</code>。</p>
 <p>之所以带哨兵，原因数据结构也学过：<strong>简化操作，可以减少一些边界条件的判别</strong></p>
 <p>这里还有一个好处就是<strong>哨兵维护一些元数据（metadata）。</strong></p>
 <p>标准库为了遵循<code>zero-overhead</code>原则，没有维护总结点数，也没有维护header的前一节点（previous）。</p>
 <p>你可以通过下面的代码验证：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">std</span>::forward_list&lt;<span class="keyword">int</span>&gt; <span class="built_in">list</span>;</span><br><span class="line"><span class="keyword">static_assert</span>(<span class="keyword">sizeof</span> <span class="built_in">list</span> == <span class="number">8</span>, <span class="string">""</span>);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">std::forward_list&lt;int&gt; list;
+static_assert(sizeof list == 8, &quot;&quot;);
+</code></pre>
 <p>可是在很多情况下，这两个元数据很有作用，若要自己维护，显得多余，而且previous标准库并未暴露相关API，所以别想了。</p>
 <p>这两个元数据的overhead也不过16byte（32位机则是8byte）</p>
 <p>所以header有三个数据成员： <code>next</code>， <code>previous</code>， <code>count</code></p>
@@ -164,65 +166,409 @@
 <li>对于<strong>类模板（class template）</strong>，由于共同基类没有涉及模板参数且链表的大部分算法都是不涉及值（源码可以看到），所以我们可以将算法从类模板<code>ForwardList&lt;&gt;</code>中分离出来，这样一来，就不用类模板针对每个模板实参生成不同的具体算法，而是共用一个分离的那个算法，一定程度上缓解了源码膨胀问题</li>
 </ul>
 <p>这种设计技巧在<a href>红黑树</a>中也有用到。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// include/forward_list/node_def.h</span></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Throught BaseLinkedNode to split the detail of algorithm</span></span><br><span class="line"><span class="comment"> * from class template(ForwardList&lt;&gt;)</span></span><br><span class="line"><span class="comment"> * @note In C++, "typedef struct XXX &#123; &#125; XXX;" is not necessary in fact.</span></span><br><span class="line"><span class="comment"> * @see src/forward_list/algorithm.cc</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">typedef</span> <span class="class"><span class="keyword">struct</span> <span class="title">BaseLinkedNode</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> <span class="title">BaseLinkedNode</span>* <span class="title">next</span> = <span class="title">nullptr</span>;</span></span><br><span class="line">&#125; BaseLinkedNode;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Represents the plain node</span></span><br><span class="line"><span class="comment"> * which has value(related template parameter)</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">LinkedNode</span> :</span> BaseLinkedNode &#123;</span><br><span class="line">  T val;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * Represents the header sentinel.</span></span><br><span class="line"><span class="comment"> * Different from the plain node(LinkedNode&lt;&gt;), header doesn't maintains value domain,</span></span><br><span class="line"><span class="comment"> * it just maintains previous/next and count of elements.</span></span><br><span class="line"><span class="comment"> * @warning This is not STL-required, just useful for me.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">Header</span> :</span> BaseLinkedNode &#123;</span><br><span class="line">    BaseLinkedNode* prev = <span class="literal">nullptr</span>;</span><br><span class="line">    <span class="keyword">size_t</span> count = <span class="number">0</span>;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">// include/forward_list/node_def.h
+/**
+ * Throught BaseLinkedNode to split the detail of algorithm
+ * from class template(ForwardList&lt;&gt;)
+ * @note In C++, &quot;typedef struct XXX &#123; &#125; XXX;&quot; is not necessary in fact.
+ * @see src/forward_list/algorithm.cc
+ */
+typedef struct BaseLinkedNode &#123;
+  struct BaseLinkedNode* next = nullptr;
+&#125; BaseLinkedNode;
+
+/**
+ * Represents the plain node
+ * which has value(related template parameter)
+ */
+template&lt;typename T&gt;
+struct LinkedNode : BaseLinkedNode &#123;
+  T val;
+&#125;;
+
+/**
+ * Represents the header sentinel.
+ * Different from the plain node(LinkedNode&lt;&gt;), header doesn&#39;t maintains value domain,
+ * it just maintains previous/next and count of elements.
+ * @warning This is not STL-required, just useful for me.
+ */
+struct Header : BaseLinkedNode &#123;
+    BaseLinkedNode* prev = nullptr;
+    size_t count = 0;
+&#125;;
+</code></pre>
 <p>然后还有一个问题需要思考，<code>header</code>初始状态如何？</p>
 <p><code>count</code>和<code>next</code>不用想，关键是<code>prev</code>，</p>
 <p><code>prev</code>置为<code>nullptr</code>合适吗？不合适，因为当链表为空时调用<strong>insert_after(before_end(), 1)</strong>，那么就完蛋了，这时候我们希望的行为是插在<code>header</code>后面，所以<code>prev</code>应当指向<code>header</code>本身（链表为空时）</p>
 <h1 id="基础算法"><a href="#基础算法" class="headerlink" title="基础算法"></a>基础算法</h1><p>我们需要关注的基础算法如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/** </span></span><br><span class="line"><span class="comment"> * Because only the value of node is related with template parameter, </span></span><br><span class="line"><span class="comment"> * we can use @c BaseLinkedNode to split the detail of algorithm to avoid every class template </span></span><br><span class="line"><span class="comment"> * instantiation with implemetation itself.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * The push/insert_xxx() and extract_xxx() no need to consider the value of node</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_front</span><span class="params">(Header* header, BaseLinkedNode* new_node)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(Header* header, BaseLinkedNode* new_node)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_after</span><span class="params">(Header* header, BaseLinkedNode* pos, BaseLinkedNode* new_node)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="function">BaseLinkedNode* <span class="title">extract_front</span><span class="params">(Header* header)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">BaseLinkedNode* <span class="title">extract_after</span><span class="params">(Header* header, BaseLinkedNode* pos)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function">BaseLinkedNode* <span class="title">extract_after</span><span class="params">(Header* header, BaseLinkedNode* first, BaseLinkedNode* lsat)</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">/** 
+ * Because only the value of node is related with template parameter, 
+ * we can use @c BaseLinkedNode to split the detail of algorithm to avoid every class template 
+ * instantiation with implemetation itself.
+ *
+ * The push/insert_xxx() and extract_xxx() no need to consider the value of node
+ */
+void push_front(Header* header, BaseLinkedNode* new_node) noexcept;
+void push_back(Header* header, BaseLinkedNode* new_node) noexcept;
+void insert_after(Header* header, BaseLinkedNode* pos, BaseLinkedNode* new_node) noexcept;
+
+BaseLinkedNode* extract_front(Header* header) noexcept;
+BaseLinkedNode* extract_after(Header* header, BaseLinkedNode* pos) noexcept;
+BaseLinkedNode* extract_after(Header* header, BaseLinkedNode* first, BaseLinkedNode* lsat) noexcept;
+</code></pre>
 <p>这些算法全是基于节点的，不涉及分配/释放/构造/析构这些操作，因为这些涉及值（即涉及模板实参），应由<code>ForwardList</code>处理</p>
 <p>根据数据结构的知识，这些都是不难写出的，这里还是统一讲解下。</p>
-<h2 id="push-front"><a href="#push-front" class="headerlink" title="push_front"></a>push_front</h2><p>即所谓头插，需要注意的是当链表为空时，需要更新prev<br>验证链表是否为空，可以用该宏：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> FORWARD_LIST_EMPTY (header-&gt;next == nullptr)</span></span><br></pre></td></tr></table></figure><br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_front</span><span class="params">(Header* header, BaseLinkedNode* new_node)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// Update header_-&gt;prev only when list is empty</span></span><br><span class="line">  <span class="keyword">if</span> (FORWARD_LIST_EMPTY) &#123;</span><br><span class="line">    assert(header-&gt;prev == header);</span><br><span class="line">    header-&gt;prev = new_node;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  new_node-&gt;next = header-&gt;next;</span><br><span class="line">  header-&gt;next = new_node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h2 id="push-front"><a href="#push-front" class="headerlink" title="push_front"></a>push_front</h2><p>即所谓头插，需要注意的是当链表为空时，需要更新prev<br>验证链表是否为空，可以用该宏：</p>
+<pre><code class="lang-cpp">#define FORWARD_LIST_EMPTY (header-&gt;next == nullptr)
+</code></pre>
+<pre><code class="lang-cpp">void push_front(Header* header, BaseLinkedNode* new_node) noexcept
+&#123;
+  // Update header_-&gt;prev only when list is empty
+  if (FORWARD_LIST_EMPTY) &#123;
+    assert(header-&gt;prev == header);
+    header-&gt;prev = new_node;
+  &#125;
+
+  new_node-&gt;next = header-&gt;next;
+  header-&gt;next = new_node;
+&#125;
+</code></pre>
 <h2 id="push-back"><a href="#push-back" class="headerlink" title="push_back"></a>push_back</h2><p>即尾插，考虑两种情况：</p>
 <ul>
 <li>链表为空, 更新<code>header-&gt;next</code></li>
-<li>链表不为空， 更新<code>header-&gt;prev-&gt;next</code><br>之后更新<code>header-&gt;prev</code>即可<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(Header* header, BaseLinkedNode* new_node)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (header-&gt;prev != header) &#123;</span><br><span class="line">    header-&gt;prev-&gt;next = new_node;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    assert(header-&gt;prev == header);</span><br><span class="line">    assert(FORWARD_LIST_EMPTY);</span><br><span class="line">    header-&gt;next = new_node;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  header-&gt;prev = new_node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="insert-after"><a href="#insert-after" class="headerlink" title="insert_after"></a>insert_after</h2>由于单向链表不像双向链表每个节点都有两个指针，所以在不知道要删除节点的前结点的情况下删除是$O(n)$的.</li>
+<li><p>链表不为空， 更新<code>header-&gt;prev-&gt;next</code><br>之后更新<code>header-&gt;prev</code>即可</p>
+<pre><code class="lang-cpp">void push_back(Header* header, BaseLinkedNode* new_node) noexcept
+&#123;
+if (header-&gt;prev != header) &#123;
+  header-&gt;prev-&gt;next = new_node;
+&#125;
+else &#123;
+  assert(header-&gt;prev == header);
+  assert(FORWARD_LIST_EMPTY);
+  header-&gt;next = new_node;
+&#125;
+
+header-&gt;prev = new_node;
+&#125;
+</code></pre>
+<h2 id="insert-after"><a href="#insert-after" class="headerlink" title="insert_after"></a>insert_after</h2><p>由于单向链表不像双向链表每个节点都有两个指针，所以在不知道要删除节点的前结点的情况下删除是$O(n)$的.</p>
+</li>
 </ul>
 <p>当pos为<code>header-&gt;prev</code>的时候，表现为尾插（push_back)，所以需要更新<code>prev</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_after</span><span class="params">(Header* header, BaseLinkedNode* pos, BaseLinkedNode* new_node)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// Push to back, update header_-&gt;prev</span></span><br><span class="line">  <span class="comment">// If pos == header, and FORWARD_LIST_EMPTY == true</span></span><br><span class="line">  <span class="comment">// pos == heaer-&gt;prev also equal to true</span></span><br><span class="line">  <span class="keyword">if</span> (pos == header-&gt;prev) &#123;</span><br><span class="line">    header-&gt;prev = new_node;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  new_node-&gt;next = pos-&gt;next;</span><br><span class="line">  pos-&gt;next = new_node;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">void insert_after(Header* header, BaseLinkedNode* pos, BaseLinkedNode* new_node) noexcept
+&#123;
+  // Push to back, update header_-&gt;prev
+  // If pos == header, and FORWARD_LIST_EMPTY == true
+  // pos == heaer-&gt;prev also equal to true
+  if (pos == header-&gt;prev) &#123;
+    header-&gt;prev = new_node;
+  &#125;
+
+  new_node-&gt;next = pos-&gt;next;
+  pos-&gt;next = new_node;
+&#125;
+</code></pre>
 <h2 id="extract-front"><a href="#extract-front" class="headerlink" title="extract_front"></a>extract_front</h2><p>该函数是<code>pop_front()</code>的实现细节，<code>extract_front()</code>负责将第一节点从链表移除并返回该节点</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BaseLinkedNode* <span class="title">extract_front</span><span class="params">(Header* header)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  assert(!FORWARD_LIST_EMPTY);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> ret = header-&gt;next;</span><br><span class="line">  header-&gt;next = header-&gt;next-&gt;next;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (FORWARD_LIST_EMPTY) &#123;</span><br><span class="line">    header-&gt;prev = header;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// Reset returned node, to avoid construct loop in some cases</span></span><br><span class="line">  ret-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">BaseLinkedNode* extract_front(Header* header) noexcept
+&#123;
+  assert(!FORWARD_LIST_EMPTY);
+
+  auto ret = header-&gt;next;
+  header-&gt;next = header-&gt;next-&gt;next;
+
+  if (FORWARD_LIST_EMPTY) &#123;
+    header-&gt;prev = header;
+  &#125;
+
+  // Reset returned node, to avoid construct loop in some cases
+  ret-&gt;next = nullptr;
+
+  return ret;
+&#125;
+</code></pre>
 <p>调用前提是链表非空，否则触发断言</p>
 <p>如果移除后链表为空，需要更新prev</p>
 <p>需要注意的一点是返回的节点必须是“干净”的，即置<code>next</code>为<code>nullptr</code>，避免因为原来的链接关系导致出现<code>double free</code>等莫名bug</p>
 <h2 id="extract-after"><a href="#extract-after" class="headerlink" title="extract_after"></a>extract_after</h2><p>该函数是<code>erase_after()</code>的实现细节，将给定节点后的节点移除并返回</p>
 <p>需要注意的是给定节点及其下一节点都不能是<code>nullptr</code>，以及给定节点的下一节点为<code>header-&gt;prev</code>的话，需要更新<code>prev</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BaseLinkedNode* <span class="title">extract_after</span><span class="params">(Header* header, BaseLinkedNode* pos)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  ZASSERT(pos != <span class="literal">nullptr</span>, <span class="string">"The position argument must not be end()"</span>);</span><br><span class="line">  ZASSERT(!FORWARD_LIST_EMPTY, <span class="string">"ForwardList must be not empty"</span>);</span><br><span class="line">  ZASSERT(pos-&gt;next != <span class="literal">nullptr</span>, <span class="string">"The next node of the position argument mustn't be nullptr"</span>);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> ret = pos-&gt;next;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// If pos-&gt;next is last element, update it</span></span><br><span class="line">  <span class="keyword">if</span> (ret == header-&gt;prev) &#123;</span><br><span class="line">    <span class="comment">// FIXME Need to update head-&gt;prev = nullptr when pos == header</span></span><br><span class="line">    header-&gt;prev = pos;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  pos-&gt;next = pos-&gt;next-&gt;next;</span><br><span class="line"></span><br><span class="line">  ret-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">  <span class="keyword">return</span> ret;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">BaseLinkedNode* extract_after(Header* header, BaseLinkedNode* pos) noexcept
+&#123;
+  ZASSERT(pos != nullptr, &quot;The position argument must not be end()&quot;);
+  ZASSERT(!FORWARD_LIST_EMPTY, &quot;ForwardList must be not empty&quot;);
+  ZASSERT(pos-&gt;next != nullptr, &quot;The next node of the position argument mustn&#39;t be nullptr&quot;);
+
+  auto ret = pos-&gt;next;
+
+  // If pos-&gt;next is last element, update it
+  if (ret == header-&gt;prev) &#123;
+    // FIXME Need to update head-&gt;prev = nullptr when pos == header
+    header-&gt;prev = pos;
+  &#125;
+
+  pos-&gt;next = pos-&gt;next-&gt;next;
+
+  ret-&gt;next = nullptr;
+  return ret;
+
+&#125;
+</code></pre>
 <p>其中<code>ZASSERT</code>是如下宏：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ZASSERT(cond, msg) \</span></span><br><span class="line">  assert((cond) &amp;&amp; (msg))</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-c">#define ZASSERT(cond, msg) \
+  assert((cond) &amp;&amp; (msg))
+</code></pre>
 <h2 id="extract-after-range"><a href="#extract-after-range" class="headerlink" title="extract_after(range)"></a>extract_after(range)</h2><p>范围版本的<code>extract_after()</code>负责移除<strong>(first, last)</strong>的节点，并返回这些节点的首节点，供<code>erase_after()</code>删除</p>
 <p>一般其他容器的话是左闭右开，但因为单向链表的特性是做不到左闭的</p>
 <p>显然，区间长度至少要为1，不然返回<code>nullptr</code>表示没有可删节点</p>
 <p>如果<code>last</code>是<code>nullptr</code>，即ForwardList的<code>end()</code>的话，那么这个区间必然包含了<code>header-&gt;prev</code>，需要更新<code>prev</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="function">BaseLinkedNode* <span class="title">extract_after</span><span class="params">(Header* header, BaseLinkedNode* first, BaseLinkedNode* last)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// The length of the range must be 1 at least</span></span><br><span class="line">  <span class="keyword">if</span> (first-&gt;next != last) &#123;</span><br><span class="line">    BaseLinkedNode* old_next;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// If last is the end iterator, indicates the header_-&gt;prev need to update</span></span><br><span class="line">    <span class="keyword">if</span> (last == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">      header-&gt;prev = first;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">auto</span> first_next = first-&gt;next;</span><br><span class="line">    first-&gt;next = last;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> first_next;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="literal">nullptr</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">BaseLinkedNode* extract_after(Header* header, BaseLinkedNode* first, BaseLinkedNode* last) noexcept
+&#123;
+  // The length of the range must be 1 at least
+  if (first-&gt;next != last) &#123;
+    BaseLinkedNode* old_next;
+
+    // If last is the end iterator, indicates the header_-&gt;prev need to update
+    if (last == nullptr) &#123;
+      header-&gt;prev = first;
+    &#125;
+
+    auto first_next = first-&gt;next;
+    first-&gt;next = last;
+
+    return first_next;
+  &#125;
+
+  return nullptr;
+&#125;
+</code></pre>
 <h1 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h1><p><code>ForwardList</code>的迭代器本质上就是节点的location，由于单向链表的特性，所以这显然是<code>forward iterator</code>（单向前进迭代器）</p>
-<p>单向迭代器需要满足的操作可见<a href="https://en.cppreference.com/w/cpp/named_req/ForwardIterator" target="_blank" rel="noopener">LegacyForwardIterator</a></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T&gt;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> <span class="title">ForwardListIterator</span> :</span> <span class="built_in">std</span>::iterator&lt;<span class="built_in">std</span>::forward_iterator_tag, T&gt; &#123;</span><br><span class="line">  <span class="comment">// type alias...</span></span><br><span class="line"></span><br><span class="line">  ForwardListIterator(BaseNode* node=<span class="literal">nullptr</span>) </span><br><span class="line">   : node_&#123; node &#125;</span><br><span class="line">  &#123;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Ref&amp; <span class="keyword">operator</span>*() <span class="keyword">noexcept</span> &#123; <span class="keyword">return</span> extract()-&gt;val; &#125;</span><br><span class="line">  ConstRef <span class="keyword">operator</span>*() <span class="keyword">const</span> <span class="keyword">noexcept</span> &#123; <span class="keyword">return</span> extract()-&gt;val; &#125;</span><br><span class="line">  Pointer <span class="keyword">operator</span>-&gt;() <span class="keyword">noexcept</span> &#123; <span class="keyword">return</span> &amp;(extract()-&gt;val); &#125;</span><br><span class="line">  ConstPointer <span class="keyword">operator</span>-&gt;() <span class="keyword">const</span> <span class="keyword">noexcept</span> &#123; <span class="keyword">return</span> &amp;(extract()-&gt;val); &#125;</span><br><span class="line"></span><br><span class="line">  Self&amp; <span class="keyword">operator</span>++() <span class="keyword">noexcept</span></span><br><span class="line">  &#123;</span><br><span class="line">    node_ = node_-&gt;next;</span><br><span class="line">    <span class="keyword">return</span> *<span class="keyword">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Self <span class="keyword">operator</span>++(<span class="keyword">int</span>) <span class="keyword">noexcept</span></span><br><span class="line">  &#123;</span><br><span class="line">    <span class="keyword">auto</span> ret = node_;</span><br><span class="line">    node_ = node_-&gt;next;</span><br><span class="line">    <span class="keyword">return</span> ret;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// Util</span></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">set</span><span class="params">(Node* node)</span> <span class="keyword">noexcept</span> </span>&#123; node_ = node; &#125;</span><br><span class="line">  <span class="function">Node* <span class="title">extract</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span> </span>&#123; <span class="keyword">return</span> <span class="keyword">static_cast</span>&lt;Node*&gt;(node_); &#125;</span><br><span class="line">  <span class="function">Self <span class="title">next</span><span class="params">()</span> <span class="keyword">const</span> <span class="keyword">noexcept</span> </span>&#123; <span class="keyword">return</span> Self(node_-&gt;next); &#125;</span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  BaseNode* node_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="comment">// ForwardListConstIterator is same with it instead of Ref and Pointer</span></span><br></pre></td></tr></table></figure>
+<p>单向迭代器需要满足的操作可见<a target="_blank" rel="noopener" href="https://en.cppreference.com/w/cpp/named_req/ForwardIterator">LegacyForwardIterator</a></p>
+<pre><code class="lang-cpp">template&lt;typename T&gt;
+struct ForwardListIterator : std::iterator&lt;std::forward_iterator_tag, T&gt; &#123;
+  // type alias...
+
+  ForwardListIterator(BaseNode* node=nullptr) 
+   : node_&#123; node &#125;
+  &#123;
+  &#125;
+
+  Ref&amp; operator*() noexcept &#123; return extract()-&gt;val; &#125;
+  ConstRef operator*() const noexcept &#123; return extract()-&gt;val; &#125;
+  Pointer operator-&gt;() noexcept &#123; return &amp;(extract()-&gt;val); &#125;
+  ConstPointer operator-&gt;() const noexcept &#123; return &amp;(extract()-&gt;val); &#125;
+
+  Self&amp; operator++() noexcept
+  &#123;
+    node_ = node_-&gt;next;
+    return *this;
+  &#125;
+
+  Self operator++(int) noexcept
+  &#123;
+    auto ret = node_;
+    node_ = node_-&gt;next;
+    return ret;
+  &#125;
+
+  // Util
+  void set(Node* node) noexcept &#123; node_ = node; &#125;
+  Node* extract() const noexcept &#123; return static_cast&lt;Node*&gt;(node_); &#125;
+  Self next() const noexcept &#123; return Self(node_-&gt;next); &#125;
+private:
+  BaseNode* node_;
+&#125;;
+
+// ForwardListConstIterator is same with it instead of Ref and Pointer
+</code></pre>
 <h1 id="trick-ForwardListBase"><a href="#trick-ForwardListBase" class="headerlink" title="trick: ForwardListBase"></a>trick: ForwardListBase</h1><p>之所以设置<code>ForwardListBase</code>主要是因为：</p>
 <ul>
 <li>将header的分配/构造/释放/析构放在基类，利用RAII处理（有便于派生类的异常处理）</li>
 <li>继承特定的Allocator，利用<strong>EBCO</strong>进行优化（allocator往往是空类），这样就不需要额外的数据成员表示<code>allocator</code></li>
 </ul>
 <p>显然，ForwardList要用到两种allocator：<code>Header</code>和<code>LinkedNode&lt;T&gt;</code>，所以代码如下：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Alloc&gt;</span><br><span class="line"><span class="keyword">using</span> HeaderAllocator = <span class="keyword">typename</span> Alloc::<span class="keyword">template</span> rebind&lt;Header&gt;::other;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Alloc&gt;</span><br><span class="line"><span class="keyword">using</span> NodeAllocator = <span class="keyword">typename</span> Alloc::<span class="keyword">template</span> rebind&lt;LinkedNode&lt;T&gt;&gt;::other;</span><br><span class="line"></span><br><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * EBCO</span></span><br><span class="line"><span class="comment"> * Need two allocator: header and node</span></span><br><span class="line"><span class="comment"> * This class also manage the header allocate and deallocate</span></span><br><span class="line"><span class="comment"> * but don't construct and destroy it, it just a POD object.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Alloc=<span class="built_in">std</span>::allocator&lt;T&gt;&gt;</span><br><span class="line">class ForwardListBase </span><br><span class="line">  : <span class="keyword">protected</span> HeaderAllocator&lt;Alloc&gt;, <span class="keyword">protected</span> NodeAllocator&lt;T, Alloc&gt; &#123;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  <span class="keyword">using</span> AllocTraits = <span class="built_in">std</span>::allocator_traits&lt;HeaderAllocator&lt;Alloc&gt;&gt;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  ForwardListBase()</span><br><span class="line">  <span class="keyword">try</span>: header_(AllocTraits::allocate(*<span class="keyword">this</span>, <span class="keyword">sizeof</span>(Header)))</span><br><span class="line">  &#123;</span><br><span class="line">    reset();</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">catch</span> (<span class="built_in">std</span>::bad_alloc <span class="keyword">const</span>&amp; ex) &#123; </span><br><span class="line">    <span class="keyword">throw</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ForwardListBase(ForwardListBase&amp;&amp; other) <span class="keyword">noexcept</span></span><br><span class="line">   : header_(other.header_)</span><br><span class="line">  &#123;</span><br><span class="line">    other.header_ = <span class="literal">nullptr</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  ~ForwardListBase() <span class="keyword">noexcept</span> </span><br><span class="line">  &#123;</span><br><span class="line">    <span class="comment">// AllocTraits::destroy(this, header_);</span></span><br><span class="line">    AllocTraits::deallocate(*<span class="keyword">this</span>, header_, <span class="keyword">sizeof</span>(Header));</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function">  </span>&#123;</span><br><span class="line">    header_-&gt;prev = header_;</span><br><span class="line">    header_-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">    header_-&gt;count = <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line"><span class="keyword">protected</span>:</span><br><span class="line">  Header* header_;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Alloc=<span class="built_in">std</span>::allocator&lt;T&gt;&gt;</span><br><span class="line">class ForwardList : <span class="keyword">protected</span> forward_list_detail::ForwardListBase&lt;T, Alloc&gt; &#123; </span><br><span class="line"><span class="keyword">public</span>:</span><br><span class="line">  <span class="comment">//...</span></span><br><span class="line"><span class="keyword">private</span>:</span><br><span class="line">  <span class="comment">// Expose the header_ in Base class.</span></span><br><span class="line">  <span class="comment">// This is necessary for base class template.</span></span><br><span class="line">  <span class="keyword">using</span> Base::header_;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">
+template&lt;typename Alloc&gt;
+using HeaderAllocator = typename Alloc::template rebind&lt;Header&gt;::other;
+
+template&lt;typename T, typename Alloc&gt;
+using NodeAllocator = typename Alloc::template rebind&lt;LinkedNode&lt;T&gt;&gt;::other;
+
+/**
+ * EBCO
+ * Need two allocator: header and node
+ * This class also manage the header allocate and deallocate
+ * but don&#39;t construct and destroy it, it just a POD object.
+ */
+template&lt;typename T, typename Alloc=std::allocator&lt;T&gt;&gt;
+class ForwardListBase 
+  : protected HeaderAllocator&lt;Alloc&gt;, protected NodeAllocator&lt;T, Alloc&gt; &#123;
+protected:
+  using AllocTraits = std::allocator_traits&lt;HeaderAllocator&lt;Alloc&gt;&gt;;
+
+public:
+  ForwardListBase()
+  try: header_(AllocTraits::allocate(*this, sizeof(Header)))
+  &#123;
+    reset();
+  &#125;
+  catch (std::bad_alloc const&amp; ex) &#123; 
+    throw;
+  &#125;
+
+  ForwardListBase(ForwardListBase&amp;&amp; other) noexcept
+   : header_(other.header_)
+  &#123;
+    other.header_ = nullptr;
+  &#125;
+
+  ~ForwardListBase() noexcept 
+  &#123;
+    // AllocTraits::destroy(this, header_);
+    AllocTraits::deallocate(*this, header_, sizeof(Header));
+  &#125;
+
+  void reset() noexcept
+  &#123;
+    header_-&gt;prev = header_;
+    header_-&gt;next = nullptr;
+    header_-&gt;count = 0;
+  &#125;
+protected:
+  Header* header_;
+&#125;;
+
+template&lt;typename T, typename Alloc=std::allocator&lt;T&gt;&gt;
+class ForwardList : protected forward_list_detail::ForwardListBase&lt;T, Alloc&gt; &#123; 
+public:
+  //...
+private:
+  // Expose the header_ in Base class.
+  // This is necessary for base class template.
+  using Base::header_;
+&#125;;
+</code></pre>
 <p>这样，派生类（<code>ForwardList</code>）就不需要操心<code>header</code>和<code>allocator</code>的问题了</p>
 <p>从这里也可以得到<code>ForwardList</code>的大小也就一个<code>header</code>：<strong>24字节</strong>罢了</p>
 <p>接下来就是讲解下各类操作，我是如何思考的。</p>
 <h1 id="操作"><a href="#操作" class="headerlink" title="操作"></a>操作</h1><h2 id="插曲：Node-API"><a href="#插曲：Node-API" class="headerlink" title="插曲：Node API"></a>插曲：Node API</h2><p>在ForwardList私有成员中提供了以下API便于节点的创造（包含分配和构造）和毁坏（包含析构和释放）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment">* create_node has two step</span></span><br><span class="line"><span class="comment">* allocate memory ==&gt; construct object</span></span><br><span class="line"><span class="comment">* Also drop_node has two step:</span></span><br><span class="line"><span class="comment">* destroy object ==&gt; free memory(/deallocate)</span></span><br><span class="line"><span class="comment">*/</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span>... Args&gt;</span><br><span class="line"><span class="function">Node* <span class="title">create_node</span><span class="params">(Args&amp;&amp; ...args)</span> </span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">auto</span> node = AllocTraits::allocate(*<span class="keyword">this</span>, <span class="keyword">sizeof</span>(Node));</span><br><span class="line"></span><br><span class="line">  node-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">  AllocTraits::construct(*<span class="keyword">this</span>, &amp;node-&gt;val, <span class="built_in">std</span>::forward&lt;Args&gt;(args)...);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> node;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">drop_node</span><span class="params">(BaseNode* _node)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">auto</span> node = <span class="keyword">static_cast</span>&lt;Node*&gt;(_node);</span><br><span class="line">  AllocTraits::destroy(*<span class="keyword">this</span>, node);</span><br><span class="line">  AllocTraits::deallocate(*<span class="keyword">this</span>, node, <span class="keyword">sizeof</span>(Node));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="insert-API"><a href="#insert-API" class="headerlink" title="insert API"></a>insert API</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Insert after header</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> ...Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">emplace_front</span><span class="params">(Args&amp;&amp;... args)</span> </span>&#123; push_front(create_node(STD_FORWARD(Args, args)...)); &#125;</span><br><span class="line"><span class="comment">// It is may be better for builtin type that use value-passed parameter.</span></span><br><span class="line"><span class="comment">// But we can not suppose the move operation for ValueType is cheap</span></span><br><span class="line"><span class="comment">// Thus, I still write const&amp;/&amp;&amp; or better.</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_front</span><span class="params">(ValueType <span class="keyword">const</span>&amp; val)</span> </span>&#123; push_front(create_node(val)); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_front</span><span class="params">(ValueType&amp;&amp; val)</span> </span>&#123; push_front(create_node(<span class="built_in">std</span>::move(val))); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert before header</span></span><br><span class="line"><span class="comment">// Not standard required</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> ...Args&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">emplace_back</span><span class="params">(Args&amp;&amp;... args)</span> </span>&#123; push_back(create_node(STD_FORWARD(Args, args)...)); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(ValueType <span class="keyword">const</span>&amp; val)</span> </span>&#123; push_back(create_node(val)); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">push_back</span><span class="params">(ValueType&amp;&amp; val)</span> </span>&#123; push_back(create_node(<span class="built_in">std</span>::move(val))); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Insert after given position(presented by iterator)</span></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> ...Args&gt; </span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">emplace_after</span><span class="params">(ConstIterator pos, Args&amp;&amp;... args)</span> </span></span><br><span class="line"><span class="function"></span>&#123; insert_after(pos, ConstIterator(create_node(STD_FORWARD(Args, args)...))); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_after</span><span class="params">(ConstIterator pos, ValueType <span class="keyword">const</span>&amp; val)</span> </span></span><br><span class="line"><span class="function"></span>&#123; insert_after(pos, ConstIterator(create_node(val))); &#125;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_after</span><span class="params">(ConstIterator pos, ValueType&amp;&amp; val)</span> </span></span><br><span class="line"><span class="function"></span>&#123; insert_after(pos, ConstIterator(create_node(<span class="built_in">std</span>::move(val)))); &#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Based on Node, thus we can reuse extracted node(throught call extract_xxx())</span></span><br><span class="line"><span class="comment">// Maybe this is the implementation function of std::forward_list&lt;&gt;</span></span><br><span class="line"><span class="comment">// But I expose these.</span></span><br><span class="line"><span class="comment">// Not standard required</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">push_front</span><span class="params">(Node* new_node)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">push_back</span><span class="params">(Node* new_node)</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">insert_after</span><span class="params">(ConstIterator pos, Node* new_node)</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// Range insert</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">insert_after</span><span class="params">(ConstIterator pos, SizeType count, ValueType <span class="keyword">const</span>&amp; val)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> InputIterator, <span class="keyword">typename</span> = </span><br><span class="line">  zstl::<span class="keyword">enable_if_t</span>&lt;zstl::is_input_iterator&lt;InputIterator&gt;::value&gt;&gt;</span><br><span class="line"><span class="keyword">void</span> insert_after(ConstIterator pos, InputIterator first, InputIterator last);</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">/**
+* create_node has two step
+* allocate memory ==&gt; construct object
+* Also drop_node has two step:
+* destroy object ==&gt; free memory(/deallocate)
+*/
+template&lt;typename... Args&gt;
+Node* create_node(Args&amp;&amp; ...args) 
+&#123;
+  auto node = AllocTraits::allocate(*this, sizeof(Node));
+
+  node-&gt;next = nullptr;
+  AllocTraits::construct(*this, &amp;node-&gt;val, std::forward&lt;Args&gt;(args)...);
+
+  return node;
+&#125;
+
+void drop_node(BaseNode* _node) noexcept
+&#123;
+  auto node = static_cast&lt;Node*&gt;(_node);
+  AllocTraits::destroy(*this, node);
+  AllocTraits::deallocate(*this, node, sizeof(Node));
+&#125;
+</code></pre>
+<h2 id="insert-API"><a href="#insert-API" class="headerlink" title="insert API"></a>insert API</h2><pre><code class="lang-cpp">// Insert after header
+template&lt;typename ...Args&gt;
+void emplace_front(Args&amp;&amp;... args) &#123; push_front(create_node(STD_FORWARD(Args, args)...)); &#125;
+// It is may be better for builtin type that use value-passed parameter.
+// But we can not suppose the move operation for ValueType is cheap
+// Thus, I still write const&amp;/&amp;&amp; or better.
+void push_front(ValueType const&amp; val) &#123; push_front(create_node(val)); &#125;
+void push_front(ValueType&amp;&amp; val) &#123; push_front(create_node(std::move(val))); &#125;
+
+// Insert before header
+// Not standard required
+template&lt;typename ...Args&gt;
+void emplace_back(Args&amp;&amp;... args) &#123; push_back(create_node(STD_FORWARD(Args, args)...)); &#125;
+void push_back(ValueType const&amp; val) &#123; push_back(create_node(val)); &#125;
+void push_back(ValueType&amp;&amp; val) &#123; push_back(create_node(std::move(val))); &#125;
+
+// Insert after given position(presented by iterator)
+template&lt;typename ...Args&gt; 
+void emplace_after(ConstIterator pos, Args&amp;&amp;... args) 
+&#123; insert_after(pos, ConstIterator(create_node(STD_FORWARD(Args, args)...))); &#125;
+void insert_after(ConstIterator pos, ValueType const&amp; val) 
+&#123; insert_after(pos, ConstIterator(create_node(val))); &#125;
+void insert_after(ConstIterator pos, ValueType&amp;&amp; val) 
+&#123; insert_after(pos, ConstIterator(create_node(std::move(val)))); &#125;
+
+// Based on Node, thus we can reuse extracted node(throught call extract_xxx())
+// Maybe this is the implementation function of std::forward_list&lt;&gt;
+// But I expose these.
+// Not standard required
+inline void push_front(Node* new_node) noexcept;
+inline void push_back(Node* new_node) noexcept;
+inline void insert_after(ConstIterator pos, Node* new_node);
+
+// Range insert
+void insert_after(ConstIterator pos, SizeType count, ValueType const&amp; val);
+template&lt;typename InputIterator, typename = 
+  zstl::enable_if_t&lt;zstl::is_input_iterator&lt;InputIterator&gt;::value&gt;&gt;
+void insert_after(ConstIterator pos, InputIterator first, InputIterator last);
+</code></pre>
 <p>基本上都是基础算法的API的一个wrapper，所以没有什么困难的，类似于下面这个：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::push_front</span><span class="params">(Node* new_node)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  forward_list_detail::push_front(header_, new_node);</span><br><span class="line">  ++header_-&gt;count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::push_front(Node* new_node) noexcept
+&#123;
+  forward_list_detail::push_front(header_, new_node);
+  ++header_-&gt;count;
+&#125;
+</code></pre>
 <p>值得一提的是我将基于节点的插入API也暴露了出来，这个一般是搭配<code>extract_xxx()</code>返回的节点使用的，这样就省了一次<strong>重新分配(malloc)</strong>和<strong>释放(free)</strong>，只需要设值即可插入链表。你可能会说用<code>std::swap</code>或直接设值就可以解决这个问题，实际确实如此，但是<code>std::swap()</code>对<code>T</code>做出了要求：必须满足<code>std::is_swappable_v&lt;T&gt;</code>，引入了额外的复杂度，并且<code>std::swap</code>一次性破坏了两个有效迭代器，而复用节点没有破坏除了该节点以外的任何节点，更别说因为显式调用了<code>extract_xxx()</code>，该节点就应该通过新的链表去访问，不会去再使用原来的那个迭代器，因此这样实际上并没有破坏任何有效迭代器。在之后的<code>reverse</code>和<code>sort</code>等算法中你也会注意，链表的这些算法都是<code>stable</code>的，它们以节点为单位，而不是通过<code>std::swap()</code>或<code>std::iter_swap()</code>，不会破坏任何迭代器。</p>
-<h2 id="erase-API"><a href="#erase-API" class="headerlink" title="erase API"></a>erase API</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// pop/erase/clear</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> ValueType <span class="title">pop_front</span><span class="params">()</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> Iterator <span class="title">erase_after</span><span class="params">(ConstIterator pos)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> Iterator <span class="title">erase_after</span><span class="params">(ConstIterator first, ConstIterator last)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="keyword">void</span> <span class="title">clear</span><span class="params">()</span></span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// The implematation detial of pop_front() and erase_after()</span></span><br><span class="line"><span class="comment">// But these don't free the node in fact, just remove it from list</span></span><br><span class="line"><span class="comment">// The user can reuse the returnd node</span></span><br><span class="line"><span class="comment">// Not standard required</span></span><br><span class="line"><span class="function"><span class="keyword">inline</span> Node* <span class="title">extract_front</span><span class="params">()</span> <span class="keyword">noexcept</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> Node* <span class="title">extract_after</span><span class="params">(ConstIterator pos)</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+<h2 id="erase-API"><a href="#erase-API" class="headerlink" title="erase API"></a>erase API</h2><pre><code class="lang-cpp">// pop/erase/clear
+inline ValueType pop_front();
+inline Iterator erase_after(ConstIterator pos);
+inline Iterator erase_after(ConstIterator first, ConstIterator last);
+inline void clear();
+
+// The implematation detial of pop_front() and erase_after()
+// But these don&#39;t free the node in fact, just remove it from list
+// The user can reuse the returnd node
+// Not standard required
+inline Node* extract_front() noexcept;
+inline Node* extract_after(ConstIterator pos) noexcept;
+</code></pre>
 <p>基本都是wrapper，除了<code>clear()</code>：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::clear</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">while</span> (header_-&gt;next) &#123;</span><br><span class="line">    <span class="keyword">auto</span> node = header_-&gt;next;</span><br><span class="line">    header_-&gt;next = node-&gt;next;</span><br><span class="line">    drop_node(node);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Base::reset();  </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::clear()
+&#123;
+  while (header_-&gt;next) &#123;
+    auto node = header_-&gt;next;
+    header_-&gt;next = node-&gt;next;
+    drop_node(node);
+  &#125;
+
+  Base::reset();  
+&#125;
+</code></pre>
 <p>基本上没什么好讲的</p>
-<h2 id="search-API"><a href="#search-API" class="headerlink" title="search API"></a>search API</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Search the before iterator of the given value.</span></span><br><span class="line"><span class="comment">// It's useful for calling erase_after() and insert_after().</span></span><br><span class="line"><span class="comment">// Not standard required</span></span><br><span class="line"><span class="function">Iterator <span class="title">search_before</span><span class="params">(ValueType <span class="keyword">const</span>&amp; val, ConstIterator pos)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> UnaryPred&gt;</span><br><span class="line"><span class="function">Iterator <span class="title">search_before_if</span><span class="params">(UnaryPred pred, ConstIterator pos)</span></span>;</span><br><span class="line"><span class="function">Iterator <span class="title">search_before</span><span class="params">(ValueType <span class="keyword">const</span>&amp; val)</span> </span>&#123; <span class="keyword">return</span> search_before(val, cbefore_begin()); &#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> UnaryPred&gt;</span><br><span class="line"><span class="function">Iterator <span class="title">search_before</span><span class="params">(UnaryPred pred)</span> </span>&#123; <span class="keyword">return</span> search_before(pred, cbefore_begin()); &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="search-API"><a href="#search-API" class="headerlink" title="search API"></a>search API</h2><pre><code class="lang-cpp">// Search the before iterator of the given value.
+// It&#39;s useful for calling erase_after() and insert_after().
+// Not standard required
+Iterator search_before(ValueType const&amp; val, ConstIterator pos);
+template&lt;typename UnaryPred&gt;
+Iterator search_before_if(UnaryPred pred, ConstIterator pos);
+Iterator search_before(ValueType const&amp; val) &#123; return search_before(val, cbefore_begin()); &#125;
+template&lt;typename UnaryPred&gt;
+Iterator search_before(UnaryPred pred) &#123; return search_before(pred, cbefore_begin()); &#125;
+</code></pre>
 <p>这个是我自己加的，我觉得某些情形可以简化操作，标准库并没有这种算法。</p>
 <p>实现很简单，这里就不放了。</p>
-<h2 id="operation-API"><a href="#operation-API" class="headerlink" title="operation API"></a>operation API</h2><h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Operations</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(Self&amp; <span class="built_in">list</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(Self&amp;&amp; <span class="built_in">list</span>)</span> </span>&#123; merge(<span class="built_in">list</span>); &#125;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> BinaryPred&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(Self&amp; <span class="built_in">list</span>, BinaryPred pred)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> BinaryPred&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">merge</span><span class="params">(Self&amp;&amp; <span class="built_in">list</span>, BinaryPred pred)</span> </span>&#123; merge(<span class="built_in">list</span>, <span class="built_in">std</span>::move(pred)); &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="operation-API"><a href="#operation-API" class="headerlink" title="operation API"></a>operation API</h2><h2 id="merge"><a href="#merge" class="headerlink" title="merge"></a>merge</h2><pre><code class="lang-cpp">// Operations
+void merge(Self&amp; list);
+void merge(Self&amp;&amp; list) &#123; merge(list); &#125;
+template&lt;typename BinaryPred&gt;
+void merge(Self&amp; list, BinaryPred pred);
+template&lt;typename BinaryPred&gt;
+void merge(Self&amp;&amp; list, BinaryPred pred) &#123; merge(list, std::move(pred)); &#125;
+</code></pre>
 <p><code>merge()</code>操作是将两个有序链表合并成一个有序链表</p>
 <p>这个操作同时也是<code>sort()</code>的一个实现细节</p>
 <p><code>merge()</code>由于要修改作为参数的链表，不能<code>const&amp;</code>将左右值并收，这里并不是为了<code>完美转发（perfect forwarding）</code></p>
@@ -232,37 +578,260 @@
 <p><img src="https://s2.loli.net/2022/01/30/B6MLiVn2zFGKsJH.png" alt="image-20220129204836869.png"></p>
 <p>如果<code>other</code>比<code>this</code>先遍历完，那么说明<code>other</code>已经嵌入<code>this</code>，成为了一条新的完整的有序链表</p>
 <p>相反，<code>this</code>先遍历完，那么余下的<code>other</code>直接插在<code>this</code>后面</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::merge</span><span class="params">(Self&amp; <span class="built_in">list</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">list</span>.empty()) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  BaseNode* beg = header_;</span><br><span class="line">  BaseNode* obeg = <span class="built_in">list</span>.header_;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">while</span> (beg-&gt;next != <span class="literal">nullptr</span> &amp;&amp; obeg-&gt;next != <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="keyword">if</span> (GET_LINKED_NODE_VALUE(obeg-&gt;next) &lt; GET_LINKED_NODE_VALUE(beg-&gt;next)) &#123;</span><br><span class="line">      <span class="keyword">auto</span> old_node = obeg-&gt;next-&gt;next;</span><br><span class="line">      insert_after(beg, <span class="built_in">list</span>.extract_after(obeg));</span><br><span class="line">      beg = beg-&gt;next;</span><br><span class="line">      obeg-&gt;next = old_node;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      beg = beg-&gt;next;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (beg-&gt;next == <span class="literal">nullptr</span>) &#123;</span><br><span class="line">    <span class="comment">// It's also ok when list is empty</span></span><br><span class="line">    splice_after(before_end(), <span class="built_in">list</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  assert(<span class="built_in">list</span>.empty());</span><br><span class="line">  <span class="built_in">list</span>.reset();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="splice-after-list"><a href="#splice-after-list" class="headerlink" title="splice_after(list)"></a>splice_after(list)</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">splice_after</span><span class="params">(ConstIterator pos, Self&amp; <span class="built_in">list</span>)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">splice_after</span><span class="params">(ConstIterator pos, Self&amp;&amp; <span class="built_in">list</span>)</span> </span>&#123; splice_after(pos, <span class="built_in">list</span>); &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::merge(Self&amp; list)
+&#123;
+  if (list.empty()) return;
+
+  BaseNode* beg = header_;
+  BaseNode* obeg = list.header_;
+
+  while (beg-&gt;next != nullptr &amp;&amp; obeg-&gt;next != nullptr) &#123;
+    if (GET_LINKED_NODE_VALUE(obeg-&gt;next) &lt; GET_LINKED_NODE_VALUE(beg-&gt;next)) &#123;
+      auto old_node = obeg-&gt;next-&gt;next;
+      insert_after(beg, list.extract_after(obeg));
+      beg = beg-&gt;next;
+      obeg-&gt;next = old_node;
+    &#125;
+    else &#123;
+      beg = beg-&gt;next;
+    &#125;
+  &#125;
+
+  if (beg-&gt;next == nullptr) &#123;
+    // It&#39;s also ok when list is empty
+    splice_after(before_end(), list);
+  &#125;
+
+  assert(list.empty());
+  list.reset();
+&#125;
+</code></pre>
+<h2 id="splice-after-list"><a href="#splice-after-list" class="headerlink" title="splice_after(list)"></a>splice_after(list)</h2><pre><code class="lang-cpp">void splice_after(ConstIterator pos, Self&amp; list);
+void splice_after(ConstIterator pos, Self&amp;&amp; list) &#123; splice_after(pos, list); &#125;
+</code></pre>
 <p><code>splice_after()</code>将作为参数的链表链接到<code>pos</code>参数后</p>
 <p>由于是整个链表，所以处理十分简单，需要注意的一点是<code>list</code>不能为空，因为更新prev会出问题，指向的将是<code>list</code>的<code>header</code></p>
 <p>处理完后，<code>list</code>为空，重置<code>list</code></p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ForwardListBase</span></span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reset</span><span class="params">()</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  header_-&gt;prev = header_;</span><br><span class="line">  header_-&gt;next = <span class="literal">nullptr</span>;</span><br><span class="line">  header_-&gt;count = <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">// ForwardListBase
+void reset() noexcept
+&#123;
+  header_-&gt;prev = header_;
+  header_-&gt;next = nullptr;
+  header_-&gt;count = 0;
+&#125;
+</code></pre>
 <p>这个算法对于<code>std::forward_list&lt;&gt;</code>是$O(n)$，但是我这里是$O(1)$，为什么呢？</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::splice_after</span><span class="params">(ConstIterator pos, Self&amp; <span class="built_in">list</span>)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// If list is empty,</span></span><br><span class="line">  <span class="comment">// it is wrong to update prev.</span></span><br><span class="line">  <span class="keyword">if</span> (<span class="built_in">list</span>.empty()) <span class="keyword">return</span> ;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> pos_node = pos.to_iterator().extract();</span><br><span class="line">  <span class="keyword">auto</span> old_next = pos_node-&gt;next;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (pos == before_end()) </span><br><span class="line">  &#123;</span><br><span class="line">    header_-&gt;prev = <span class="built_in">list</span>.before_end().extract();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  pos_node-&gt;next = <span class="built_in">list</span>.begin().extract();</span><br><span class="line">  <span class="built_in">list</span>.before_end().extract()-&gt;next = old_next;</span><br><span class="line">  </span><br><span class="line">  header_-&gt;count += <span class="built_in">list</span>.size();</span><br><span class="line">  </span><br><span class="line">  <span class="built_in">list</span>.reset();</span><br><span class="line">  ZASSERT(<span class="built_in">list</span>.empty(), <span class="string">"The list must be empty"</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="splice-after-single-node"><a href="#splice-after-single-node" class="headerlink" title="splice_after(single node)"></a>splice_after(single node)</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">splice_after</span><span class="params">(ConstIterator pos, Self&amp; <span class="built_in">list</span>, ConstIterator it)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">splice_after</span><span class="params">(ConstIterator pos, Self&amp;&amp; <span class="built_in">list</span>, ConstIterator it)</span> </span>&#123; splice_after(pos, <span class="built_in">list</span>, it); &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::splice_after(ConstIterator pos, Self&amp; list)
+&#123;
+  // If list is empty,
+  // it is wrong to update prev.
+  if (list.empty()) return ;
+
+  auto pos_node = pos.to_iterator().extract();
+  auto old_next = pos_node-&gt;next;
+
+  if (pos == before_end()) 
+  &#123;
+    header_-&gt;prev = list.before_end().extract();
+  &#125;
+
+  pos_node-&gt;next = list.begin().extract();
+  list.before_end().extract()-&gt;next = old_next;
+
+  header_-&gt;count += list.size();
+
+  list.reset();
+  ZASSERT(list.empty(), &quot;The list must be empty&quot;);
+&#125;
+</code></pre>
+<h2 id="splice-after-single-node"><a href="#splice-after-single-node" class="headerlink" title="splice_after(single node)"></a>splice_after(single node)</h2><pre><code class="lang-cpp">void splice_after(ConstIterator pos, Self&amp; list, ConstIterator it);
+void splice_after(ConstIterator pos, Self&amp;&amp; list, ConstIterator it) &#123; splice_after(pos, list, it); &#125;
+</code></pre>
 <p>过于简单，直接上代码</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::splice_after</span><span class="params">(ConstIterator pos, Self&amp; <span class="built_in">list</span>, ConstIterator it)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  insert_after(pos, <span class="built_in">list</span>.extract_after(it));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="splice-after-range"><a href="#splice-after-range" class="headerlink" title="splice_after(range)"></a>splice_after(range)</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">splice_after</span><span class="params">(ConstIterator pos, Self&amp; <span class="built_in">list</span>, ConstIterator first, ConstIterator last)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">splice_after</span><span class="params">(ConstIterator pos, Self&amp;&amp; <span class="built_in">list</span>, ConstIterator first, ConstIterator last)</span></span></span><br><span class="line"><span class="function"></span>&#123; splice_after(pos, <span class="built_in">list</span>, first, last); &#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::splice_after(ConstIterator pos, Self&amp; list, ConstIterator it)
+&#123;
+  insert_after(pos, list.extract_after(it));
+&#125;
+</code></pre>
+<h2 id="splice-after-range"><a href="#splice-after-range" class="headerlink" title="splice_after(range)"></a>splice_after(range)</h2><pre><code class="lang-cpp">void splice_after(ConstIterator pos, Self&amp; list, ConstIterator first, ConstIterator last);
+void splice_after(ConstIterator pos, Self&amp;&amp; list, ConstIterator first, ConstIterator last)
+&#123; splice_after(pos, list, first, last); &#125;
+</code></pre>
 <p>这个很草的一点是不能$O(1)$实现，不然<code>splice_after()</code>list版本可以直接转发给range版本</p>
 <p>因为<code>last</code>的前一节点不知道，所以无论如何都得$O(n)$，于是索性写成下面这样：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::splice_after</span><span class="params">(ConstIterator pos, Self&amp; <span class="built_in">list</span>, ConstIterator first, ConstIterator last)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// (first, last)</span></span><br><span class="line">  <span class="keyword">while</span> (first.next() != last) &#123;</span><br><span class="line">    insert_after(pos, <span class="built_in">list</span>.extract_after(first));</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// In C++20, the return type is modified to size_type(i.e. SizeType here).</span></span><br><span class="line"><span class="comment">// It indicates the number of removed elements</span></span><br><span class="line"><span class="function">SizeType <span class="title">remove</span><span class="params">(ValueType <span class="keyword">const</span>&amp; val)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> UnaryPred&gt;</span><br><span class="line"><span class="function">SizeType <span class="title">remove_if</span><span class="params">(UnaryPred pred)</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::splice_after(ConstIterator pos, Self&amp; list, ConstIterator first, ConstIterator last)
+&#123;
+  // (first, last)
+  while (first.next() != last) &#123;
+    insert_after(pos, list.extract_after(first));
+  &#125;
+&#125;
+</code></pre>
+<h2 id="remove"><a href="#remove" class="headerlink" title="remove"></a>remove</h2><pre><code class="lang-cpp">// In C++20, the return type is modified to size_type(i.e. SizeType here).
+// It indicates the number of removed elements
+SizeType remove(ValueType const&amp; val);
+template&lt;typename UnaryPred&gt;
+SizeType remove_if(UnaryPred pred);
+</code></pre>
 <p><code>remove()</code>的逻辑很简单，用<code>search_before()</code>迭代就行了。</p>
 <p>需要注意的一点是，返回值在C++20变化了（见注释），所以我也就按20的标准来了，更合理，毕竟可能有这种需求嘛</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">FORWARD_LIST_TEMPLATE::remove</span><span class="params">(ValueType <span class="keyword">const</span>&amp; val)</span></span></span><br><span class="line"> -&gt; SizeType</span><br><span class="line">&#123;</span><br><span class="line">  SizeType count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> it = search_before(val);</span><br><span class="line">  <span class="keyword">while</span> (it != end()) &#123;</span><br><span class="line">    ++count;</span><br><span class="line">    erase_after(it);</span><br><span class="line">    it = search_before(val, it);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="reverse"><a href="#reverse" class="headerlink" title="reverse"></a>reverse</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">()</span> <span class="keyword">noexcept</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+auto FORWARD_LIST_TEMPLATE::remove(ValueType const&amp; val)
+ -&gt; SizeType
+&#123;
+  SizeType count = 0;
+
+  auto it = search_before(val);
+  while (it != end()) &#123;
+    ++count;
+    erase_after(it);
+    it = search_before(val, it);
+  &#125;
+
+  return count;
+&#125;
+</code></pre>
+<h2 id="reverse"><a href="#reverse" class="headerlink" title="reverse"></a>reverse</h2><pre><code class="lang-cpp">void reverse() noexcept;
+</code></pre>
 <p><code>reverse()</code>的实现思维其实就是典型的栈，所以用递归也可以实现，这里我是用<code>std::vector&lt;&gt;</code>模拟栈（实际上，<code>std::stack&lt;&gt;</code>的默认容器就是<code>std::vector&lt;&gt;</code>）</p>
 <p>显然，这个也与值无关，因此我将它分离了。</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">reverse</span><span class="params">(Header* header)</span> <span class="keyword">noexcept</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// Or use recurrsion to implemetation</span></span><br><span class="line">  <span class="built_in">std</span>::<span class="built_in">vector</span>&lt;BaseLinkedNode*&gt; nodes;</span><br><span class="line">  nodes.reserve(header-&gt;count);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (!FORWARD_LIST_EMPTY) &#123;</span><br><span class="line">    nodes.push_back(extract_front(header));</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  assert(FORWARD_LIST_EMPTY); </span><br><span class="line">  assert(nodes.size() == nodes.capacity());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">using</span> SizeType = <span class="keyword">decltype</span>(header-&gt;count);</span><br><span class="line">  <span class="keyword">for</span> (SizeType i = <span class="number">0</span>; i &lt; nodes.size(); ++i) &#123;</span><br><span class="line">    push_front(header, nodes[i]);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// In C++20, the return type is modified to size_type(i.e. SizeType here).</span></span><br><span class="line"><span class="comment">// It indicates the number of removed elements</span></span><br><span class="line"><span class="function">SizeType <span class="title">unique</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> BinaryPred&gt;</span><br><span class="line"><span class="function">SizeType <span class="title">unique</span><span class="params">(BinaryPred pred)</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">void reverse(Header* header) noexcept
+&#123;
+  // Or use recurrsion to implemetation
+  std::vector&lt;BaseLinkedNode*&gt; nodes;
+  nodes.reserve(header-&gt;count);
+
+  while (!FORWARD_LIST_EMPTY) &#123;
+    nodes.push_back(extract_front(header));
+  &#125;
+
+  assert(FORWARD_LIST_EMPTY); 
+  assert(nodes.size() == nodes.capacity());
+
+  using SizeType = decltype(header-&gt;count);
+  for (SizeType i = 0; i &lt; nodes.size(); ++i) &#123;
+    push_front(header, nodes[i]);
+  &#125;
+&#125;
+</code></pre>
+<h2 id="unique"><a href="#unique" class="headerlink" title="unique"></a>unique</h2><pre><code class="lang-cpp">// In C++20, the return type is modified to size_type(i.e. SizeType here).
+// It indicates the number of removed elements
+SizeType unique();
+template&lt;typename BinaryPred&gt;
+SizeType unique(BinaryPred pred);
+</code></pre>
 <p><code>unique()</code>的作用和<code>std::unique()</code>一样，不过<code>std::unique()</code>会破坏迭代器（因为是通过覆盖实现的），因此有必要为<code>ForwardList</code>写个自己的。</p>
 <p>遇到值相同的相邻节点，删到相邻节点不等位置便可，否则前进即可</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">auto</span> <span class="title">FORWARD_LIST_TEMPLATE::unique</span><span class="params">()</span></span></span><br><span class="line"> -&gt; SizeType</span><br><span class="line">&#123;</span><br><span class="line">  SizeType count = <span class="number">0</span>;</span><br><span class="line">  <span class="keyword">for</span> (BaseNode* beg = header_; beg-&gt;next != <span class="literal">nullptr</span> &amp;&amp; beg-&gt;next-&gt;next != <span class="literal">nullptr</span>; ) &#123;</span><br><span class="line">    <span class="comment">// Adjacent node with same value</span></span><br><span class="line">    <span class="keyword">if</span> (GET_LINKED_NODE_VALUE(beg-&gt;next) == GET_LINKED_NODE_VALUE(beg-&gt;next-&gt;next)) &#123;</span><br><span class="line">      erase_after(beg-&gt;next);</span><br><span class="line">      ++count;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      beg = beg-&gt;next;</span><br><span class="line">      <span class="keyword">if</span> (beg == <span class="literal">nullptr</span>) <span class="keyword">break</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> count;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">()</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> Compare&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">sort</span><span class="params">(Compare cmp)</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+auto FORWARD_LIST_TEMPLATE::unique()
+ -&gt; SizeType
+&#123;
+  SizeType count = 0;
+  for (BaseNode* beg = header_; beg-&gt;next != nullptr &amp;&amp; beg-&gt;next-&gt;next != nullptr; ) &#123;
+    // Adjacent node with same value
+    if (GET_LINKED_NODE_VALUE(beg-&gt;next) == GET_LINKED_NODE_VALUE(beg-&gt;next-&gt;next)) &#123;
+      erase_after(beg-&gt;next);
+      ++count;
+    &#125;
+    else &#123;
+      beg = beg-&gt;next;
+      if (beg == nullptr) break;
+    &#125;
+  &#125;
+
+  return count;
+&#125;
+</code></pre>
+<h2 id="sort"><a href="#sort" class="headerlink" title="sort"></a>sort</h2><pre><code class="lang-cpp">void sort();
+template&lt;typename Compare&gt;
+void sort(Compare cmp);
+</code></pre>
 <p><code>sort()</code>我一开始是用的Quick Sort，效果还行，但是不如我曾经写list时用的那个Merge Sort，代码如下：</p>
 <p>（<code>sort()</code>是Merge Sort, 而<code>sort2()</code>是Quick Sort）</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::sort</span><span class="params">()</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="comment">// TODO Optimization</span></span><br><span class="line">  <span class="comment">// lists store non-header list</span></span><br><span class="line">  <span class="comment">// To small list, maybe better a little.</span></span><br><span class="line">  <span class="comment">// It is not significant for large list.</span></span><br><span class="line">  Self lists[<span class="number">64</span>];</span><br><span class="line">  Self <span class="built_in">list</span>;  </span><br><span class="line">  <span class="keyword">int8_t</span> end_of_lists = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (!empty()) &#123;</span><br><span class="line">    <span class="built_in">list</span>.push_front(extract_front());</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">int8_t</span> i = <span class="number">0</span>; ; ++i) &#123;</span><br><span class="line">      <span class="keyword">if</span> (lists[i].empty()) &#123;</span><br><span class="line">        <span class="built_in">list</span>.swap(lists[i]);</span><br><span class="line">        <span class="keyword">if</span> (i == end_of_lists) end_of_lists++;</span><br><span class="line">        <span class="keyword">break</span>;</span><br><span class="line">      &#125; </span><br><span class="line">      <span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// Merge non-empty list</span></span><br><span class="line">        <span class="comment">// larger list merge shorter list</span></span><br><span class="line">        <span class="keyword">if</span> (lists[i].size() &gt; <span class="built_in">list</span>.size()) &#123;</span><br><span class="line">          lists[i].merge(<span class="built_in">list</span>);</span><br><span class="line">          <span class="built_in">list</span>.swap(lists[i]);</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="keyword">else</span></span><br><span class="line">          <span class="built_in">list</span>.merge(lists[i]);</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; </span><br><span class="line">    </span><br><span class="line">  assert(<span class="built_in">list</span>.empty());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span> (<span class="keyword">int</span> i = end_of_lists - <span class="number">1</span>; i &gt;= <span class="number">0</span>; --i) &#123;</span><br><span class="line">    <span class="built_in">list</span>.merge(lists[i]);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  *<span class="keyword">this</span> = <span class="built_in">std</span>::move(<span class="built_in">list</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::sort2</span><span class="params">()</span> </span></span><br><span class="line"><span class="function"></span>&#123;   </span><br><span class="line">  ForwardList less;</span><br><span class="line">  ForwardList equal;</span><br><span class="line">  ForwardList larger;</span><br><span class="line">  </span><br><span class="line">  <span class="keyword">if</span> (size() &lt; <span class="number">2</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> ;</span><br><span class="line">  &#125; </span><br><span class="line"></span><br><span class="line">  <span class="keyword">auto</span> pivot = *begin();</span><br><span class="line">  Node* tmp;</span><br><span class="line"></span><br><span class="line">  equal.push_back(extract_front());</span><br><span class="line"></span><br><span class="line">  <span class="keyword">while</span> (!empty()) &#123;</span><br><span class="line">    tmp = extract_front();</span><br><span class="line">    <span class="keyword">if</span> (tmp-&gt;val &lt; pivot) &#123;</span><br><span class="line">      less.push_back(tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> <span class="keyword">if</span> (pivot &lt; tmp-&gt;val) &#123;</span><br><span class="line">      larger.push_back(tmp);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span> &#123;</span><br><span class="line">      equal.push_back(tmp);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  less.sort();</span><br><span class="line">  larger.sort();</span><br><span class="line"></span><br><span class="line">  less.splice_after(less.cbefore_end(), equal);</span><br><span class="line">  less.splice_after(less.cbefore_end(), larger);</span><br><span class="line"></span><br><span class="line">  *<span class="keyword">this</span> = <span class="built_in">std</span>::move(less);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::sort()
+&#123;
+  // TODO Optimization
+  // lists store non-header list
+  // To small list, maybe better a little.
+  // It is not significant for large list.
+  Self lists[64];
+  Self list;  
+  int8_t end_of_lists = 0;
+
+  while (!empty()) &#123;
+    list.push_front(extract_front());
+
+    for (int8_t i = 0; ; ++i) &#123;
+      if (lists[i].empty()) &#123;
+        list.swap(lists[i]);
+        if (i == end_of_lists) end_of_lists++;
+        break;
+      &#125; 
+      else &#123;
+        // Merge non-empty list
+        // larger list merge shorter list
+        if (lists[i].size() &gt; list.size()) &#123;
+          lists[i].merge(list);
+          list.swap(lists[i]);
+        &#125;
+        else
+          list.merge(lists[i]);
+      &#125;
+    &#125;
+  &#125; 
+
+  assert(list.empty());
+
+  for (int i = end_of_lists - 1; i &gt;= 0; --i) &#123;
+    list.merge(lists[i]);
+  &#125;
+
+  *this = std::move(list);
+&#125;
+
+template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::sort2() 
+&#123;   
+  ForwardList less;
+  ForwardList equal;
+  ForwardList larger;
+
+  if (size() &lt; 2) &#123;
+    return ;
+  &#125; 
+
+  auto pivot = *begin();
+  Node* tmp;
+
+  equal.push_back(extract_front());
+
+  while (!empty()) &#123;
+    tmp = extract_front();
+    if (tmp-&gt;val &lt; pivot) &#123;
+      less.push_back(tmp);
+    &#125;
+    else if (pivot &lt; tmp-&gt;val) &#123;
+      larger.push_back(tmp);
+    &#125;
+    else &#123;
+      equal.push_back(tmp);
+    &#125;
+  &#125;
+
+  less.sort();
+  larger.sort();
+
+  less.splice_after(less.cbefore_end(), equal);
+  less.splice_after(less.cbefore_end(), larger);
+
+  *this = std::move(less);
+&#125;
+</code></pre>
 <p>Quick Sort暂且不谈，学过的都看得懂</p>
 <p>这个Merge Sort很有趣，它没有用递归实现，并且最多也只用65个链表，而Quick Sort递归层次深了的话，估摸着也不止65吧。</p>
 <p>为什么整64是因为，这个表示它可以存的元素最大值为$2^{64}-1$，它的思路是这样的：</p>
@@ -276,19 +845,69 @@
 <p>当链表中的所有节点处理完，然后合并<code>lists</code>中所有非空链表，<code>end_of_lists</code>是用来提前终止该过程的，因为<code>end_of_lists</code>包括后面的链表几乎都为空。</p>
 <p>最后附上一张benckmark的图，可以看出<code>sort()</code>性能优于<code>sort2()</code></p>
 <p><img src="https://s2.loli.net/2022/01/30/Q1nG6IsdYfvR7r9.png" alt="image-20220130001703964.png"></p>
-<h2 id="assign"><a href="#assign" class="headerlink" title="assign"></a>assign</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">assign</span><span class="params">(SizeType count, ValueType <span class="keyword">const</span>&amp; value)</span></span>;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> InputIterator,</span><br><span class="line"><span class="keyword">typename</span> = zstl::<span class="keyword">enable_if_t</span>&lt;zstl::is_input_iterator&lt;InputIterator&gt;::value&gt;&gt;</span><br><span class="line"><span class="keyword">void</span> assign(InputIterator first, InputIterator last);</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> U&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">assign</span><span class="params">(<span class="built_in">std</span>::<span class="built_in">initializer_list</span>&lt;U&gt; il)</span> </span>&#123; assign(il.begin(), il.end()); &#125;</span><br></pre></td></tr></table></figure>
+<h2 id="assign"><a href="#assign" class="headerlink" title="assign"></a>assign</h2><pre><code class="lang-cpp">void assign(SizeType count, ValueType const&amp; value);
+template&lt;typename InputIterator,
+typename = zstl::enable_if_t&lt;zstl::is_input_iterator&lt;InputIterator&gt;::value&gt;&gt;
+void assign(InputIterator first, InputIterator last);
+template&lt;typename U&gt;
+void assign(std::initializer_list&lt;U&gt; il) &#123; assign(il.begin(), il.end()); &#125;
+</code></pre>
 <p><code>assign()</code>这玩意挺尬尴的，不如直接拷贝赋值（实际这个也是拷贝赋值的实现细节）</p>
 <p>需要注意的问题就是复用节点了，因为不管<code>this</code>的节点数是否大于参数的链表，它都有节点复用，然后决定是否新增节点或删除节点即可</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> InputIterator, <span class="keyword">typename</span>&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::assign</span><span class="params">(InputIterator first, InputIterator last)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  Iterator beg;</span><br><span class="line">  <span class="keyword">for</span> (beg = before_begin(); beg.next() != end() &amp;&amp; first != last; ++beg, ++first) &#123;</span><br><span class="line">    AllocTraits::destroy(*<span class="keyword">this</span>, &amp;*beg.next());</span><br><span class="line">    AllocTraits::construct(*<span class="keyword">this</span>, &amp;*beg.next(), *first);</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="comment">// size() &lt; distance(first, last) </span></span><br><span class="line">  <span class="keyword">if</span> (beg.next() == end()) &#123;</span><br><span class="line">    <span class="keyword">while</span> (first != last) &#123;</span><br><span class="line">      <span class="comment">// insert_after(beg, *first);</span></span><br><span class="line">      push_back(*first++);</span><br><span class="line">    &#125;  </span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">if</span> (first == last) &#123;</span><br><span class="line">    <span class="comment">// size() &gt; distance(first, last)</span></span><br><span class="line">    <span class="keyword">while</span> (beg.next() != end()) &#123;</span><br><span class="line">      erase_after(beg);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h2><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(SizeType n)</span></span>;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">resize</span><span class="params">(SizeType n, ValueType <span class="keyword">const</span>&amp; val)</span></span>;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+template&lt;typename InputIterator, typename&gt;
+void FORWARD_LIST_TEMPLATE::assign(InputIterator first, InputIterator last)
+&#123;
+  Iterator beg;
+  for (beg = before_begin(); beg.next() != end() &amp;&amp; first != last; ++beg, ++first) &#123;
+    AllocTraits::destroy(*this, &amp;*beg.next());
+    AllocTraits::construct(*this, &amp;*beg.next(), *first);
+  &#125;
+
+  // size() &lt; distance(first, last) 
+  if (beg.next() == end()) &#123;
+    while (first != last) &#123;
+      // insert_after(beg, *first);
+      push_back(*first++);
+    &#125;  
+  &#125;
+  else if (first == last) &#123;
+    // size() &gt; distance(first, last)
+    while (beg.next() != end()) &#123;
+      erase_after(beg);
+    &#125;
+  &#125;
+&#125;
+</code></pre>
+<h2 id="resize"><a href="#resize" class="headerlink" title="resize"></a>resize</h2><pre><code class="lang-cpp">  void resize(SizeType n);
+  void resize(SizeType n, ValueType const&amp; val);
+</code></pre>
 <p>这个实现十分简单，直接上代码：</p>
-<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">template</span>&lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> A&gt;</span><br><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">FORWARD_LIST_TEMPLATE::resize</span><span class="params">(SizeType n)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">  <span class="keyword">if</span> (size() &lt;= n) &#123;</span><br><span class="line">    <span class="keyword">auto</span> diff = n - size();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (diff--) &#123;</span><br><span class="line">      push_back(T&#123;&#125;);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  <span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">auto</span> it = zstl::advance_iter(before_begin(), n);</span><br><span class="line"></span><br><span class="line">    <span class="keyword">while</span> (it.next() != end()) &#123;</span><br><span class="line">      erase_after(it);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<pre><code class="lang-cpp">template&lt;typename T, typename A&gt;
+void FORWARD_LIST_TEMPLATE::resize(SizeType n)
+&#123;
+  if (size() &lt;= n) &#123;
+    auto diff = n - size();
+
+    while (diff--) &#123;
+      push_back(T&#123;&#125;);
+    &#125;
+  &#125;
+  else &#123;
+    auto it = zstl::advance_iter(before_begin(), n);
+
+    while (it.next() != end()) &#123;
+      erase_after(it);
+    &#125;
+  &#125;
+&#125;
+</code></pre>
 <p>对比<code>std::forward_list&lt;&gt;</code>，第一种情形（<code>size() &lt;= n</code>）我的写法更快，因为可以直接获取$O(1)$获取size，第二种差不多，读者可以自己尝试不用<code>size()</code>写一下。</p>
 <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1><p>暂时就写这些，可能以后会补充（可能有bug）</p>
-<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a href="https://github.com/Conzxy/TinySTL/tree/master/stl_supplement/include" target="_blank" rel="noopener">类模板，节点定义等</a></p>
-<p><a href="https://github.com/Conzxy/TinySTL/tree/master/stl_supplement/src/forward_list" target="_blank" rel="noopener">分离的算法源文件</a></p>
-<p><a href="https://github.com/Conzxy/TinySTL/tree/master/stl_supplement/test" target="_blank" rel="noopener">测试文件和sort的benchmark</a></p>
-</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Conzxy</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2022/01/28/stl/forward_list/">http://yoursite.com/2022/01/28/stl/forward_list/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">Conzxy's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Single-linked-list/">Single linked list</a><a class="post-meta__tags" href="/tags/Data-structure/">Data structure</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/02/09/jos/lab1/"><img class="prev-cover" src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Lab1 Booting a PC</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/20/Cpp/Concurrent/cond_var/"><img class="next-cover" src="/" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">条件变量Question&amp;answer</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Conzxy</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">47</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">41</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Conzxy"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Conzxy" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Cpper，最近对分布式系统、编译器设计感兴趣</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ForwardList-%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">ForwardList 实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">基础算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#push-front"><span class="toc-number">3.1.</span> <span class="toc-text">push_front</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#push-back"><span class="toc-number">3.2.</span> <span class="toc-text">push_back</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#insert-after"><span class="toc-number">3.3.</span> <span class="toc-text">insert_after</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract-front"><span class="toc-number">3.4.</span> <span class="toc-text">extract_front</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract-after"><span class="toc-number">3.5.</span> <span class="toc-text">extract_after</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract-after-range"><span class="toc-number">3.6.</span> <span class="toc-text">extract_after(range)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#trick-ForwardListBase"><span class="toc-number">5.</span> <span class="toc-text">trick: ForwardListBase</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-number">6.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E6%9B%B2%EF%BC%9ANode-API"><span class="toc-number">6.1.</span> <span class="toc-text">插曲：Node API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#insert-API"><span class="toc-number">6.2.</span> <span class="toc-text">insert API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#erase-API"><span class="toc-number">6.3.</span> <span class="toc-text">erase API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#search-API"><span class="toc-number">6.4.</span> <span class="toc-text">search API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#operation-API"><span class="toc-number">6.5.</span> <span class="toc-text">operation API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#merge"><span class="toc-number">6.6.</span> <span class="toc-text">merge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice-after-list"><span class="toc-number">6.7.</span> <span class="toc-text">splice_after(list)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice-after-single-node"><span class="toc-number">6.8.</span> <span class="toc-text">splice_after(single node)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice-after-range"><span class="toc-number">6.9.</span> <span class="toc-text">splice_after(range)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove"><span class="toc-number">6.10.</span> <span class="toc-text">remove</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reverse"><span class="toc-number">6.11.</span> <span class="toc-text">reverse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unique"><span class="toc-number">6.12.</span> <span class="toc-text">unique</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sort"><span class="toc-number">6.13.</span> <span class="toc-text">sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#assign"><span class="toc-number">6.14.</span> <span class="toc-text">assign</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#resize"><span class="toc-number">6.15.</span> <span class="toc-text">resize</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">7.</span> <span class="toc-text">结语</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">7.1.</span> <span class="toc-text">代码</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/22/kanon/poller/" title="Kanon Poller"><img src="https://s2.loli.net/2022/08/11/bCyiuJUI8fvD6Zj.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kanon Poller"/></a><div class="content"><a class="title" href="/2022/05/22/kanon/poller/" title="Kanon Poller">Kanon Poller</a><time datetime="2022-05-22T05:30:43.122Z" title="发表于 2022-05-22 13:30:43">2022-05-22</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2022/05/22/kanon/epoller/" title="Kanon EPoller">Kanon EPoller</a><time datetime="2022-05-22T05:27:01.487Z" title="发表于 2022-05-22 13:27:01">2022-05-22</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2022/05/21/kanon/poller_base/" title="Kanon PollerBase">Kanon PollerBase</a><time datetime="2022-05-21T04:54:20.870Z" title="发表于 2022-05-21 12:54:20">2022-05-21</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2022/05/21/kanon/channel/" title="Kanon Channel">Kanon Channel</a><time datetime="2022-05-21T04:09:35.262Z" title="发表于 2022-05-21 12:09:35">2022-05-21</time></div></div><div class="aside-list-item"><div class="content"><a class="title" href="/2022/05/21/kanon/event_loop_thread/" title="Kanon EventLoopThread">Kanon EventLoopThread</a><time datetime="2022-05-21T04:09:29.055Z" title="发表于 2022-05-21 12:09:29">2022-05-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Conzxy</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
+<h2 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h2><p><a target="_blank" rel="noopener" href="https://github.com/Conzxy/TinySTL/tree/master/stl_supplement/include">类模板，节点定义等</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Conzxy/TinySTL/tree/master/stl_supplement/src/forward_list">分离的算法源文件</a></p>
+<p><a target="_blank" rel="noopener" href="https://github.com/Conzxy/TinySTL/tree/master/stl_supplement/test">测试文件和sort的benchmark</a></p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="http://yoursite.com">Conzxy</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://yoursite.com/2022/01/28/stl/forward_list/">http://yoursite.com/2022/01/28/stl/forward_list/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://yoursite.com" target="_blank">Conzxy's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/Single-linked-list/">Single linked list</a><a class="post-meta__tags" href="/tags/Data-structure/">Data structure</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/02/09/jos/lab1/"><img class="prev-cover" src="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Lab1 Booting a PC</div></div></a></div><div class="next-post pull-right"><a href="/2021/12/20/Cpp/Concurrent/cond_var/"><img class="next-cover" src="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">条件变量Question&amp;answer</div></div></a></div></nav><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Conzxy</div><div class="author-info__description"></div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">82</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">47</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">41</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Conzxy"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Conzxy" target="_blank" title="Github"><i class="fab fa-github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Cpper，最近对分布式系统、编译器设计感兴趣</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#ForwardList-%E5%AE%9E%E7%8E%B0"><span class="toc-number">1.</span> <span class="toc-text">ForwardList 实现</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%AE%BE%E8%AE%A1"><span class="toc-number">2.</span> <span class="toc-text">设计</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E7%AE%97%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">基础算法</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#push-front"><span class="toc-number">3.1.</span> <span class="toc-text">push_front</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#push-back"><span class="toc-number">3.2.</span> <span class="toc-text">push_back</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#insert-after"><span class="toc-number">3.3.</span> <span class="toc-text">insert_after</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract-front"><span class="toc-number">3.4.</span> <span class="toc-text">extract_front</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract-after"><span class="toc-number">3.5.</span> <span class="toc-text">extract_after</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#extract-after-range"><span class="toc-number">3.6.</span> <span class="toc-text">extract_after(range)</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E8%BF%AD%E4%BB%A3%E5%99%A8"><span class="toc-number">4.</span> <span class="toc-text">迭代器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#trick-ForwardListBase"><span class="toc-number">5.</span> <span class="toc-text">trick: ForwardListBase</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E6%93%8D%E4%BD%9C"><span class="toc-number">6.</span> <span class="toc-text">操作</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8F%92%E6%9B%B2%EF%BC%9ANode-API"><span class="toc-number">6.1.</span> <span class="toc-text">插曲：Node API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#insert-API"><span class="toc-number">6.2.</span> <span class="toc-text">insert API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#erase-API"><span class="toc-number">6.3.</span> <span class="toc-text">erase API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#search-API"><span class="toc-number">6.4.</span> <span class="toc-text">search API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#operation-API"><span class="toc-number">6.5.</span> <span class="toc-text">operation API</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#merge"><span class="toc-number">6.6.</span> <span class="toc-text">merge</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice-after-list"><span class="toc-number">6.7.</span> <span class="toc-text">splice_after(list)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice-after-single-node"><span class="toc-number">6.8.</span> <span class="toc-text">splice_after(single node)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#splice-after-range"><span class="toc-number">6.9.</span> <span class="toc-text">splice_after(range)</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#remove"><span class="toc-number">6.10.</span> <span class="toc-text">remove</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#reverse"><span class="toc-number">6.11.</span> <span class="toc-text">reverse</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#unique"><span class="toc-number">6.12.</span> <span class="toc-text">unique</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#sort"><span class="toc-number">6.13.</span> <span class="toc-text">sort</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#assign"><span class="toc-number">6.14.</span> <span class="toc-text">assign</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#resize"><span class="toc-number">6.15.</span> <span class="toc-text">resize</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E7%BB%93%E8%AF%AD"><span class="toc-number">7.</span> <span class="toc-text">结语</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%A3%E7%A0%81"><span class="toc-number">7.1.</span> <span class="toc-text">代码</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/05/22/kanon/poller/" title="Kanon Poller"><img src="https://s2.loli.net/2022/08/11/bCyiuJUI8fvD6Zj.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kanon Poller"/></a><div class="content"><a class="title" href="/2022/05/22/kanon/poller/" title="Kanon Poller">Kanon Poller</a><time datetime="2022-05-22T05:30:43.122Z" title="发表于 2022-05-22 13:30:43">2022-05-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/22/kanon/epoller/" title="Kanon EPoller"><img src="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kanon EPoller"/></a><div class="content"><a class="title" href="/2022/05/22/kanon/epoller/" title="Kanon EPoller">Kanon EPoller</a><time datetime="2022-05-22T05:27:01.487Z" title="发表于 2022-05-22 13:27:01">2022-05-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/21/kanon/poller_base/" title="Kanon PollerBase"><img src="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kanon PollerBase"/></a><div class="content"><a class="title" href="/2022/05/21/kanon/poller_base/" title="Kanon PollerBase">Kanon PollerBase</a><time datetime="2022-05-21T04:54:20.870Z" title="发表于 2022-05-21 12:54:20">2022-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/21/kanon/channel/" title="Kanon Channel"><img src="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kanon Channel"/></a><div class="content"><a class="title" href="/2022/05/21/kanon/channel/" title="Kanon Channel">Kanon Channel</a><time datetime="2022-05-21T04:09:35.262Z" title="发表于 2022-05-21 12:09:35">2022-05-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/05/21/kanon/event_loop_thread/" title="Kanon EventLoopThread"><img src="https://s2.loli.net/2022/08/11/cLoR4IHvwUBePAx.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Kanon EventLoopThread"/></a><div class="content"><a class="title" href="/2022/05/21/kanon/event_loop_thread/" title="Kanon EventLoopThread">Kanon EventLoopThread</a><time datetime="2022-05-21T04:09:29.055Z" title="发表于 2022-05-21 12:09:29">2022-05-21</time></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Conzxy</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><div class="js-pjax"><script>if (!window.MathJax) {
   window.MathJax = {
     tex: {
       inlineMath: [ ['$','$'], ["\\(","\\)"]],
