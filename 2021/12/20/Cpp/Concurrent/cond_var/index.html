@@ -14,7 +14,7 @@
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https://conzxy.github.io/img/shinku1.png"><link rel="shortcut icon" href="https://s2.loli.net/2022/08/11/GzwcjJWagFYDrqA.png"><link rel="canonical" href="https://conzxy.github.io/2021/12/20/Cpp/Concurrent/cond_var/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
   root: '/',
-  algolia: {"apiKey":"6d906e58a3775dbc633767eedd5e917a","indexName":"conzxy_blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  algolia: {"appId":"N9Z0PM0HJZ","apiKey":"6d906e58a3775dbc633767eedd5e917a","indexName":"conzxy_blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
   localSearch: undefined,
   translate: undefined,
   noticeOutdate: undefined,
@@ -161,7 +161,7 @@
 <blockquote>
 <p>Q4: Is is necessary to lock when calling signal()</p>
 </blockquote>
-<p>A4: 对于timedwait()来说不是必要的，但终究是非常规用法。对于一般的wait()还是必须得加锁，不能在临界区外面调用signal()。设想如下情景：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs cpp">mutex.<span class="hljs-built_in">lock</span>();<br><span class="hljs-built_in">increment_condition_variable</span>(); <span class="hljs-comment">// increment the variable related to condition instead condition itself</span><br>mutex.<span class="hljs-built_in">unlock</span>(); <span class="hljs-comment">// FIXME use MutexGuard</span><br>cond.<span class="hljs-built_in">signal</span>();<br></code></pre></td></tr></table></figure><br>还是生产者消费者问题：在unlock()与signal()间，上下文切换到消费者线程，由于signal()没有被锁住，所以它可能会在消费者线程调用wait()前就被调用，从而导致出现“丢失唤醒”。</p>
+<p>A4: 对于timedwait()来说不是必要的，但终究是非常规用法。对于一般的wait()还是必须得加锁，不能在临界区外面调用signal()。设想如下情景：<br><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">mutex.<span class="built_in">lock</span>();</span><br><span class="line"><span class="built_in">increment_condition_variable</span>(); <span class="comment">// increment the variable related to condition instead condition itself</span></span><br><span class="line">mutex.<span class="built_in">unlock</span>(); <span class="comment">// FIXME use MutexGuard</span></span><br><span class="line">cond.<span class="built_in">signal</span>();</span><br></pre></td></tr></table></figure><br>还是生产者消费者问题：在unlock()与signal()间，上下文切换到消费者线程，由于signal()没有被锁住，所以它可能会在消费者线程调用wait()前就被调用，从而导致出现“丢失唤醒”。</p>
 <blockquote>
 <p>Q5: The semantic of signal()/broadcast()</p>
 </blockquote>
