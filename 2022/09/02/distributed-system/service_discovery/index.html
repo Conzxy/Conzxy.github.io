@@ -1,0 +1,229 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"><title>对Service Discovery with router tier的思考 | Conzxy's blog</title><meta name="keywords" content="distributed-system"><meta name="author" content="Conzxy,1967933844@qq.com"><meta name="copyright" content="Conzxy"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="前言最近，在思考Load Balancer(LB)和Configuration Controller的区别，最后根据《DDIA》中提到的关键词搜到的资料总算是明确了两者的一些优缺点（大概），也验证了我的一些想法，它们都属于service discovery问题的一种解决方案。 Service discovery所谓服务发现，根据我的理解，它就是指一个客户端接入整个集群，它怎么找到应该提供给它服务的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="对Service Discovery with router tier的思考">
+<meta property="og:url" content="https://conzxy.github.io/2022/09/02/distributed-system/service_discovery/index.html">
+<meta property="og:site_name" content="Conzxy&#39;s blog">
+<meta property="og:description" content="前言最近，在思考Load Balancer(LB)和Configuration Controller的区别，最后根据《DDIA》中提到的关键词搜到的资料总算是明确了两者的一些优缺点（大概），也验证了我的一些想法，它们都属于service discovery问题的一种解决方案。 Service discovery所谓服务发现，根据我的理解，它就是指一个客户端接入整个集群，它怎么找到应该提供给它服务的">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.loli.net/2022/09/02/IymaQWxA14lEPgO.jpg">
+<meta property="article:published_time" content="2022-09-02T02:47:26.780Z">
+<meta property="article:modified_time" content="2022-09-02T08:59:58.544Z">
+<meta property="article:author" content="Conzxy">
+<meta property="article:tag" content="distributed-system">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.loli.net/2022/09/02/IymaQWxA14lEPgO.jpg"><link rel="shortcut icon" href="https://s2.loli.net/2022/08/11/GzwcjJWagFYDrqA.png"><link rel="canonical" href="https://conzxy.github.io/2022/09/02/distributed-system/service_discovery/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" media="print" onload="this.media='all'"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.min.css" media="print" onload="this.media='all'"><script>const GLOBAL_CONFIG = { 
+  root: '/',
+  algolia: {"appId":"N9Z0PM0HJZ","apiKey":"6d906e58a3775dbc633767eedd5e917a","indexName":"conzxy_blog","hits":{"per_page":6},"languages":{"input_placeholder":"搜索文章","hits_empty":"找不到您查询的内容：${query}","hits_stats":"找到 ${hits} 条结果，用时 ${time} 毫秒"}},
+  localSearch: undefined,
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  source: {
+    justifiedGallery: {
+      js: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.js',
+      css: 'https://cdn.jsdelivr.net/npm/flickr-justified-gallery/dist/fjGallery.min.css'
+    }
+  },
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isAnchor: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: '对Service Discovery with router tier的思考',
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isToc: true,
+  postUpdate: '2022-09-02 16:59:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>(win=>{
+    win.saveToLocal = {
+      set: function setWithExpiry(key, value, ttl) {
+        if (ttl === 0) return
+        const now = new Date()
+        const expiryDay = ttl * 86400000
+        const item = {
+          value: value,
+          expiry: now.getTime() + expiryDay,
+        }
+        localStorage.setItem(key, JSON.stringify(item))
+      },
+
+      get: function getWithExpiry(key) {
+        const itemStr = localStorage.getItem(key)
+
+        if (!itemStr) {
+          return undefined
+        }
+        const item = JSON.parse(itemStr)
+        const now = new Date()
+
+        if (now.getTime() > item.expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return item.value
+      }
+    }
+  
+    win.getScript = url => new Promise((resolve, reject) => {
+      const script = document.createElement('script')
+      script.src = url
+      script.async = true
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    })
+  
+      win.activateDarkMode = function () {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      win.activateLightMode = function () {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+      const t = saveToLocal.get('theme')
+    
+          if (t === 'dark') activateDarkMode()
+          else if (t === 'light') activateLightMode()
+        
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        if (asideStatus === 'hide') {
+          document.documentElement.classList.add('hide-aside')
+        } else {
+          document.documentElement.classList.remove('hide-aside')
+        }
+      }
+    
+    const detectApple = () => {
+      if(/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)){
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+    })(window)</script><link rel="stylesheet" href="/css/user.css"><!-- hexo injector head_end start -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.12.0/dist/katex.min.css">
+<!-- hexo injector head_end end --><meta name="generator" content="Hexo 5.4.2"></head><body><div id="web_bg"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img is-center"><img src="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="sidebar-site-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">57</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw 首页"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw 归档"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw 标签"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw 分类"></i><span> 分类</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url('https://s2.loli.net/2022/09/02/qkZKpsVQebCJrUz.png')"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">Conzxy's blog</a></span><div id="menus"><div id="search-button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw 首页"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw 归档"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw 标签"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw 分类"></i><span> 分类</span></a></div></div><div id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></div></div></nav><div id="post-info"><h1 class="post-title">对Service Discovery with router tier的思考</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2022-09-02T02:47:26.780Z" title="发表于 2022-09-02 10:47:26">2022-09-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2022-09-02T08:59:58.544Z" title="更新于 2022-09-02 16:59:58">2022-09-02</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/distributed-system/">distributed-system</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.4k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title="对Service Discovery with router tier的思考"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span><span class="post-meta-separator">|</span><span class="post-meta-commentcount"><i class="far fa-comments fa-fw post-meta-icon"></i><span class="post-meta-label">评论数:</span><a href="/2022/09/02/distributed-system/service_discovery/#post-comment"><span class="gitalk-comment-count"><i class="fa-solid fa-spinner fa-spin"></i></span></a></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="post-content" id="article-container"><h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>最近，在思考<code>Load Balancer(LB)</code>和<code>Configuration Controller</code>的区别，最后根据《DDIA》中提到的关键词<a target="_blank" rel="noopener" href="https://avinetworks.com/glossary/service-discovery/">搜到的资料</a>总算是明确了两者的一些优缺点（大概），也验证了我的一些想法，它们都属于<code>service discovery</code>问题的一种解决方案。</p>
+<h1 id="Service-discovery"><a href="#Service-discovery" class="headerlink" title="Service discovery"></a>Service discovery</h1><p>所谓服务发现，根据我的理解，它就是指一个客户端接入整个集群，它怎么找到应该提供给它服务的服务器，即哪个节点它应该连接以至于服务内容是正确的或是对应的。<br>比如，对于kv服务，如果采用集群形式提供服务，那么可能采取哈希键的方式获取到具体的节点，然后之后对于该键的操作都应该连接该节点（具体实现会更复杂）。</p>
+<p>这个问题的解决影响整个集群的可用性，因此设计集群估计是避不开的。</p>
+<p>以下我想讨论的主要是服务发现中的一种方案：带有路由层（router-tier）的集群更细化的方案思考。</p>
+<h1 id="Load-Balancer"><a href="#Load-Balancer" class="headerlink" title="Load Balancer"></a>Load Balancer</h1><p>根据<a target="_blank" rel="noopener" href="https://www.nginx.com/resources/glossary/load-balancing/">nginx文档</a>可以了解到均衡负载器（以下可能称呼为LB）的作用主要是将客户端的请求转发根据均衡负载算法转发给后端的（提供服务的）服务器，从而保证所有服务器并不会工作过载（overwork），否则性能可能会下降（因为资源紧张），并且由于有多个服务器并行处理请求，因此性能相较于单服务器可能有一定的提升（我想如果IO负载比计算负载要更大，那么可能性能不会提升那么明显或者下降）。</p>
+<p>在实现上，均衡负载器类似于<code>反向代理</code>(reverse proxy)：收集所有请求并转发给服务器，收集服务器的响应转发给对应的客户端，但是不会做caching等额外的操作。</p>
+<p>我对均衡负载器最不理解的一点在于，在客户端和服务端之间加设了一个“路由器”（router），为什么很多横向扩展（horizontal scaling）的方案采用它，因为这不多了一层网络IO的开销，稍微学过OS的都知道各种IO设备之间存在间隙（gap），而网络IO是所有IO设备中目前最差的（尽管gap在缩小）。<br>但是实际上作为代价也带来了一些好处，见下。</p>
+<h1 id="Configuration-Controller"><a href="#Configuration-Controller" class="headerlink" title="Configuration Controller"></a>Configuration Controller</h1><p>首先解释一下，Configuration是指集群节点的元数据，每次节点发送变化会生成新的配置。比如分片服务器，那么维护的可能是分片到节点的映射等元数据。</p>
+<p>配置管理器和LB类似，也是在服务器和客户端之间的一个中介，但是它并不是转发中介，而只是个管理集群元数据的服务器，客户端要获取具体的服务内容最终还是得与提供服务的节点进行连接。</p>
+<p>配置的存储方式容易想到的有两种：</p>
+<ul>
+<li>内存（自定义数据结构或者内存数据库）</li>
+<li>硬盘（一般使用面向硬盘的数据库）</li>
+</ul>
+<p>既然配置管理器不转发请求，那么客户端首先必须通过它获取服务器的位置，然后才能向提供服务的节点发送请求。</p>
+<p>那么每次获取节点位置都需要请求两次？这样性能想必不会好到哪去。</p>
+<p>一种避免方式是将配置缓存到客户端。但是又有新的问题：在客户端的缓存如何更新？如果配置管理器每次配置更新的时候同时发送给所有客户端配置的话，IO开销太大了，因为客户端的数目可能很大，甚至远大于集群大小。一种解决方式是将配置的更新与节点同步，然后节点接受到请求后解析请求判断请求是否该送到该节点，如果不是的话，说明客户端的配置已经过期了，需要节点将新的配置发给客户端。<code>6.824</code>的ShardedKv采用的这种方式，<code>redis</code>其实也类似，只是没有配置管理器。</p>
+<h1 id="优缺点对比"><a href="#优缺点对比" class="headerlink" title="优缺点对比"></a>优缺点对比</h1><h2 id="Load-balancer"><a href="#Load-balancer" class="headerlink" title="Load balancer"></a>Load balancer</h2><p>优点：</p>
+<ul>
+<li>分散节点负载，并行处理多个请求，提升整个系统的吞吐量和性能</li>
+<li>隐藏提供服务的节点，对于某些服务可能有用。</li>
+<li>即使节点故障了，LB没故障仍可以提供服务（我认为这个不能算是很好的做法，因为更好的做法是节点自己提供容错手段）</li>
+<li>LB与提供服务的节点实现是分离的，即不需要节点为配置做任何处理，某种意义上可以复用提供服务的不同服务器，比如web服务器可以是apache，nginx，lighthttpd等。</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>IO负载都集中在LB上，某种意义上系统瓶颈可能在于单个LB（尽管可以构筑LB集群）</li>
+<li>网络IO的开销多了一层，如果请求基本都是IO负载，那么性能不会得到很大的提升</li>
+</ul>
+<h2 id="Configuration-Controller-1"><a href="#Configuration-Controller-1" class="headerlink" title="Configuration Controller"></a>Configuration Controller</h2><p>优点：</p>
+<ul>
+<li>客户端与节点直接连接，避免了中介转发的IO开销</li>
+<li>请求不通过中介直接分发给了集群中的所有节点，很大程度上将热点（hop spot）从中介上转移了</li>
+</ul>
+<p>缺点：</p>
+<ul>
+<li>同步节点配置的更新需要一定的IO开销</li>
+<li>实现复杂，需要客户端，服务节点都针对其进行定制化</li>
+</ul>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="https://conzxy.github.io">Conzxy</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="https://conzxy.github.io/2022/09/02/distributed-system/service_discovery/">https://conzxy.github.io/2022/09/02/distributed-system/service_discovery/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="https://conzxy.github.io" target="_blank">Conzxy's blog</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/distributed-system/">distributed-system</a></div><div class="post_share"><div class="social-share" data-image="https://s2.loli.net/2022/09/02/IymaQWxA14lEPgO.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/2022/09/02/distributed-system/protobuf_rpc_callback/"><img class="prev-cover" src="https://s2.loli.net/2022/09/02/wQVD6FU5zjCyurE.png" onerror="onerror=null;src='/img/404.jpg'" alt="cover of previous post"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">实现自己的Closure以使rpc的回调兼容所有可调用对象</div></div></a></div><div class="next-post pull-right"><a href="/2022/08/24/cos333/regex/"><img class="next-cover" src="https://s2.loli.net/2022/08/24/JugsZfl9qcHMSFt.jpg" onerror="onerror=null;src='/img/404.jpg'" alt="cover of next post"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">COS333 assignment1 -- glob</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><div><a href="/2022/08/12/mmkv/dist_arch/" title="mmkv分布式架构设想"><img class="cover" src="https://s2.loli.net/2022/08/12/f4ykdUMHsEqJBSc.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-08-12</div><div class="title">mmkv分布式架构设想</div></div></a></div><div><a href="/2022/09/02/distributed-system/protobuf_rpc_callback/" title="实现自己的Closure以使rpc的回调兼容所有可调用对象"><img class="cover" src="https://s2.loli.net/2022/09/02/wQVD6FU5zjCyurE.png" alt="cover"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2022-09-02</div><div class="title">实现自己的Closure以使rpc的回调兼容所有可调用对象</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="gitalk-container"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info"><div class="is-center"><div class="avatar-img"><img src="https://s2.loli.net/2022/08/11/FL2oCbPv5MNiDgK.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info__name">Conzxy</div><div class="author-info__description">blog</div></div><div class="card-info-data site-data is-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">93</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">57</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">47</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/Conzxy"><i class="fab fa-github"></i><span>Follow Me</span></a><div class="card-info-social-icons is-center"><a class="social-icon" href="https://github.com/Conzxy" target="_blank" title="Github"><i class="fab fa-github"></i></a><a class="social-icon" href="/1967933844@qq.com" target="_blank" title="Email"><i class="fas fa-envelope"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">Cpper，最近对分布式系统、编译器设计感兴趣</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Service-discovery"><span class="toc-number">2.</span> <span class="toc-text">Service discovery</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Load-Balancer"><span class="toc-number">3.</span> <span class="toc-text">Load Balancer</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Configuration-Controller"><span class="toc-number">4.</span> <span class="toc-text">Configuration Controller</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BC%98%E7%BC%BA%E7%82%B9%E5%AF%B9%E6%AF%94"><span class="toc-number">5.</span> <span class="toc-text">优缺点对比</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#Load-balancer"><span class="toc-number">5.1.</span> <span class="toc-text">Load balancer</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Configuration-Controller-1"><span class="toc-number">5.2.</span> <span class="toc-text">Configuration Controller</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/2022/09/02/distributed-system/protobuf_rpc_callback/" title="实现自己的Closure以使rpc的回调兼容所有可调用对象"><img src="https://s2.loli.net/2022/09/02/wQVD6FU5zjCyurE.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="实现自己的Closure以使rpc的回调兼容所有可调用对象"/></a><div class="content"><a class="title" href="/2022/09/02/distributed-system/protobuf_rpc_callback/" title="实现自己的Closure以使rpc的回调兼容所有可调用对象">实现自己的Closure以使rpc的回调兼容所有可调用对象</a><time datetime="2022-09-02T05:39:49.536Z" title="发表于 2022-09-02 13:39:49">2022-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/09/02/distributed-system/service_discovery/" title="对Service Discovery with router tier的思考"><img src="https://s2.loli.net/2022/09/02/IymaQWxA14lEPgO.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="对Service Discovery with router tier的思考"/></a><div class="content"><a class="title" href="/2022/09/02/distributed-system/service_discovery/" title="对Service Discovery with router tier的思考">对Service Discovery with router tier的思考</a><time datetime="2022-09-02T02:47:26.780Z" title="发表于 2022-09-02 10:47:26">2022-09-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/24/cos333/regex/" title="COS333 assignment1 -- glob"><img src="https://s2.loli.net/2022/08/24/JugsZfl9qcHMSFt.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="COS333 assignment1 -- glob"/></a><div class="content"><a class="title" href="/2022/08/24/cos333/regex/" title="COS333 assignment1 -- glob">COS333 assignment1 -- glob</a><time datetime="2022-08-24T05:02:10.935Z" title="发表于 2022-08-24 13:02:10">2022-08-24</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/23/cos333/base64/" title="base64 encoder &amp; decoder"><img src="https://s2.loli.net/2022/08/23/qlHRyp7inYC4jbt.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="base64 encoder &amp; decoder"/></a><div class="content"><a class="title" href="/2022/08/23/cos333/base64/" title="base64 encoder &amp; decoder">base64 encoder &amp; decoder</a><time datetime="2022-08-23T01:32:17.930Z" title="发表于 2022-08-23 09:32:17">2022-08-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/2022/08/19/hexo/transparent_bg/" title="Hexo butterfly 4.3.1 背景透明度设置"><img src="https://s2.loli.net/2022/08/19/5AvhBfa3WFJjHen.png" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Hexo butterfly 4.3.1 背景透明度设置"/></a><div class="content"><a class="title" href="/2022/08/19/hexo/transparent_bg/" title="Hexo butterfly 4.3.1 背景透明度设置">Hexo butterfly 4.3.1 背景透明度设置</a><time datetime="2022-08-18T16:31:31.164Z" title="发表于 2022-08-19 00:31:31">2022-08-19</time></div></div></div></div></div></div></main><footer id="footer" style="background-image: url('https://s2.loli.net/2022/08/18/XNnMbxd95EmwReV.jpg')"><div id="footer-wrap"><div class="copyright">&copy;2020 - 2022 By Conzxy</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div><div class="footer_custom_text">欢迎来到Conzxy's blog，希望内容对你有所启发!</div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></div><div id="algolia-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="search-wrap"><div id="algolia-search-input"></div><hr/><div id="algolia-search-results"><div id="algolia-hits"></div><div id="algolia-pagination"></div><div id="algolia-info"><div class="algolia-stats"></div><div class="algolia-poweredBy"></div></div></div></div></div><div id="search-mask"></div></div><div><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui/dist/fancybox.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/algoliasearch/dist/algoliasearch-lite.umd.min.js"></script><script src="https://cdn.jsdelivr.net/npm/instantsearch.js/dist/instantsearch.production.min.js"></script><script src="/js/search/algolia.js"></script><div class="js-pjax"><script>function addGitalkSource () {
+  const ele = document.createElement('link')
+  ele.rel = 'stylesheet'
+  ele.href= 'https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.css'
+  document.getElementsByTagName('head')[0].appendChild(ele)
+}
+
+function loadGitalk () {
+  function initGitalk () {
+    var gitalk = new Gitalk(Object.assign({
+      clientID: '777f04a5b126f26c2e07',
+      clientSecret: '8f8dd09899f1d1d8f688e50ab6119b788982da7d',
+      repo: 'Conzxy.github.io',
+      owner: 'Conzxy',
+      admin: ['Conzxy'],
+      id: 'ef3567d208f395c22dd12d5c4ada69ce',
+      updateCountCallback: commentCount
+    },null))
+
+    gitalk.render('gitalk-container')
+  }
+
+  if (typeof Gitalk === 'function') initGitalk()
+  else {
+    addGitalkSource()
+    getScript('https://cdn.jsdelivr.net/npm/gitalk/dist/gitalk.min.js').then(initGitalk)
+  }
+}
+
+function commentCount(n){
+  let isCommentCount = document.querySelector('#post-meta .gitalk-comment-count')
+  if (isCommentCount) {
+    isCommentCount.innerHTML= n
+  }
+}
+
+if ('Gitalk' === 'Gitalk' || !false) {
+  if (false) btf.loadComment(document.getElementById('gitalk-container'), loadGitalk)
+  else loadGitalk()
+} else {
+  function loadOtherComment () {
+    loadGitalk()
+  }
+}</script></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
